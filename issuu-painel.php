@@ -23,7 +23,7 @@ require(ISSUU_PAINEL_DIR . 'menu/principal/config.php');
 
 if ((!is_null($api_key) && strlen($api_key) > 0) && (!is_null($api_secret) && strlen($api_secret) > 0))
 {
-	require(ISSUU_PAINEL_DIR . 'issuuservice-lib/issuu-lib.php');
+	require(ISSUU_PAINEL_DIR . 'issuuservice/issuu-lib.php');
 
 	$includes = glob(ISSUU_PAINEL_DIR . 'includes/*.php');
 
