@@ -51,7 +51,7 @@ class IssuuDocument extends IssuuServiceAPI
     */
     public function upload($params = array())
     {
-        if (!isset($_FILES['file']) || empty($_FILES['file']))
+        if (!isset($_FILES['file']) || empty($_FILES['files']))
         {
             header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
             header('Content-Type: text/plain');
@@ -78,8 +78,6 @@ class IssuuDocument extends IssuuServiceAPI
 
         $response = curl_exec($curl);
         curl_close($curl);
-
-        echo $response;
 
         $slug = $this->slug_section;
 
