@@ -101,7 +101,7 @@ foreach ($_POST as $key => $value) {
 	}
 }
 
-$result = $document->upload($_POST);
+$result = $issuu_document->upload($_POST);
 
 if ($result['stat'] == 'ok')
 {

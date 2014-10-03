@@ -45,7 +45,7 @@ foreach ($_POST as $key => $value) {
 	$_POST[$key] = trim($value);
 }
 
-$result = $document->update($_POST);
+$result = $issuu_document->update($_POST);
 
 if ($result['stat'] == 'ok')
 {

@@ -97,7 +97,7 @@ foreach ($_POST as $key => $value) {
 	$_POST[$key] = trim($value);
 }
 
-$result = $document->urlUpload($_POST);
+$result = $issuu_document->urlUpload($_POST);
 
 if ($result['stat'] == 'ok')
 {

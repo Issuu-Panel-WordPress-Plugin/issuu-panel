@@ -16,7 +16,7 @@ if ($count > 0)
 		}
 	}
 
-	$result = $document->delete($params);
+	$result = $issuu_document->delete($params);
 
 	if ($result['stat'] == 'ok')
 	{
