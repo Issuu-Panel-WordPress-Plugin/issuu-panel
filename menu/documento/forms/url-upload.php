@@ -54,6 +54,21 @@
 				</td>
 			</tr>
 			<tr>
+				<th><label>Pastas</label></th>
+				<td>
+					<?php if (isset($folders['folder']) && !empty($folders['folder'])) : ?>
+						<fieldset>
+							<?php for ($i = 0; $i < $cnt_f; $i++) : ?>
+								<label for="folder<?= $i + 1; ?>">
+									<input id="folder<?= $i + 1; ?>" type="checkbox" name="folder[]" value="<?= $folders['folder'][$i]->folderId; ?>">
+									<?= $folders['folder'][$i]->name; ?> (<?= $folders['folder'][$i]->items; ?>)
+								</label><br>
+							<?php endfor; ?>
+						</fieldset>
+					<?php endif; ?>
+				</td>
+			</tr>
+			<tr>
 				<th><label for="commentsAllowed">Permitir comentários</label></th>
 				<td><input type="checkbox" name="commentsAllowed" id="commentsAllowed" value="true"></td>
 			</tr>

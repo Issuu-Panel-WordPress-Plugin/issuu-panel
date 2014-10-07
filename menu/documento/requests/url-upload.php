@@ -78,6 +78,23 @@ else
 
 unset($_POST['pub']);
 
+if (isset($_POST['folder']) && !empty($_POST['folder']))
+{
+	$count = count($_POST['folder']);
+	for ($i = 0; $i < $count; $i++) {
+		if ($i == ($count - 1))
+		{
+			$_POST['folderIds'] .= $_POST['folder'][$i];
+		}
+		else
+		{
+			$_POST['folderIds'] .= $_POST['folder'][$i] . ',';
+		}
+	}
+}
+
+unset($_POST['folder']);
+
 if (trim($_POST['name']) != '')
 {
 	$_POST['name'] = str_replace(" ", "", $_POST['name']);

@@ -22,7 +22,7 @@ function issuu_painel_menu_document_init()
 
 	$issuu_document = new IssuuDocument($api_key, $api_secret);
 
-	if (isset($_GET['upload']))
+	if (isset($_GET['upload']) && !isset($_POST['delete']))
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
@@ -36,11 +36,14 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
+			$issuu_folder = new IssuuFolder($api_key, $api_secret);
+			$folders = $issuu_folder->issuuList();
+			$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 			include(ISSUU_PAINEL_DIR . 'menu/documento/forms/upload.php');
 			$load = true;
 		}
 	}
-	else if (isset($_GET['url_upload']))
+	else if (isset($_GET['url_upload']) && !isset($_POST['delete']))
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
@@ -52,6 +55,9 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
+			$issuu_folder = new IssuuFolder($api_key, $api_secret);
+			$folders = $issuu_folder->issuuList();
+			$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 			include(ISSUU_PAINEL_DIR . 'menu/documento/forms/url-upload.php');
 			$load = true;
 		}
