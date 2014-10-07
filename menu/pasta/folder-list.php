@@ -9,8 +9,8 @@
 				<a href="admin.php?page=issuu-folder-admin&folder=<?= $key; ?>">
 					<?php for ($i = 0; $i < 3; $i++) : ?>
 						<?php if (isset($value['documentsId'][$i])) : ?>
-							<div class="folder-item">
-								<img src="<?= sprintf($image, $value['documentsId'][$i]); ?>">
+							<div class="folder-item folder-item-doc">
+								<img src="<?= sprintf($image, $value['documentsId'][$i]->documentId); ?>">
 							</div><!-- FIM folder-item -->
 						<?php else: ?>
 							<div class="folder-item"></div><!-- FIM folder-item -->

@@ -42,35 +42,23 @@ function issuu_painel_menu_folder_init()
 
 		if ($fo['stat'] == 'ok')
 		{
+			$issuu_bookmark = new IssuuBookmark($api_key, $api_secret);
+			$bookmarks = $issuu_bookmark->issuuList(array('folderId' => $_GET['folder']));
+
 			$fo = $fo['folder'];
 			$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
 			$folders_documents = array();
 
-			$folders = $issuu_folder->issuuList(array('folderSortBy' => 'created'));
-			$documents = $issuu_document->issuuList();
+			$folders_documents['name'] = $fo->name;
+			$folders_documents['items'] = $fo->items;
 
-
-			if (isset($folders['folder']) && !empty($folders['folder']))
+			if ($bookmarks['stat'] == 'ok' && isset($bookmarks['bookmark']) && !empty($bookmarks['bookmark']))
 			{
-				foreach ($folders['folder'] as $f) {
-					$fId = $f->folderId;
-					$folders_documents[$fId] = array();
-					$folders_documents[$fId]['name'] = $f->name;
-					$folders_documents[$fId]['documentsId'] = array();
-					$folders_documents[$fId]['items'] = $f->items;
-				}
+				$folders_documents['documentsId'] = $bookmarks['bookmark'];
 			}
-
-			if (isset($documents['document']) && !empty($documents['document']))
+			else
 			{
-				foreach ($documents['document'] as $doc) {
-					if (isset($doc->folders))
-					{
-						foreach ($doc->folders as $f) {
-							$folders_documents[$f]['documentsId'][] = $doc->documentId;
-						}
-					}
-				}
+				$folders_documents['documentsId'] = array();
 			}
 
 			include(ISSUU_PAINEL_DIR . 'menu/pasta/forms/update.php');
@@ -94,27 +82,26 @@ function issuu_painel_menu_folder_init()
 		$folders_documents = array();
 
 		$folders = $issuu_folder->issuuList(array('folderSortBy' => 'created'));
-		$documents = $issuu_document->issuuList();
 
 		if (isset($folders['folder']) && !empty($folders['folder']))
 		{
+			$issuu_bookmark = new IssuuBookmark($api_key, $api_secret);
+	
 			foreach ($folders['folder'] as $f) {
 				$fId = $f->folderId;
 				$folders_documents[$fId] = array();
 				$folders_documents[$fId]['name'] = $f->name;
-				$folders_documents[$fId]['documentsId'] = array();
 				$folders_documents[$fId]['items'] = $f->items;
-			}
-		}
 
-		if (isset($documents['document']) && !empty($documents['document']))
-		{
-			foreach ($documents['document'] as $doc) {
-				if (isset($doc->folders))
+				$bookmarks = $issuu_bookmark->issuuList(array('pageSize' => 3, 'folderId' => $fId));
+
+				if ($bookmarks['stat'] == 'ok' && (isset($bookmarks['bookmark']) && !empty($bookmarks['bookmark'])))
 				{
-					foreach ($doc->folders as $f) {
-						$folders_documents[$f]['documentsId'][] = $doc->documentId;
-					}
+					$folders_documents[$fId]['documentsId'] = $bookmarks['bookmark'];
+				}
+				else
+				{
+					$folders_documents[$fId]['documentsId'] = array();
 				}
 			}
 		}

@@ -27,6 +27,19 @@
 			</tr>
 		</tbody>
 	</table>
+	<div id="document-list">
+		<?php if (isset($folders_documents['documentsId']) && !empty($folders_documents['documentsId'])) : ?>
+		<h3>Documentos da pasta</h3>
+			<?php foreach ($folders_documents['documentsId'] as $doc) : ?>
+				<div class="document complete">
+					<div class="document-box">
+						<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
+					</div>
+					<p class="description"><?= $doc->title ?></p>
+				</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</div>
 </form>
 <script type="text/javascript" charset="utf-8">
 	(function($){
