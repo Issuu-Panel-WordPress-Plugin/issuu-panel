@@ -86,6 +86,10 @@
 	left: 38px;
 }
 
+.issuu-folder .folder-item-doc{
+	height: auto !important;
+}
+
 .issuu-folder .folder-item img{
 	display: block;
 	width: 100%;
