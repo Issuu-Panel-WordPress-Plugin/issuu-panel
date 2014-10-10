@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+#issuu-painel-list{
+	display: block;
+}
+
+#issuu-painel-list:after{
+	content: " ";
+	display: table;
+	clear: both;
+}
