@@ -40,15 +40,15 @@
 	width: 100%;
 	min-height: 170px;
 
-	background-image: url(../images/loading.png);
+	background-image: url(../images/loading.gif);
 	background-size: 40px;
 	background-repeat: no-repeat;
 	background-position: center;
 	
-	-webkit-animation: loading-issuu 1s linear infinite normal;
+/*	-webkit-animation: loading-issuu 1s linear infinite normal;
 	   -moz-animation: loading-issuu 1s linear infinite normal;
 		 -o-animation: loading-issuu 1s linear infinite normal;
-			animation: loading-issuu 1s linear infinite normal;
+			animation: loading-issuu 1s linear infinite normal;*/
 }
 
 #document-list,
