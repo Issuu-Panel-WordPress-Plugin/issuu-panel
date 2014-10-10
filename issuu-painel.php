@@ -33,6 +33,15 @@ if ((!is_null($api_key) && strlen($api_key) > 0) && (!is_null($api_secret) && st
 
 	include(ISSUU_PAINEL_DIR . 'menu/documento/config.php');
 	include(ISSUU_PAINEL_DIR . 'menu/pasta/config.php');
+	include(ISSUU_PAINEL_DIR . 'shortcode/document-list.php');
+}
+
+add_action('wp_enqueue_scripts', 'issuu_painel_wp_enqueue_scripts');
+
+function issuu_painel_wp_enqueue_scripts()
+{
+	wp_enqueue_style('issuu-painel-documents', ISSUU_PAINEL_URL . 'css/issuu-painel-documents.css');
+	// wp_enqueue_style('')
 }
 
 add_action('admin_enqueue_scripts', 'issuu_painel_admin_enqueue_scripts');
@@ -41,6 +50,9 @@ function issuu_painel_admin_enqueue_scripts()
 {
 	wp_enqueue_style('document-list', ISSUU_PAINEL_URL . 'css/document-list.css', array(), null, 'screen, print');
 	wp_enqueue_style('folder-list', ISSUU_PAINEL_URL . 'css/folder-list.css', array('dashicons'), null, 'screen, print');
+	wp_enqueue_script('json2');
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('issuu-painel-js', ISSUU_PAINEL_URL . 'js/js.php');
 }
 
 add_action('admin_menu', 'ip_menu_admin');
