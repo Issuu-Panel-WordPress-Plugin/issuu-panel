@@ -1,13 +1,13 @@
-<h1>Lista de documentos</h1>
+<h1><?php _e('Documents list', ISSUU_PAINEL_DOMAIN_LANG); ?></h1>
 <form action="" method="post">
 	<input type="hidden" name="delete" value="true">
 	<a href="admin.php?page=issuu-document-admin&upload" class="buttons-top issuu-other-button" title="">
-		Carregar arquivo
+		<?php _e('Upload file', ISSUU_PAINEL_DOMAIN_LANG); ?>
 	</a>
 	<a href="admin.php?page=issuu-document-admin&url_upload" class="buttons-top issuu-other-button" title="">
-		Carregar arquivo por URL
+		<?php _e('Upload file by URL', ISSUU_PAINEL_DOMAIN_LANG); ?>
 	</a>
-	<input type="submit" class="buttons-top issuu-submit-button" value="Excluir">
+	<input type="submit" class="buttons-top issuu-submit-button" value="<?php _e('Delete'); ?>">
 	<div id="document-list">
 		<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
 			<?php foreach ($docs['document'] as $doc) : ?>
@@ -22,7 +22,9 @@
 						<div class="document-box">
 							<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
 							<div class="update-document">
-								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->orgDocName; ?>">Editar</a>
+								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->orgDocName; ?>">
+									<?php _e('Edit'); ?>
+								</a>
 							</div>
 				<?php endif; ?>
 					</div>

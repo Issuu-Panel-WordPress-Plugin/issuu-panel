@@ -6,8 +6,8 @@ function issuu_painel_menu_document()
 {
 	add_submenu_page(
 		'issuu-painel-admin',
-		'Documento',
-		'Documento',
+		__('Documents', ISSUU_PAINEL_DOMAIN_LANG),
+		__('Documents', ISSUU_PAINEL_DOMAIN_LANG),
 		'manage_options',
 		'issuu-document-admin',
 		'issuu_painel_menu_document_init'
@@ -31,8 +31,6 @@ function issuu_painel_menu_document_init()
 			$datetime = $date . $time;
 			
 			include(ISSUU_PAINEL_DIR . 'menu/documento/requests/upload.php');
-
-			// sleep(20 * 1000);
 		}
 		else
 		{

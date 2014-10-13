@@ -1,20 +1,20 @@
-<h1>Documento</h1>
+<h1><?php _e('Document', ISSUU_PAINEL_DOMAIN_LANG); ?></h1>
 <form action="" method="post" id="document-upload" enctype="multipart/form-data">
 	<table class="form-table">
 		<tbody>
 			<tr>
-				<th><label for="slurpUrl">URL do arquivo</label></th>
+				<th><label for="slurpUrl"><?php _e('URL file', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<input type="text" name="slurpUrl" id="slurpUrl" class="regular-text code">
 					<p class="description">URL onde o arquivo está localizado</p>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="title">Título do documento</label></th>
+				<th><label for="title"><?php _e('Title', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td><input type="text" name="title" id="title" class="regular-text code"></td>
 			</tr>
 			<tr>
-				<th><label for="name">Nome na URL</label></th>
+				<th><label for="name"><?php _e('Name in URL', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<input type="text" name="name" id="name" class="regular-text code">
 					<p class="description">
@@ -27,7 +27,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="description">Descrição</label></th>
+				<th><label for="description"><?php _e('Description'); ?></label></th>
 				<td>
 					<textarea name="description" id="description" cols="45" rows="6"></textarea>
 				</td>
@@ -42,11 +42,14 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label>Data da publicação</label></th>
+				<th><label><?php _e('Publish date', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
-					<input type="text" name="pub[day]" id="dia" placeholder="Dia" class="small-text" maxlength="2"> /
-					<input type="text" name="pub[month]" id="mes" placeholder="Mês" class="small-text" maxlength="2"> /
-					<input type="text" name="pub[year]" id="ano" placeholder="Ano" class="small-text" maxlength="4">
+					<input type="text" name="pub[day]" id="dia" placeholder="<?php _e('Day'); ?>" class="small-text"
+						maxlength="2"> /
+					<input type="text" name="pub[month]" id="mes" placeholder="<?php _e('Month'); ?>" class="small-text"
+						maxlength="2"> /
+					<input type="text" name="pub[year]" id="ano" placeholder="<?php _e('Year'); ?>" class="small-text"
+						maxlength="4">
 					<p class="description">
 						Data da publicação do documento.<br>
 						<strong>OBS:</strong> Caso não informe um valor a data atual será usada
@@ -54,7 +57,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label>Pastas</label></th>
+				<th><label><?php _e('Folders', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<?php if (isset($folders['folder']) && !empty($folders['folder'])) : ?>
 						<fieldset>
@@ -69,27 +72,35 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="commentsAllowed">Permitir comentários</label></th>
+				<th><label for="commentsAllowed"><?php _e('Allow comments', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td><input type="checkbox" name="commentsAllowed" id="commentsAllowed" value="true"></td>
 			</tr>
 			<tr>
-				<th><label for="downloadable">Permitir download do arquivo</label></th>
+				<th><label for="downloadable"><?php _e('Allow file download', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td><input type="checkbox" name="downloadable" id="downloadable" value="true"></td>
 			</tr>
 			<tr>
-				<th><label>Acesso</label></th>
+				<th><label><?php _e('Access', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<fieldset>
-						<label for="acesso1"><input type="radio" name="access" id="acesso1" value="public"> Público</label><br>
-						<label for="acesso2"><input type="radio" name="access" id="acesso2" value="private"> Privado</label>
+						<label for="acesso1">
+							<input type="radio" name="access" id="acesso1" value="public">
+							<?php _e('Public', ISSUU_PAINEL_DOMAIN_LANG); ?>
+						</label><br>
+						<label for="acesso2">
+							<input type="radio" name="access" id="acesso2" value="private">
+							<?php _e('Private', ISSUU_PAINEL_DOMAIN_LANG); ?>
+						</label>
 					</fieldset>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<input type="submit" class="button-primary" value="Enviar">
+					<input type="submit" class="button-primary" value="<?php _e('Save'); ?>">
 					<h3>
-						<a href="admin.php?page=issuu-document-admin" style="text-decoration: none;">Voltar</a>
+						<a href="admin.php?page=issuu-document-admin" style="text-decoration: none;">
+							<?php _e('Back'); ?>
+						</a>
 					</h3>
 				</th>
 			</tr>
