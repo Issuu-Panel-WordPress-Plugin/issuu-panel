@@ -30,7 +30,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 		{
 			$docs = array();
 
-			foreach ($documents as $doc) {
+			foreach ($documents['document'] as $doc) {
 				$docs[] = array(
 					'thumbnail' => 'http://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
 					'url' => 'http://issuu.com/' . $doc->username . '/docs/' . $doc->name,
