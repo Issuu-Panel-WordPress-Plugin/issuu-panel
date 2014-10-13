@@ -1,0 +1,113 @@
+# Copyright (C) 2014 WordPress
+# This file is distributed under the same license as the WordPress package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Issuu Painel 1.0\n"
+"Report-Msgid-Bugs-To: http://wppolyglots.wordpress.com\n"
+"POT-Creation-Date: 2014-09-11 14:11:11+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-10-12 23:55-0300\n"
+"Last-Translator: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
+"Language-Team: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
+"X-Generator: Poedit 1.6.9\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_BR\n"
+
+msgid "Folder"
+msgstr "Pasta"
+
+msgid "Folders"
+msgstr "Pastas"
+
+msgid "Document"
+msgstr "Documento"
+
+msgid "Documents"
+msgstr "Documentos"
+
+msgid "Documents list"
+msgstr "Lista de documentos"
+
+msgid "Folders list"
+msgstr "Lista de pastas"
+
+msgid "File"
+msgstr "Arquivo"
+
+msgid "Files"
+msgstr "Arquivos"
+
+msgid "API key"
+msgstr "Chave de API"
+
+msgid "Insert API key"
+msgstr "Insirar uma chave de API"
+
+msgid "Insert API key. "
+msgstr "Insirar uma chave de API. "
+
+msgid "API secret"
+msgstr "Chave de API secreta"
+
+msgid "Insert API secret"
+msgstr "Insirar uma chave de API secreta"
+
+msgid "Insert API secret. "
+msgstr "Insirar uma chave de API secreta. "
+
+msgid ""
+"To create keys <a target=\"_blank\" href=\"https://issuu.com/home/settings/"
+"apikey\">click here</a>"
+msgstr ""
+"Para criar as chaves <a target=\"_blank\" href=\"https://issuu.com/home/"
+"settings/apikey\">clique aqui</a>"
+
+msgid "Upload file"
+msgstr "Carregar arquivo"
+
+msgid "Upload file by URL"
+msgstr "Carregar arquivo pela URL"
+
+msgid "URL file"
+msgstr "URL do arquivo"
+
+msgid "Title"
+msgstr "Título do documento"
+
+msgid "Name in URL"
+msgstr "Nome na URL"
+
+msgid "Publish date"
+msgstr "Data de publicação"
+
+msgid "Allow comments"
+msgstr "Permitir comentários"
+
+msgid "Allow file download"
+msgstr "Permitir download do arquivo"
+
+msgid "Access"
+msgstr "Acesso"
+
+msgid "Public"
+msgstr "Público"
+
+msgid "Private"
+msgstr "Privado"
+
+msgid "Create new folder"
+msgstr "Criar nova pasta"
+
+msgid "Update folder"
+msgstr "Atualizar pasta"
+
+msgid "Folder's name"
+msgstr "Nome da pasta"
+
+msgid "Insert folder's name"
+msgstr "Informe o nome da pasta"
+
+msgid "Folder's documents"
+msgstr "Documentos da pasta"
