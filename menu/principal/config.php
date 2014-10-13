@@ -20,7 +20,7 @@ function issuu_painel_menu_admin_init()
 
 	echo '<div class="wrap">';
 
-	$link_api_service = '<a target="_blank" href="https://issuu.com/home/settings/apikey">clique aqui</a> para gerar.';
+	$link_api_service = '<a target="_blank" href="https://issuu.com/home/settings/apikey">click here</a>';
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
@@ -33,21 +33,29 @@ function issuu_painel_menu_admin_init()
 
 	if (strlen($api_key) <= 0)
 	{
-		echo "<div class=\"error\"><p>Insira uma chave de API. Caso não possua uma $link_api_service</p></div>";
+		echo "<div class=\"error\"><p>" .
+		__('Insert API key. ' , ISSUU_PAINEL_DOMAIN_LANG) .
+		__("To create keys $link_api_service", ISSUU_PAINEL_DOMAIN_LANG) .
+		"</p></div>";
 	}
 
 	if (strlen($api_secret) <= 0)
 	{
-		echo "<div class=\"error\"><p>Insira uma chave de API secreta. Caso não possua uma $link_api_service</p></div>";
+		echo "<div class=\"error\"><p>" .
+		__('Insert API secret. ' , ISSUU_PAINEL_DOMAIN_LANG) .
+		__("To create keys $link_api_service", ISSUU_PAINEL_DOMAIN_LANG) .
+		"</p></div>";
 	}
 
 	echo '<h1>Issuu Painel Admin</h1>';
 
 	echo "<form action=\"\" method=\"post\" accept-charset=\"utf-8\">";
-	echo '<p><label for="api_key"><strong>Chave de API</strong></label><br>';
-	echo "<input type=\"text\" name=\"api_key\" id=\"api_key\" placeholder=\"Insira a chave de API aqui\" value=\"$api_key\" style=\"width: 300px;\"><p>";
-	echo '<p><label for="api_secret"><strong>Chave de API secreta</strong></label><br>';
-	echo "<input type=\"text\" name=\"api_secret\" id=\"api_secret\" placeholder=\"Insira a chave de API secreta aqui\" value=\"$api_secret\" style=\"width: 300px;\"><p>";
+	echo '<p><label for="api_key"><strong>' . __('API key', ISSUU_PAINEL_DOMAIN_LANG) . '</strong></label><br>';
+	echo "<input type=\"text\" name=\"api_key\" id=\"api_key\" placeholder=\"" .
+		__('Insert API key', ISSUU_PAINEL_DOMAIN_LANG) . "\" value=\"$api_key\" style=\"width: 300px;\"><p>";
+	echo '<p><label for="api_secret"><strong>' . __('API secret', ISSUU_PAINEL_DOMAIN_LANG) . '</strong></label><br>';
+	echo "<input type=\"text\" name=\"api_secret\" id=\"api_secret\" placeholder=\"" .
+		__('Insert API secret', ISSUU_PAINEL_DOMAIN_LANG) . "\" value=\"$api_secret\" style=\"width: 300px;\"><p>";
 	echo "<p><input type=\"submit\" class=\"button-primary\" value=\"Cadastrar\"></p>";
 	echo "</form>";
 
