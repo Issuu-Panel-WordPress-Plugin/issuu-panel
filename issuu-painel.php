@@ -12,6 +12,14 @@ License: GPL3
 define('ISSUU_PAINEL_DIR', plugin_dir_path(__FILE__));
 define('ISSUU_PAINEL_URL', plugin_dir_url(__FILE__));
 define('ISSUU_PAINEL_PREFIX', 'issuu_painel_');
+define('ISSUU_PAINEL_DOMAIN_LANG', 'issuu-painel-domain-lang');
+
+add_action('plugins_loaded', 'issuu_painel_textdomain');
+
+function issuu_painel_textdomain()
+{
+	load_plugin_textdomain(ISSUU_PAINEL_DOMAIN_LANG, false, dirname(plugin_basename(__FILE__)) . '/lang/');
+}
 
 add_option(ISSUU_PAINEL_PREFIX . 'api_key', '');
 add_option(ISSUU_PAINEL_PREFIX . 'api_secret', '');
@@ -34,6 +42,7 @@ if ((!is_null($api_key) && strlen($api_key) > 0) && (!is_null($api_secret) && st
 	include(ISSUU_PAINEL_DIR . 'menu/documento/config.php');
 	include(ISSUU_PAINEL_DIR . 'menu/pasta/config.php');
 	include(ISSUU_PAINEL_DIR . 'shortcode/document-list.php');
+	include(ISSUU_PAINEL_DIR . 'shortcode/folder-list.php');
 }
 
 add_action('wp_enqueue_scripts', 'issuu_painel_wp_enqueue_scripts');
@@ -41,6 +50,13 @@ add_action('wp_enqueue_scripts', 'issuu_painel_wp_enqueue_scripts');
 function issuu_painel_wp_enqueue_scripts()
 {
 	wp_enqueue_style('issuu-painel-documents', ISSUU_PAINEL_URL . 'css/issuu-painel-documents.css');
+	wp_enqueue_script(
+		'issuu-iframe-link',
+		ISSUU_PAINEL_URL . 'js/issuu-iframe-link.js',
+		array('jquery'),
+		null,
+		true
+	);
 	// wp_enqueue_style('')
 }
 
