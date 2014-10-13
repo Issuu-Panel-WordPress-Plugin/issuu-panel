@@ -6,8 +6,8 @@ function issuu_painel_menu_folder()
 {
 	add_submenu_page(
 		'issuu-painel-admin',
-		'Pasta',
-		'Pasta',
+		__('Folders', ISSUU_PAINEL_DOMAIN_LANG),
+		__('Folders', ISSUU_PAINEL_DOMAIN_LANG),
 		'manage_options',
 		'issuu-folder-admin',
 		'issuu_painel_menu_folder_init'
