@@ -36,6 +36,11 @@
 	}
 }
 
+.shortcode[disabled]{
+	padding: 2px 6px;
+	color: #333;
+}
+
 .loading-issuu{
 	width: 100%;
 	min-height: 170px;
