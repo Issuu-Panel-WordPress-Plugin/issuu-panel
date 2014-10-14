@@ -57,13 +57,19 @@ function issuu_painel_wp_enqueue_scripts()
 		null,
 		true
 	);
-	// wp_enqueue_style('')
 }
 
 add_action('admin_enqueue_scripts', 'issuu_painel_admin_enqueue_scripts');
 
 function issuu_painel_admin_enqueue_scripts()
 {
+	wp_enqueue_style(
+		'issuu-painel-pagination',
+		ISSUU_PAINEL_URL . 'css/issuu-painel-pagination.css',
+		array(),
+		null,
+		'screen, print'
+	);
 	wp_enqueue_style('document-list', ISSUU_PAINEL_URL . 'css/document-list.css', array(), null, 'screen, print');
 	wp_enqueue_style('folder-list', ISSUU_PAINEL_URL . 'css/folder-list.css', array('dashicons'), null, 'screen, print');
 	wp_enqueue_script('json2');
