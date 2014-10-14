@@ -79,9 +79,21 @@ function issuu_painel_menu_folder_init()
 		}
 
 		$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
+		$page = (isset($_GET['pn']))? $_GET['pn'] : 1;
+		$per_page = 10;
+		$params = array(
+			'pageSize' => $per_page,
+			'folderSortBy' => 'created',
+			'startIndex' => $per_page * ($page - 1)
+		);
 		$folders_documents = array();
 
-		$folders = $issuu_folder->issuuList(array('folderSortBy' => 'created'));
+		$folders = $issuu_folder->issuuList($params);
+
+		if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize'])
+		{
+			$number_pages = ceil($folders['totalCount'] / $per_page);
+		}
 
 		if (isset($folders['folder']) && !empty($folders['folder']))
 		{
@@ -89,9 +101,10 @@ function issuu_painel_menu_folder_init()
 	
 			foreach ($folders['folder'] as $f) {
 				$fId = $f->folderId;
-				$folders_documents[$fId] = array();
-				$folders_documents[$fId]['name'] = $f->name;
-				$folders_documents[$fId]['items'] = $f->items;
+				$folders_documents[$fId] = array(
+					'name' => $f->name,
+					'items' => $f->items
+				);
 
 				$bookmarks = $issuu_bookmark->issuuList(array('pageSize' => 3, 'folderId' => $fId));
 

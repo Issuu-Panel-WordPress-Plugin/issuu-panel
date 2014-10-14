@@ -77,17 +77,16 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
-			$params['orgDocName'] = strtr($_GET['update'], array('%20' => '+', ' ' => '+'));
-			$params['pageSize'] = 1;
+			$params['name'] = strtr($_GET['update'], array('%20' => '+', ' ' => '+'));
 
-			$doc = $issuu_document->issuuList($params);
+			$doc = $issuu_document->update($params);
 		}
 
 		if ($doc['stat'] == 'ok' && !empty($doc['document']))
 		{
 			if ($load)
 			{
-				$doc = $doc['document'][0];
+				$doc = $doc['document'];
 			}
 			else
 			{
@@ -96,7 +95,7 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
-			echo '<div class="error"><p>Nenhum documento encontrado ou ao atualizá-lo</p></div>';
+			echo '<div class="error"><p>Nenhum documento encontrado</p></div>';
 			exit;
 		}
 
@@ -125,8 +124,19 @@ function issuu_painel_menu_document_init()
 		}
 
 		$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
+		$page = (isset($_GET['pn']))? $_GET['pn'] : 1;
+		$per_page = 10;
+		$params = array(
+			'pageSize' => $per_page,
+			'startIndex' => $per_page * ($page - 1)
+		);
 
-		$docs = $issuu_document->issuuList();
+		$docs = $issuu_document->issuuList($params);
+		
+		if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize'])
+		{
+			$number_pages = ceil($docs['totalCount'] / $per_page);
+		}
 
 		include(ISSUU_PAINEL_DIR . 'menu/documento/document-list.php');
 	}
