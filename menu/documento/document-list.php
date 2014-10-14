@@ -8,6 +8,17 @@
 		<?php _e('Upload file by URL', ISSUU_PAINEL_DOMAIN_LANG); ?>
 	</a>
 	<input type="submit" class="buttons-top issuu-submit-button" value="<?php _e('Delete'); ?>">
+	<?php if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize']) : ?>
+		<div id="issuu-painel-pagination">
+			<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
+				<?php if ($page == $i) : ?>
+					<span class="issuu-painel-number-page"><?= $i; ?></span>
+				<?php else : ?>
+					<a class="issuu-painel-number-page" href="?page=issuu-document-admin&pn=<?= $i; ?>"><?= $i; ?></a>
+				<?php endif; ?>
+			<?php endfor; ?>
+		</div>
+	<?php endif; ?>
 	<div id="document-list">
 		<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
 			<?php foreach ($docs['document'] as $doc) : ?>
@@ -22,7 +33,7 @@
 						<div class="document-box">
 							<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
 							<div class="update-document">
-								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->orgDocName; ?>">
+								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->name; ?>">
 									<?php _e('Edit'); ?>
 								</a>
 							</div>
@@ -34,6 +45,10 @@
 		<?php endif; ?>
 	</div>
 </form>
+<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
+	<h3>Shortcode</h3>
+	<input type="text" value="[issuu-painel-document-list]" disabled size="28" class="code shortcode">
+<?php endif; ?>
 <script type="text/javascript">
 	(function($){
 		$(document).ready(function(){

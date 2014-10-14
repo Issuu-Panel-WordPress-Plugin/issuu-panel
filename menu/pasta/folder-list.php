@@ -2,6 +2,17 @@
 <form action="" method="post" accept-charset="utf-8">
 	<input type="hidden" name="delete" value="true">
 	<input type="submit" class="issuu-submit-button" value="<?php _e('Delete'); ?>">
+	<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize']) : ?>
+		<div id="issuu-painel-pagination">
+			<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
+				<?php if ($page == $i) : ?>
+					<span class="issuu-painel-number-page"><?= $i; ?></span>
+				<?php else : ?>
+					<a class="issuu-painel-number-page" href="?page=issuu-folder-admin&pn=<?= $i; ?>"><?= $i; ?></a>
+				<?php endif; ?>
+			<?php endfor; ?>
+		</div>
+	<?php endif; ?>
 	<div class="issuu-folder-content">
 		<?php foreach ($folders_documents as $key => $value) : ?>
 			<div class="issuu-folder">
