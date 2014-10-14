@@ -298,7 +298,7 @@ abstract class IssuuServiceAPI
     /**
     *   IssuuServiceAPI::returnErrorJson()
     *
-    *   Lista registros da requisição
+    *   Retorna objeto de erro
     *
     *   @access protected
     *   @param object $response Correspondente ao objeto de resposta da requisição
@@ -317,7 +317,7 @@ abstract class IssuuServiceAPI
     /**
     *   IssuuServiceAPI::returnErrorXML()
     *
-    *   Lista registros da requisição
+    *   Retorna objeto do erros
     *
     *   @access protected
     *   @param object $response Correspondente ao objeto de resposta da requisição
