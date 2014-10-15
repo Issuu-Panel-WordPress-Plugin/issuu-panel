@@ -22,15 +22,6 @@ function issuu_painel_menu_admin_init()
 
 	$link_api_service = '<a target="_blank" href="https://issuu.com/home/settings/apikey">click here</a>';
 
-	if ($_SERVER['REQUEST_METHOD'] == 'POST')
-	{
-		update_option(ISSUU_PAINEL_PREFIX . 'api_key', trim($_POST['api_key']));
-		update_option(ISSUU_PAINEL_PREFIX . 'api_secret',trim($_POST['api_secret']));
-
-		$api_key = get_option(ISSUU_PAINEL_PREFIX . 'api_key');
-		$api_secret = get_option(ISSUU_PAINEL_PREFIX . 'api_secret');
-	}
-
 	if (strlen($api_key) <= 0)
 	{
 		echo "<div class=\"error\"><p>" .
