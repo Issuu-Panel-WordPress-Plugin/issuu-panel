@@ -7,7 +7,7 @@
 	<a href="admin.php?page=issuu-document-admin&url_upload" class="buttons-top issuu-other-button" title="">
 		<?php _e('Upload file by URL', ISSUU_PAINEL_DOMAIN_LANG); ?>
 	</a>
-	<input type="submit" class="buttons-top issuu-submit-button" value="<?php _e('Delete'); ?>">
+	<input type="submit" class="buttons-top issuu-submit-button" value="<?php _e('Delete', ISSUU_PAINEL_DOMAIN_LANG); ?>">
 	<?php if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize']) : ?>
 		<div id="issuu-painel-pagination">
 			<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
@@ -34,7 +34,7 @@
 							<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
 							<div class="update-document">
 								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->name; ?>">
-									<?php _e('Edit'); ?>
+									<?php _e('Edit', ISSUU_PAINEL_DOMAIN_LANG); ?>
 								</a>
 							</div>
 				<?php endif; ?>

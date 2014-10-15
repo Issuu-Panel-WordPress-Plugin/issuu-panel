@@ -17,16 +17,12 @@
 				<td>
 					<input type="text" name="name" id="name" class="regular-text code">
 					<p class="description">
-						Nome que será inserido na URL:
-						http://issuu.com/(nome_do_usuario)/docs/(nome).<br>
-						Use somente letras minúsculas [a-z], números [0-9] e/ou outros caracteres[_.-].
-						Não use espaços.<br>
-						<strong>OBS:</strong> Caso não informe um valor ele será gerado automaticamente
+						<?php _e('Name that is entered in the URL: http://issuu.com/(username)/docs/(name).<br>Use only lowercase letters [a-z], numbers [0-9] and/or other characters [_.-]. Do not use spaces.<br><strong>NOTE:</strong> If you do not enter a value, it will automatically be generated', ISSUU_PAINEL_DOMAIN_LANG); ?>
 					</p>
 				</td>
 			</tr>
 			<tr>
-				<th><label for="description"><?php _e('Description'); ?></label></th>
+				<th><label for="description"><?php _e('Description', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<textarea name="description" id="description" cols="45" rows="6"></textarea>
 				</td>
@@ -36,22 +32,21 @@
 				<td>
 					<textarea name="tags" id="tags" cols="45" rows="6"></textarea>
 					<p class="description">
-						Use vírgulas para separar as tags. Não use espaços.
+						<?php _e('Use commas to separate tags. Do not use spaces.', ISSUU_PAINEL_DOMAIN_LANG); ?>
 					</p>
 				</td>
 			</tr>
 			<tr>
 				<th><label><?php _e('Publish date', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
-					<input type="text" name="pub[day]" id="dia" placeholder="<?php _e('Day'); ?>" class="small-text"
+					<input type="text" name="pub[day]" id="dia" placeholder="<?php _e('Day', ISSUU_PAINEL_DOMAIN_LANG); ?>" class="small-text"
 						maxlength="2"> /
-					<input type="text" name="pub[month]" id="mes" placeholder="<?php _e('Month'); ?>" class="small-text"
+					<input type="text" name="pub[month]" id="mes" placeholder="<?php _e('Month', ISSUU_PAINEL_DOMAIN_LANG); ?>" class="small-text"
 						maxlength="2"> /
-					<input type="text" name="pub[year]" id="ano" placeholder="<?php _e('Year'); ?>" class="small-text"
+					<input type="text" name="pub[year]" id="ano" placeholder="<?php _e('Year', ISSUU_PAINEL_DOMAIN_LANG); ?>" class="small-text"
 						maxlength="4">
 					<p class="description">
-						Data da publicação do documento.<br>
-						<strong>OBS:</strong> Caso não informe um valor a data atual será usada
+						<?php _e('Date of publication of the document.<br><strong>NOTE:</strong> If you do not enter a value, the current date will be used', ISSUU_PAINEL_DOMAIN_LANG); ?>
 					</p>
 				</td>
 			</tr>
@@ -95,10 +90,10 @@
 			</tr>
 			<tr>
 				<th>
-					<input type="submit" class="button-primary" value="<?php _e('Save'); ?>">
+					<input type="submit" class="button-primary" value="<?php _e('Save', ISSUU_PAINEL_DOMAIN_LANG); ?>">
 					<h3>
 						<a href="admin.php?page=issuu-document-admin" style="text-decoration: none;">
-							<?php _e('Back'); ?>
+							<?php _e('Back', ISSUU_PAINEL_DOMAIN_LANG); ?>
 						</a>
 					</h3>
 				</th>

@@ -22,11 +22,11 @@ if ($count > 0)
 	{
 		if ($count > 1)
 		{
-			echo '<div class="updated"><p>Documentos excluídos com sucesso</p></div>';
+			echo '<div class="updated"><p>' . __('Documents deleted successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
 		}
 		else
 		{
-			echo '<div class="updated"><p>Documento excluído com sucesso</p></div>';
+			echo '<div class="updated"><p>' . __('Document deleted successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
 		}
 	}
 	else if ($result['stat'] == 'fail')
@@ -36,5 +36,5 @@ if ($count > 0)
 }
 else
 {
-	echo '<div class="update-nag">Nada foi excluído</div>';
+	echo '<div class="update-nag">' . __('Nothing was excluded', ISSUU_PAINEL_DOMAIN_LANG) . '</div>';
 }

@@ -95,7 +95,7 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
-			echo '<div class="error"><p>Nenhum documento encontrado</p></div>';
+			echo '<div class="error"><p>' . __('No documents found', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
 			exit;
 		}
 
