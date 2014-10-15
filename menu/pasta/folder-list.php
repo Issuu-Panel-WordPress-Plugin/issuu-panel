@@ -1,7 +1,7 @@
 <h1><?php _e('Folders list', ISSUU_PAINEL_DOMAIN_LANG); ?></h1>
 <form action="" method="post" accept-charset="utf-8">
 	<input type="hidden" name="delete" value="true">
-	<input type="submit" class="issuu-submit-button" value="<?php _e('Delete'); ?>">
+	<input type="submit" class="issuu-submit-button" value="<?php _e('Delete', ISSUU_PAINEL_DOMAIN_LANG); ?>">
 	<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize']) : ?>
 		<div id="issuu-painel-pagination">
 			<?php for ($i = 1; $i <= $number_pages; $i++) : ?>

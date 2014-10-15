@@ -11,10 +11,10 @@ $response = $issuu_folder->add($_POST);
 
 if ($response['stat'] == 'ok')
 {
-	echo '<div class="updated"><p>Pasta criada com sucesso</p></div>';
+	echo '<div class="updated"><p>' . __('Folder created successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
 }
 else
 {
-	echo '<div class="error"><p>Erro ao criar pasta - ' . $response['message'] .
-		(($response['field'] != '')? ' :' . $response['field'] : '') . '</p></div>';
+	echo '<div class="error"><p>' . __('Error while creating the folder', ISSUU_PAINEL_DOMAIN_LANG) . ' - ' .
+		$response['message'] . (($response['field'] != '')? ' :' . $response['field'] : '') . '</p></div>';
 }

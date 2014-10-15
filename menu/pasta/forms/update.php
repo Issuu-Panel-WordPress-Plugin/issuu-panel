@@ -11,7 +11,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="folderDescription"><?php _e('Description'); ?></label></th>
+				<th><label for="folderDescription"><?php _e('Description', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
 				<td>
 					<textarea name="folderDescription" id="folderDescription"
 						cols="45" rows="6"><?= $fo->description; ?></textarea>
@@ -19,10 +19,10 @@
 			</tr>
 			<tr>
 				<th>
-					<input type="submit" value="<?php _e('Update'); ?>" class="button-primary">
+					<input type="submit" value="<?php _e('Update', ISSUU_PAINEL_DOMAIN_LANG); ?>" class="button-primary">
 					<h3>
 						<a href="admin.php?page=issuu-folder-admin" style="text-decoration: none;">
-							<?php _e('Back'); ?>
+							<?php _e('Back', ISSUU_PAINEL_DOMAIN_LANG); ?>
 						</a>
 					</h3>
 				</th>

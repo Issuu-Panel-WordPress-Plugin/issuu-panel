@@ -65,7 +65,7 @@ function issuu_painel_menu_folder_init()
 		}
 		else
 		{
-			echo '<div class="error"><p>Pasta inexistente</p></div>';
+			echo '<div class="error"><p>' . __('The folder does not exist', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
 		}
 
 		$load = true;
