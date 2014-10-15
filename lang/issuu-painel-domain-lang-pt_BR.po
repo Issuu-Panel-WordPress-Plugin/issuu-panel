@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-15 15:35-0300\n"
+"PO-Revision-Date: 2014-10-15 17:49-0300\n"
 "Last-Translator: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "Language-Team: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "X-Generator: Poedit 1.6.9\n"
@@ -70,19 +70,19 @@ msgid "API key"
 msgstr "Chave de API"
 
 msgid "Insert API key"
-msgstr "Insirar uma chave de API"
+msgstr "Insira uma chave de API"
 
 msgid "Insert API key. "
-msgstr "Insirar uma chave de API. "
+msgstr "Insira uma chave de API. "
 
 msgid "API secret"
 msgstr "Chave de API secreta"
 
 msgid "Insert API secret"
-msgstr "Insirar uma chave de API secreta"
+msgstr "Insira uma chave de API secreta"
 
 msgid "Insert API secret. "
-msgstr "Insirar uma chave de API secreta. "
+msgstr "Insira uma chave de API secreta. "
 
 msgid ""
 "To create keys <a target=\"_blank\" href=\"https://issuu.com/home/settings/"
@@ -205,3 +205,40 @@ msgstr "Pasta excluída com sucesso"
 
 msgid "Folder updated successfully"
 msgstr "Pasta atualizada com sucesso"
+
+msgid "Authentication required"
+msgstr "Autenticação obrigatória"
+
+msgid "Invalid API key"
+msgstr "Chave de API inválida"
+
+msgid "Required field is missing"
+msgstr "Campo obrigatório não informado"
+
+msgid "Invalid field format"
+msgstr "Formato de campo inválido"
+
+msgid "Folder name exists for user"
+msgstr "Valor do campo 'Nome da pasta' já existe para este usuário"
+
+msgid "File size is too large"
+msgstr "O arquivo é muito grande"
+
+msgid "Document not found"
+msgstr "Documento não encontrado"
+
+msgid "Document still converting"
+msgstr "O documento está sendo convertido"
+
+msgid "Document failed conversion"
+msgstr "A conversão do documento falhou"
+
+msgid "Exceeding allowed amount of unlisted publications"
+msgstr "Quantidade permitida de publicações não listadas excedida"
+
+msgid ""
+"The name parameter in the request is already in use. Choose a different name "
+"or omit field to have name auto-generated"
+msgstr ""
+"O valor do campo 'Nome na URL' já está em uso. Escolha um nome diferente ou "
+"omita o valor para que ele seja gerado automaticamente"
