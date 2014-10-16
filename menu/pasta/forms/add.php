@@ -3,19 +3,19 @@
 	<table class="form-table">
 		<tbody>
 			<tr>
-				<th><label for="folderName"><?php _e("Folder's name", ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
+				<th><label for="folderName"><?php the_issuu_message("Folder's name"); ?></label></th>
 				<td><input type="text" name="folderName" id="folderName" class="regular-text code"></td>
 			</tr>
 			<tr>
-				<th><label for="folderDescription"><?php _e('Description', ISSUU_PAINEL_DOMAIN_LANG); ?></label></th>
+				<th><label for="folderDescription"><?php the_issuu_message('Description'); ?></label></th>
 				<td><textarea name="folderDescription" id="folderDescription" cols="45" rows="6"></textarea></td>
 			</tr>
 			<tr>
 				<th>
-					<input type="submit" value="<?php _e('Save', ISSUU_PAINEL_DOMAIN_LANG); ?>" class="button-primary">
+					<input type="submit" value="<?php the_issuu_message('Save'); ?>" class="button-primary">
 					<h3>
 						<a href="admin.php?page=issuu-folder-admin" style="text-decoration: none;">
-							<?php _e('Back', ISSUU_PAINEL_DOMAIN_LANG); ?>
+							<?php the_issuu_message('Back'); ?>
 						</a>
 					</h3>
 				</th>
@@ -28,7 +28,7 @@
 		$('#add-folder').submit(function(){
 			if ($('#folderName').val().trim() == "")
 			{
-				alert('<?php _e("Insert folder\'s name", ISSUU_PAINEL_DOMAIN_LANG); ?>');
+				alert('<?php the_issuu_message("Insert folder\'s name"); ?>');
 				return false;
 			}
 		});

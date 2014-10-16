@@ -49,9 +49,10 @@ $result = $issuu_document->update($_POST);
 
 if ($result['stat'] == 'ok')
 {
-	echo '<div class="updated"><p>' . __('Document updated successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+	echo '<div class="updated"><p>' . get_issuu_message('Document updated successfully') . '</p></div>';
 }
 else if ($result['stat'] == 'fail')
 {
-	echo '<div class="error"><p>' . $result['message'] . ': ' . $result['field'] . '</p></div>';
+	echo '<div class="error"><p>' . get_issuu_message($result['message'])
+		. (($result['field'] != '')? ': ' . $result['field'] : '') . '</p></div>';
 }
