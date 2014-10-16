@@ -32,6 +32,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 
 			foreach ($documents['document'] as $doc) {
 				$docs[] = array(
+					'id' => $doc->documentId,
 					'thumbnail' => 'http://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
 					'url' => 'http://issuu.com/' . $doc->username . '/docs/' . $doc->name,
 					'title' => $doc->title,
@@ -50,7 +51,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	}
 	else
 	{
-		return '<h3>' . $documents['message'] . '</h3>';
+		return '<h3>' . get_issuu_message($documents['message']) . '</h3>';
 	}
 
 }
