@@ -84,3 +84,40 @@ function issuu_painel_refresh_mce($ver)
 }
 
 add_filter('tiny_mce_version', 'issuu_painel_refresh_mce');
+
+function issuu_painel_tinymce_ajax()
+{
+	global $api_key, $api_secret;
+	?>
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Issuu Painel Shortcode</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="stylesheet" href="<?= ISSUU_PAINEL_URL; ?>css/issuu-painel-tinymce-popup.css">
+		<?php
+			wp_enqueue_script('tiny_mce_popup.js', includes_url('js/tinymce/tiny_mce_popup.js'));
+			wp_print_scripts('tiny_mce_popup.js');
+		?>
+	</head>
+	<body>
+		<div id="issuu-painel-table">
+			<div class="issuu-painel-table-row">
+				<div class="issuu-painel-table-cell label"><?php the_issuu_message('Folder'); ?></div>
+				<div class="issuu-painel-table-cell">
+					<select name="folderId">
+						<option value="none"><?php the_issuu_message('Select...'); ?></option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</body>
+	</html>
+
+	<?php
+	die();
+}
+
+add_action('wp_ajax_issuu_painel_tinymce_ajax', 'issuu_painel_tinymce_ajax');
