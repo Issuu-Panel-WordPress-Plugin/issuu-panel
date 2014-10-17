@@ -1,22 +1,27 @@
-(function() {
+(function(){
 	tinymce.create('tinymce.plugins.IssuuPainel', {
 		init : function(ed, url) {
+			var popupIssuu = url + '/tinymce/ola-mundo.php';
+
+			ed.addCommand('IssuuPainelCommand', function(){
+				ed.windowManager.open({
+					url: popupIssuu,
+					width: 600,
+					height: 500,
+					inline: 1
+				});
+			});
+
 			ed.addButton('issuupainel', {
-				title : 'issuupainel.youtube',
+				title : 'Issuu Painel Shortcode',
 				image : url+'/../images/issuu-painel-tinymce-button.png',
-				onclick : function() {
-					idPattern = /(?:(?:[^v]+)+v.)?([^&=]{11})(?=&|$)/;
-					var vidId = prompt("YouTube Video", "Enter the id or url for your video");
-					var m = idPattern.exec(vidId);
-					if (m != null && m != 'undefined')
-						ed.execCommand('mceInsertContent', false, '[youtube id="'+m[1]+'"]');
-				}
+				cmd: 'IssuuPainelCommand'
 			});
 		},
-		createControl : function(n, cm) {
+		createControl : function(n, cm){
 			return null;
 		},
-		getInfo : function() {
+		getInfo : function(){
 			return {
 				longname : "Issuu Painel",
 				author : 'Pedro Marcelo',
