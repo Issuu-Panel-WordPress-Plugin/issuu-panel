@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-15 17:49-0300\n"
+"PO-Revision-Date: 2014-10-18 22:33-0300\n"
 "Last-Translator: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "Language-Team: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "X-Generator: Poedit 1.6.9\n"
@@ -242,3 +242,36 @@ msgid ""
 msgstr ""
 "O valor do campo 'Nome na URL' já está em uso. Escolha um nome diferente ou "
 "omita o valor para que ele seja gerado automaticamente"
+
+msgid "Select..."
+msgstr "Selecionar..."
+
+msgid "Documents per page"
+msgstr "Documentos por página"
+
+msgid "Order"
+msgstr "Ordem"
+
+msgid "Ascending"
+msgstr "Crescente"
+
+msgid "Descending"
+msgstr "Decrescente"
+
+msgid "Order by"
+msgstr "Ordenar por"
+
+msgid "Document ID"
+msgstr "ID do documento"
+
+msgid "Insert"
+msgstr "Inserir"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "« First page"
+msgstr "« Primeira página"
+
+msgid "Last Page »"
+msgstr "Última página »"
