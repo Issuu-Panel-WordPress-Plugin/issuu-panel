@@ -52,7 +52,7 @@ function the_issuu_message($text)
 	_e($text, ISSUU_PAINEL_DOMAIN_LANG);
 }
 
-function issuu_painel_link_page($page, $permalink)
+function issuu_painel_link_page($page, $permalink, $page_name)
 {
 	$QUERY_STRING = $_SERVER['QUERY_STRING'];
 
@@ -60,11 +60,20 @@ function issuu_painel_link_page($page, $permalink)
 	{
 		if ($QUERY_STRING == "")
 		{
-			$link = $permalink . '?page=' . $page;
+			$link = $permalink . '?' . $page_name . '=' . $page;
 		}
 		else
 		{
-			$link = $permalink . '?' . $QUERY_STRING . '&page=' . $page;
+			if (strpos($QUERY_STRING, $page_name) === false)
+			{
+				$link = $permalink . '?' . $QUERY_STRING . '&' . $page_name . '=' . $page;
+			}
+			else
+			{
+
+				$QUERY_STRING = preg_replace("/($page_name=\d)/", $page_name . '=' . $page, $QUERY_STRING);
+				$link = $permalink . '?' . $QUERY_STRING;
+			}
 		}
 	}
 	else
@@ -73,15 +82,23 @@ function issuu_painel_link_page($page, $permalink)
 		$substr = substr($permalink, $pos);
 		$arr = array($substr => '');
 		$QUERY_STRING = strtr($QUERY_STRING, $arr);
-		$QUERY_STRING = preg_replace('/\&page\=\d/', '', $QUERY_STRING);
+		$QUERY_STRING = preg_replace('/\&' . $page_name . '\=\d/', '', $QUERY_STRING);
 
 		if ($QUERY_STRING == "")
 		{
-			$link = $permalink . '&page=' . $page;
+			$link = $permalink . '&' . $page_name . '=' . $page;
 		}
 		else
 		{
-			$link = $permalink . '&' . $QUERY_STRING . '&page=' . $page;
+			if (strpos($QUERY_STRING, $page_name) === false)
+			{
+				$link = $permalink . '&' . $QUERY_STRING . '&' . $page_name . '=' . $page;
+			}
+			else
+			{
+				$QUERY_STRING = preg_replace("/($page_name=\d)/", $page_name . '=' . $page, $QUERY_STRING);
+				$link = $permalink . '&' . $QUERY_STRING;
+			}
 		}
 	}
 
