@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2014-10-18 22:33-0300\n"
+"PO-Revision-Date: 2014-10-20 17:27-0300\n"
 "Last-Translator: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "Language-Team: Pedro Marcelo <pedromarcelodesaalves@gmail.com>\n"
 "X-Generator: Poedit 1.6.9\n"
@@ -275,3 +275,24 @@ msgstr "« Primeira página"
 
 msgid "Last Page »"
 msgstr "Última página »"
+
+msgid "Insert folder ID"
+msgstr "Insira o ID da pasta"
+
+msgid "No documents in list"
+msgstr "Sem documentos nesta lista"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Editor"
+msgstr "Editor"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Users with capacities from"
+msgstr "Usuários com capacidades a partir do"
+
+msgid "can use this plugin"
+msgstr "podem usar este plugin"
