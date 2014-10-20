@@ -29,6 +29,10 @@ function issuu_painel_embed_documents_shortcode($atts)
 		if (isset($documents['document']) && !empty($documents['document']))
 		{
 			$docs = array();
+			$pagination = array(
+				'pageSize' => $documents['pageSize'],
+				'totalCount' => $documents['totalCount']
+			);
 
 			foreach ($documents['document'] as $doc) {
 				$docs[] = array(

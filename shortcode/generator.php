@@ -2,7 +2,8 @@
 
 $i = 1;
 $max = count($docs);
-$content = '<div id="issuu-iframe">';
+$content = '<div class="issuupainel">';
+$content .= '<div class="issuu-iframe">';
 $content .= '<div data-doc-id="' . $docs[0]['id'] . '" style="width: 100%; height: 323px;" class="issuuembed issuu-isrendered">';
 $content .= '<div style="width:100%; height:100%;">';
 $content .= '<div style="height:-moz-calc(100% - 18px); height:-webkit-calc(100% - 18px); height:-o-calc(100% - 18px); height:calc(100% - 18px);">';
@@ -19,7 +20,7 @@ $content .= '</div>';
 $content .= '</div>';
 $content .= '</div><!-- /#issuu-iframe -->';
 
-$content .= '<div id="issuu-painel-list">';
+$content .= '<div class="issuu-painel-list">';
 
 foreach ($docs as $doc) {
 	if ($i % 3 == 1)
@@ -42,4 +43,41 @@ foreach ($docs as $doc) {
 	$i++;
 }
 
-$content .= '</div><!-- /#issuu-painel-list -->';
+$content .= '</div><!-- /.issuu-painel-list -->';
+$content .= '</div><!-- /.issuupainel -->';
+
+if ($pagination['pageSize'] < $pagination['totalCount'])
+{
+	$number_pages = ceil($pagination['totalCount'] / $pagination['pageSize']);
+	$permalink = get_permalink();
+
+	$content .= '<div class="issuu-painel-paginate">';
+
+	if ($page != 1)
+	{
+		$content .= '<a href="' . issuu_painel_link_page(1, $permalink) . '" class="issuu-painel-number-text">'
+			. get_issuu_message('« First page') . '</a>';
+	}
+	$content .= '<div class="issuu-painel-page-numbers">';
+
+	for ($i = 1; $i <= $number_pages; $i++) {
+		if ($i != $page)
+		{
+			$content .= '<a href="' . issuu_painel_link_page($i, $permalink) . '" class="issuu-painel-number-page">'
+				. $i . '</a>';
+		}
+		else
+		{
+			$content .= '<span class="issuu-painel-number-page">' . $i . '</span>';
+		}
+	}
+
+	$content .= '</div><!-- /.issuu-painel-page-numbers -->';
+
+	if ($page != $number_pages)
+	{
+		$content .= '<a href="' . issuu_painel_link_page($number_pages, $permalink) . '" class="issuu-painel-number-text">'
+			. get_issuu_message('Last Page »') . '</a>';
+	}
+	$content .= '</div><!-- /.issuu-painel-paginate -->';
+}

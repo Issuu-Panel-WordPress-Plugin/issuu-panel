@@ -37,6 +37,11 @@ function issuu_painel_embed_folder_shortcode($atts)
 					$docs = array();
 					$issuu_document = new IssuuDocument($api_key, $api_secret);
 
+					$pagination = array(
+						'pageSize' => $bookmarks['pageSize'],
+						'totalCount' => $bookmarks['totalCount']
+					);
+
 					foreach ($bookmarks['bookmark'] as $book) {
 						$document = $issuu_document->update(array('name' => $book->name));
 
