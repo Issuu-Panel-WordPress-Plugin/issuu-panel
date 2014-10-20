@@ -4,11 +4,13 @@ add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_folder');
 
 function issuu_painel_menu_folder()
 {
+	global $issuu_painel_capacity;
+	
 	add_submenu_page(
 		'issuu-painel-admin',
-		__('Folders', ISSUU_PAINEL_DOMAIN_LANG),
-		__('Folders', ISSUU_PAINEL_DOMAIN_LANG),
-		'manage_options',
+		get_issuu_message('Folders'),
+		get_issuu_message('Folders'),
+		$issuu_painel_capacity,
 		'issuu-folder-admin',
 		'issuu_painel_menu_folder_init'
 	);
