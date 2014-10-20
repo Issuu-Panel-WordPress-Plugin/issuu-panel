@@ -4,11 +4,13 @@ add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_document');
 
 function issuu_painel_menu_document()
 {
+	global $issuu_painel_capacity;
+	
 	add_submenu_page(
 		'issuu-painel-admin',
-		__('Documents', ISSUU_PAINEL_DOMAIN_LANG),
-		__('Documents', ISSUU_PAINEL_DOMAIN_LANG),
-		'manage_options',
+		get_issuu_message('Documents'),
+		get_issuu_message('Documents'),
+		$issuu_painel_capacity,
 		'issuu-document-admin',
 		'issuu_painel_menu_document_init'
 	);
