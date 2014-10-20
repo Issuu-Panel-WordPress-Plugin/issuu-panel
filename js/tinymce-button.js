@@ -6,20 +6,17 @@
 			ed.addCommand('IssuuPainelCommand', function(){
 				ed.windowManager.open({
 					file: ajaxurl + '?action=issuu_painel_tinymce_ajax',
-					width: 600,
-					height: 500,
+					width: 420,
+					height: 211,
 					inline: 1
 				});
 			});
 
 			ed.addButton('issuupainel', {
 				title : 'Issuu Painel Shortcode',
-				image : url+'/../images/issuu-painel-tinymce-button.png',
+				image : url + '/../images/issuu-painel-tinymce-button.png',
 				cmd: 'IssuuPainelCommand'
 			});
-		},
-		createControl : function(n, cm){
-			return null;
 		},
 		getInfo : function(){
 			return {
