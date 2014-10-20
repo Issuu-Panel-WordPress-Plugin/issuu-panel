@@ -1,6 +1,8 @@
 (function($){
 	$('.link-issuu-document').click(function(e){
 		var docId = $(this).attr('href');
+		var $issuupainel = $(this).parent().parent().parent().parent();
+
 		var script = '<div data-doc-id="' + docId + '" style="width: 100%; height: 323px;" class="issuuembed issuu-isrendered">';
 		script += '<div style="width:100%; height:100%;">';
 		script += '<div style="height:-moz-calc(100% - 18px); height:-webkit-calc(100% - 18px); height:-o-calc(100% - 18px); height:calc(100% - 18px);">';
@@ -16,7 +18,7 @@
 		script += '</div>';
 		script += '</div>';
 
-		$('#issuu-iframe').html(script);
+		$issuupainel.find('.issuu-iframe').html(script);
 		e.preventDefault();
 	});
 })(jQuery);
