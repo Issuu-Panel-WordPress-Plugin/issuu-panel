@@ -4,10 +4,12 @@ add_action(ISSUU_PAINEL_PREFIX . 'menu_page', 'issuu_painel_menu_admin');
 
 function issuu_painel_menu_admin()
 {
+	global $issuu_painel_capacity;
+
 	add_menu_page(
 		'Issuu Painel',
 		'Issuu Painel',
-		'manage_options',
+		$issuu_painel_capacity,
 		'issuu-painel-admin',
 		'issuu_painel_menu_admin_init',
 		ISSUU_PAINEL_URL . 'images/icon2.png'
@@ -16,7 +18,7 @@ function issuu_painel_menu_admin()
 
 function issuu_painel_menu_admin_init()
 {
-	global $api_key, $api_secret;
+	global $api_key, $api_secret, $issuu_painel_capabilities, $issuu_painel_capacity;
 
 	echo '<div class="wrap">';
 
@@ -24,29 +26,43 @@ function issuu_painel_menu_admin_init()
 
 	if (strlen($api_key) <= 0)
 	{
-		echo "<div class=\"error\"><p>" .
-		__('Insert API key. ' , ISSUU_PAINEL_DOMAIN_LANG) .
-		__("To create keys $link_api_service", ISSUU_PAINEL_DOMAIN_LANG) .
-		"</p></div>";
+		echo "<div class=\"error\"><p>" . get_issuu_message('Insert API key. ') . 
+			get_issuu_message("To create keys $link_api_service") . "</p></div>";
 	}
 
 	if (strlen($api_secret) <= 0)
 	{
-		echo "<div class=\"error\"><p>" .
-		__('Insert API secret. ' , ISSUU_PAINEL_DOMAIN_LANG) .
-		__("To create keys $link_api_service", ISSUU_PAINEL_DOMAIN_LANG) .
-		"</p></div>";
+		echo "<div class=\"error\"><p>" . get_issuu_message('Insert API secret. ') .
+			get_issuu_message("To create keys $link_api_service") . "</p></div>";
 	}
 
 	echo '<h1>Issuu Painel Admin</h1>';
 
 	echo "<form action=\"\" method=\"post\" accept-charset=\"utf-8\">";
-	echo '<p><label for="api_key"><strong>' . __('API key', ISSUU_PAINEL_DOMAIN_LANG) . '</strong></label><br>';
+	echo '<p><label for="api_key"><strong>' . get_issuu_message('API key') . '</strong></label><br>';
 	echo "<input type=\"text\" name=\"api_key\" id=\"api_key\" placeholder=\"" .
-		__('Insert API key', ISSUU_PAINEL_DOMAIN_LANG) . "\" value=\"$api_key\" style=\"width: 300px;\"><p>";
-	echo '<p><label for="api_secret"><strong>' . __('API secret', ISSUU_PAINEL_DOMAIN_LANG) . '</strong></label><br>';
+		get_issuu_message('Insert API key') . "\" value=\"$api_key\" style=\"width: 300px;\"><p>";
+	echo '<p><label for="api_secret"><strong>' . get_issuu_message('API secret') . '</strong></label><br>';
 	echo "<input type=\"text\" name=\"api_secret\" id=\"api_secret\" placeholder=\"" .
-		__('Insert API secret', ISSUU_PAINEL_DOMAIN_LANG) . "\" value=\"$api_secret\" style=\"width: 300px;\"><p>";
+		get_issuu_message('Insert API secret') . "\" value=\"$api_secret\" style=\"width: 300px;\"><p>";
+	echo '<p>';
+	the_issuu_message('Users with capacities from');
+	echo ' <select name="enabled_user">';
+
+	foreach ($issuu_painel_capabilities as $key => $value) {
+		if ($value == $issuu_painel_capacity)
+		{
+			echo "<option value=\"$key\" selected>" . get_issuu_message($key) . "</option>";
+		}
+		else
+		{
+			echo "<option value=\"$key\">" . get_issuu_message($key) . "</option>";
+		}
+	}
+
+	echo '</select> ';
+	the_issuu_message('can use this plugin');
+	echo '</p>';
 	echo "<p><input type=\"submit\" class=\"button-primary\" value=\"Cadastrar\"></p>";
 	echo "</form>";
 
