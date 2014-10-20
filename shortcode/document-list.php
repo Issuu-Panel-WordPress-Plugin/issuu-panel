@@ -2,7 +2,11 @@
 
 function issuu_painel_embed_documents_shortcode($atts)
 {
-	global $api_key, $api_secret;
+	global $api_key, $api_secret, $issuu_shortcode_index;
+
+	$issuu_shortcode_index++;
+	$page_query_name = 'ip_shortcode' . $issuu_shortcode_index . '_page';
+	print_r(get_user_option('wp_capabilities'));
 
 	$atts = shortcode_atts(
 		array(
@@ -13,7 +17,9 @@ function issuu_painel_embed_documents_shortcode($atts)
 		$atts
 	);
 
-	$page = (($page = get_query_var('page')) == 0)? 1 : $page;
+	$page = (isset($_GET[$page_query_name]) && is_numeric($_GET[$page_query_name]))?
+		intval($_GET[$page_query_name]) : 1;
+
 	$params = array(
 		'pageSize' => $atts['per_page'],
 		'startIndex' => ($atts['per_page'] * ($page - 1)),
@@ -50,7 +56,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 		}
 		else
 		{
-			return '<h3>No documents in list</h3>';
+			return '<h3>' . get_issuu_message('No documents in list') . '</h3>';
 		}
 	}
 	else

@@ -2,7 +2,10 @@
 
 function issuu_painel_embed_folder_shortcode($atts)
 {
-	global $api_key, $api_secret;
+	global $api_key, $api_secret, $issuu_shortcode_index;
+
+	$issuu_shortcode_index++;
+	$page_query_name = 'ip_shortcode' . $issuu_shortcode_index . '_page';
 
 	$atts = shortcode_atts(
 		array(
@@ -14,7 +17,8 @@ function issuu_painel_embed_folder_shortcode($atts)
 		$atts
 	);
 
-	$page = (($page = get_query_var('page')) == 0)? 1 : $page;
+	$page = (isset($_GET[$page_query_name]) && is_numeric($_GET[$page_query_name]))?
+		intval($_GET[$page_query_name]) : 1;
 
 	if (is_string($atts['id']) && strlen(trim($atts['id'])) > 0)
 	{
@@ -46,6 +50,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 						$document = $issuu_document->update(array('name' => $book->name));
 
 						$docs[] = array(
+							'id' => $book->documentId,
 							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
 							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
 							'title' => $book->title,
@@ -89,6 +94,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 					foreach ($bookmarks['bookmark'] as $book) {
 						$docs[] = array(
+							'id' => $book->documentId,
 							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
 							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
 							'title' => $book->title
@@ -101,18 +107,19 @@ function issuu_painel_embed_folder_shortcode($atts)
 				}
 				else
 				{
-					return '<h3>No documents in list</h3>';
+					return '<h3>' . get_issuu_message('No documents in list') . '</h3>';
 				}
 			}
 			else
 			{
-				return '<h3>' . $bookmarks['message'] . '</h3>';
+				return '<h3>' . get_issuu_message($bookmarks['message'])
+					. ((trim($bookmarks['field']) != '')? ': ' . $bookmarks['field'] : '') . '</h3>';
 			}
 		}
 	}
 	else
 	{
-		return '<h3>Insert folder ID</h3>';
+		return '<h3>' . get_issuu_message('Insert folder ID') . '</h3>';
 	}
 }
 
