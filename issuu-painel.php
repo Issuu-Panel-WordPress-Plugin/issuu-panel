@@ -48,6 +48,7 @@ foreach ($includes as $include) {
 
 include(ISSUU_PAINEL_DIR . 'menu/documento/config.php');
 include(ISSUU_PAINEL_DIR . 'menu/pasta/config.php');
+include(ISSUU_PAINEL_DIR . 'menu/sobre/config.php');
 include(ISSUU_PAINEL_DIR . 'shortcode/document-list.php');
 include(ISSUU_PAINEL_DIR . 'shortcode/folder-list.php');
 
