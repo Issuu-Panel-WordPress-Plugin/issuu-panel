@@ -1,6 +1,6 @@
 <?php
 
-add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_document');
+add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_document', 1);
 
 function issuu_painel_menu_document()
 {
@@ -97,7 +97,7 @@ function issuu_painel_menu_document_init()
 		}
 		else
 		{
-			echo '<div class="error"><p>' . __('No documents found', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+			echo '<div class="error"><p>' . get_issuu_message('No documents found') . '</p></div>';
 			exit;
 		}
 

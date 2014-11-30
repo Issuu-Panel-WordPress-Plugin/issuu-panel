@@ -1,4 +1,4 @@
-<h1><?php _e('Create new folder', ISSUU_PAINEL_DOMAIN_LANG); ?></h1>
+<h1><?php the_issuu_message('Create new folder'); ?></h1>
 <form action="" id="add-folder" method="post" accept-charset="utf-8">
 	<table class="form-table">
 		<tbody>

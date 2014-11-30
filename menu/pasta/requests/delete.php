@@ -23,11 +23,11 @@ if ($count > 0)
 	{
 		if ($count > 1)
 		{
-			echo '<div class="updated"><p>' . __('Folders deleted successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+			echo '<div class="updated"><p>' . get_issuu_message('Folders deleted successfully') . '</p></div>';
 		}
 		else
 		{
-			echo '<div class="updated"><p>' . __('Folder deleted successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+			echo '<div class="updated"><p>' . get_issuu_message('Folder deleted successfully') . '</p></div>';
 		}
 	}
 	else if ($result['stat'] == 'fail')
@@ -37,5 +37,5 @@ if ($count > 0)
 }
 else
 {
-	echo '<div class="update-nag">' . __('Nothing was excluded', ISSUU_PAINEL_DOMAIN_LANG) . '</div>';
+	echo '<div class="update-nag">' . get_issuu_message('Nothing was excluded') . '</div>';
 }

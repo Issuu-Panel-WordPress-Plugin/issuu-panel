@@ -8,10 +8,10 @@ $response = $issuu_folder->update($_POST);
 
 if ($response['stat'] == 'ok')
 {
-	echo '<div class="updated"><p>' . __('Folder updated successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+	echo '<div class="updated"><p>' . get_issuu_message('Folder updated successfully') . '</p></div>';
 }
 else
 {
-	echo '<div class="error"><p>' . __('Error while updating the folder', ISSUU_PAINEL_DOMAIN_LANG) . ' - ' .
+	echo '<div class="error"><p>' . get_issuu_message('Error while updating the folder') . ' - ' .
 		$response['message'] . '</p></div>';
 }

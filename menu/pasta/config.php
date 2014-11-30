@@ -1,6 +1,6 @@
 <?php
 
-add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_folder');
+add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_folder', 2);
 
 function issuu_painel_menu_folder()
 {
@@ -67,7 +67,7 @@ function issuu_painel_menu_folder_init()
 		}
 		else
 		{
-			echo '<div class="error"><p>' . __('The folder does not exist', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+			echo '<div class="error"><p>' . get_issuu_message('The folder does not exist') . '</p></div>';
 		}
 
 		$load = true;

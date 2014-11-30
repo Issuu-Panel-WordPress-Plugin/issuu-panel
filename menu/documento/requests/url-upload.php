@@ -118,7 +118,7 @@ $result = $issuu_document->urlUpload($_POST);
 
 if ($result['stat'] == 'ok')
 {
-	echo '<div class="updated"><p>' . __('Document sent successfully', ISSUU_PAINEL_DOMAIN_LANG) . '</p></div>';
+	echo '<div class="updated"><p>' . get_issuu_message('Document sent successfully') . '</p></div>';
 }
 else if ($result['stat'] == 'fail')
 {

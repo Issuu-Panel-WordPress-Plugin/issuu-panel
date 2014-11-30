@@ -1,6 +1,6 @@
 <?php
 
-add_action(ISSUU_PAINEL_PREFIX . 'menu_page', 'issuu_painel_menu_about');
+add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', 'issuu_painel_menu_about', 3);
 
 function issuu_painel_menu_about()
 {
@@ -18,5 +18,5 @@ function issuu_painel_menu_about()
 
 function issuu_painel_menu_about_init()
 {
-
+	include(ISSUU_PAINEL_DIR . 'menu/sobre/page.php');
 }
