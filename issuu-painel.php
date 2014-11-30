@@ -2,7 +2,7 @@
 /*
 Plugin Name: Issuu Painel
 Plugin URI: https://github.com/pedromarcelojava/
-Description: Painel de administração para Issuu.
+Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
 Version: 1.0
 Author: Pedro Marcelo
 Author URI: https://github.com/pedromarcelojava/
