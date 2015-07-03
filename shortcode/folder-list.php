@@ -2,13 +2,18 @@
 
 function issuu_painel_embed_folder_shortcode($atts)
 {
+	$post = get_post();
+	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
+	$issuuPanelConfig = IssuuPanelConfig::getInstance();
 	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
 	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-	$issuu_shortcode_index = IssuuPanelConfig::getNextIterator();
+	$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
+	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
+	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
 	$page_query_name = 'ip_shortcode' . $issuu_shortcode_index . '_page';
 	issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Init");
-	issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Index " . $issuu_shortcode_index);
-	$shortcode = 'issuu-painel-folder-list' . $issuu_shortcode_index;
+	issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Index " . $issuu_shortcode_index . ' in hook ' . $inHook);
+	$shortcode = 'issuu-painel-folder-list' . $issuu_shortcode_index . $inHook . $postID;
 
 	$atts = shortcode_atts(
 		array(
@@ -23,7 +28,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 	$page = (isset($_GET[$page_query_name]) && is_numeric($_GET[$page_query_name]))?
 		intval($_GET[$page_query_name]) : 1;
 
-	if (IssuuPanelConfig::cacheIsActive())
+	if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 	{
 		issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache active");
 		$cache = IssuuPanelConfig::getCache($shortcode, $atts, $page);
@@ -96,7 +101,8 @@ function issuu_painel_embed_folder_shortcode($atts)
 							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
 							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
 							'title' => $book->title,
-							'pubTime' => strtotime($document['document']->publishDate)
+							'pubTime' => strtotime($document['document']->publishDate),
+							'pageCount' => $document['document']->pageCount
 						);
 					}
 
@@ -106,7 +112,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: List of documents successfully displayed");
 
-					if (IssuuPanelConfig::cacheIsActive())
+					if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 					{
 						IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -118,7 +124,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 				{
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: No documents in list");
 					$content = '<h3>' . get_issuu_message('No documents in list') . '</h3>';
-					if (IssuuPanelConfig::cacheIsActive())
+					if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 					{
 						IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -130,7 +136,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 			{
 				issuu_panel_debug("Shortcode [issuu-painel-folder-list]: " . $bookmarks['message']);
 				$content = '<h3>' . $bookmarks['message'] . '</h3>';
-				if (IssuuPanelConfig::cacheIsActive())
+				if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 				{
 					IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -162,13 +168,31 @@ function issuu_painel_embed_folder_shortcode($atts)
 				if (isset($bookmarks['bookmark']) && !empty($bookmarks['bookmark']))
 				{
 					$docs = array();
+					try {
+						$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+					} catch (Exception $e) {
+						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: IssuuDocument object Exception - " .
+							$e->getMessage());
+						return "";
+					}
 
 					foreach ($bookmarks['bookmark'] as $book) {
+						try {
+							$document = $issuu_document->update(array('name' => $book->name));
+							issuu_panel_debug("Shortcode [issuu-painel-folder-list]: URL - " .
+								$issuu_document->buildUrl());
+						} catch (Exception $e) {
+							issuu_panel_debug("Shortcode [issuu-painel-folder-list]: IssuuDocument->update Exception - " .
+								$e->getMessage());
+							return "";
+						}
+
 						$docs[] = array(
 							'id' => $book->documentId,
 							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
 							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
-							'title' => $book->title
+							'title' => $book->title,
+							'pageCount' => $document['document']->pageCount
 						);
 					}
 
@@ -176,7 +200,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: List of documents successfully displayed");
 
-					if (IssuuPanelConfig::cacheIsActive())
+					if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 					{
 						IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -187,7 +211,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 				{
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: No documents in list");
 					$content = '<h3>' . get_issuu_message('No documents in list') . '</h3>';
-					if (IssuuPanelConfig::cacheIsActive())
+					if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 					{
 						IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -200,7 +224,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 				issuu_panel_debug("Shortcode [issuu-painel-folder-list]: " . $bookmarks['message']);
 				$content = '<h3>' . get_issuu_message($bookmarks['message'])
 					. ((trim($bookmarks['field']) != '')? ': ' . $bookmarks['field'] : '') . '</h3>';
-				if (IssuuPanelConfig::cacheIsActive())
+				if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 				{
 					IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");
@@ -213,7 +237,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 	{
 		issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Insert folder ID");
 		$content = '<h3>' . get_issuu_message('Insert folder ID') . '</h3>';
-		if (IssuuPanelConfig::cacheIsActive())
+		if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 		{
 			IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 			issuu_panel_debug("Shortcode [issuu-painel-folder-list]: Cache updated");

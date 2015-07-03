@@ -2,13 +2,18 @@
 
 function issuu_painel_embed_documents_shortcode($atts)
 {
+	$post = get_post();
+	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
+	$issuuPanelConfig = IssuuPanelConfig::getInstance();
 	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
 	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-	$issuu_shortcode_index = IssuuPanelConfig::getNextIterator();
+	$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
+	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
+	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
 	$page_query_name = 'ip_shortcode' . $issuu_shortcode_index . '_page';
 	issuu_panel_debug("Shortcode [issuu-painel-document-list]: Init");
-	issuu_panel_debug("Shortcode [issuu-painel-document-list]: Index " . $issuu_shortcode_index);
-	$shortcode = 'issuu-painel-document-list' . $issuu_shortcode_index;
+	issuu_panel_debug("Shortcode [issuu-painel-document-list]: Index " . $issuu_shortcode_index . ' in hook ' . $inHook);
+	$shortcode = 'issuu-painel-document-list' . $issuu_shortcode_index . $inHook . $postID;
 
 	$atts = shortcode_atts(
 		array(
@@ -22,7 +27,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	$page = (isset($_GET[$page_query_name]) && is_numeric($_GET[$page_query_name]))?
 		intval($_GET[$page_query_name]) : 1;
 
-	if (IssuuPanelConfig::cacheIsActive())
+	if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 	{
 		$cache = IssuuPanelConfig::getCache($shortcode, $atts, $page);
 		issuu_panel_debug("Shortcode [issuu-painel-document-list]: Cache active");
@@ -75,7 +80,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 
 			issuu_panel_debug("Shortcode [issuu-painel-document-list]: List of documents successfully displayed");
 
-			if (IssuuPanelConfig::cacheIsActive())
+			if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 			{
 				IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 				issuu_panel_debug("Shortcode [issuu-painel-document-list]: Cache updated");
@@ -86,7 +91,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 		{
 			issuu_panel_debug("Shortcode [issuu-painel-document-list]: No documents in list");
 			$content = '<h3>' . get_issuu_message('No documents in list') . '</h3>';
-			if (IssuuPanelConfig::cacheIsActive())
+			if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 			{
 				IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 				issuu_panel_debug("Shortcode [issuu-painel-document-list]: Cache updated");
@@ -98,7 +103,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	{
 		issuu_panel_debug("Shortcode [issuu-painel-document-list]: " . $documents['message']);
 		$content = '<h3>' . get_issuu_message($documents['message']) . '</h3>';
-		if (IssuuPanelConfig::cacheIsActive())
+		if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 		{
 			IssuuPanelConfig::updateCache($shortcode, $content, $atts, $page);
 			issuu_panel_debug("Shortcode [issuu-painel-document-list]: Cache updated");

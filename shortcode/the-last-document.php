@@ -2,12 +2,16 @@
 
 function issuu_panel_the_last_document($atts)
 {
+	$post = get_post();
+	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
+	$issuuPanelConfig = IssuuPanelConfig::getInstance();
 	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
 	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-	$issuu_shortcode_index = IssuuPanelConfig::getNextIterator();
+	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
+	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
 	issuu_panel_debug("Shortcode [issuu-panel-last-document]: Init");
-	issuu_panel_debug("Shortcode [issuu-panel-last-document]: Index " . $issuu_shortcode_index);
-	$shortcode = 'issuu-panel-last-document' . $issuu_shortcode_index;
+	issuu_panel_debug("Shortcode [issuu-panel-last-document]: Index " . $issuu_shortcode_index . ' in hook ' . $inHook);
+	$shortcode = 'issuu-panel-last-document' . $issuu_shortcode_index . $inHook . $postID;
 
 	$doc = array();
 
@@ -22,7 +26,7 @@ function issuu_panel_the_last_document($atts)
 		$atts
 	);
 
-	if (IssuuPanelConfig::cacheIsActive())
+	if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 	{
 		$cache = IssuuPanelConfig::getCache($shortcode, $atts, 1);
 		issuu_panel_debug("Shortcode [issuu-panel-last-document]: Cache active");
@@ -103,7 +107,7 @@ function issuu_panel_the_last_document($atts)
 
 	$content .= '<!-- Issuu Panel | Developed by Pedro Marcelo de Sá Alves -->';
 
-	if (IssuuPanelConfig::cacheIsActive())
+	if (IssuuPanelConfig::cacheIsActive() && !$issuuPanelConfig->isBot())
 	{
 		IssuuPanelConfig::updateCache($shortcode, $content, $atts, 1);
 		issuu_panel_debug("Shortcode [issuu-panel-last-document]: Cache updated");
