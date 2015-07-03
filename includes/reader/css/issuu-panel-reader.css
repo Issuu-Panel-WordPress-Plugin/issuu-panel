@@ -1,5 +1,11 @@
 @charset "utf-8";
 
+body.issuu-panel-noscroll{
+	position: fixed;
+	overflow-x: scroll;
+	width: 100%;
+}
+
 #issuu-panel-reader{
 	background-color: rgba(0,24,0,.88);
 	width: 100%;
