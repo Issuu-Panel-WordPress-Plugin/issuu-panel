@@ -109,7 +109,7 @@ You can send the translation by e-mail. Send for pedromarcelodesaalves@gmail.com
 * Added: Swedish translate by Fredrik Pettersson
 * Created: Issuu Panel Simple Reader - HTML5
 * Created: IssuuPanelCron for scheduled actions
-* Created: Shortcode caching
+* Created: Shortcode cache
 * Updated: The log file directory was changed - /wp-content/uploads/issuu-panel-folder/
 * Updated: The document URL on Issuu is default value in My Last Document
 
