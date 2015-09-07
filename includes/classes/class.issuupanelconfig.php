@@ -13,6 +13,8 @@ class IssuuPanelConfig
 
     private static $issuuPanelCron;
 
+    private static $instance;
+
     /*
     |----------------------------------------
     |  VARIABLES
@@ -82,7 +84,11 @@ class IssuuPanelConfig
 
     public static function getInstance()
     {
-        return new static();
+        if (!self::$instance)
+        {
+            self::$instance = new IssuuPanelConfig();
+        }
+        return self::$instance;
     }
 
 	public static function setVariable($name, $value)
