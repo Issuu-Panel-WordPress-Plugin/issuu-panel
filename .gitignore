@@ -3,3 +3,5 @@ images/Thumbs.db
 vendor/
 issuuservice-lib/.git/
 issuuservice-lib/vendor/
+composer.phar
+composer.lock
