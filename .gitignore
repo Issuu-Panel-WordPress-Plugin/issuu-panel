@@ -3,5 +3,8 @@ sftp-config.json
 vendor/
 issuuservice-lib/.git/
 issuuservice-lib/vendor/
+includes/Mobile-Detect/.git/
+includes/Mobile-Detect/examples/
+includes/Mobile-Detect/tests/
 composer.phar
 composer.lock
