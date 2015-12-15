@@ -15,7 +15,7 @@ class IssuuPanelMenu implements IssuuPanelPage
 			IssuuPanelConfig::getVariable('issuu_panel_capacity'),
 			ISSUU_PAINEL_MENU,
 			array($this, 'page'),
-			ISSUU_PAINEL_URL . 'images/icon2.png'
+			ISSUU_PAINEL_URL . 'assets/images/icon2.png'
 		);
 		issuu_panel_debug("Issuu Panel Page (Main)");
 	}
