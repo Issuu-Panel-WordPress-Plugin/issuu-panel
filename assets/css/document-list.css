@@ -143,11 +143,11 @@
 }
 
 .button-danger {
-	background-color: #F15353;
-    border-color: #CC5D5D;
-    text-shadow: 0 -1px 1px #CC5D5D,1px 0 1px #CC5D5D,0 1px 1px #CC5D5D,-1px 0 1px #CC5D5D;
-    box-shadow: 0 1px 0 #CC5D5D;
-    color: #fff;
+	background-color: #F15353 !important;
+    border-color: #CC5D5D !important;
+    text-shadow: 0 -1px 1px #CC5D5D,1px 0 1px #CC5D5D,0 1px 1px #CC5D5D,-1px 0 1px #CC5D5D !important;
+    box-shadow: 0 1px 0 #CC5D5D !important;
+    color: #fff !important;
 }
 
 .issuu-submit-button,
