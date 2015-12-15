@@ -10,7 +10,7 @@ if (!class_exists('IssuuServiceAPI'))
 *
 *   @author Pedro Marcelo de Sá Alves
 *   @link https://github.com/pedromarcelojava/
-*   @version 1.0
+*   @version 1.2
 */
 class IssuuDocument extends IssuuServiceAPI
 {
@@ -68,16 +68,13 @@ class IssuuDocument extends IssuuServiceAPI
         }
 
         $this->setParams($params);
-        $file = $_FILES['file']['tmp_name'];
-
-        $this->params['file'] = '@' . $file;
-
-        $curl = curl_init('http://upload.issuu.com/1_0');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $this->params);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $this->setFile($_FILES['file']);
+        $response = $this->curlRequest(
+            $this->getUploadUrl(),
+            $this->params,
+            array(),
+            false
+        );
 
         $slug = $this->slug_section;
 
@@ -185,7 +182,7 @@ class IssuuDocument extends IssuuServiceAPI
         $doc->commentsAllowed = $this->validFieldXML($document, 'commentsAllowed', 2);
         $doc->showDetectedLinks = $this->validFieldXML($document, 'showDetectedLinks', 2);
 
-        $doc->pageCount = $this->validFieldXML($document, 'pageCount', 1);
+        $doc->pageCount = $this->validFieldXML($document, 'pageCount');
         $doc->dcla = $this->validFieldXML($document, 'dcla');
         $doc->ep = $this->validFieldXML($document, 'ep');
         $doc->publicationCreationTime = $this->validFieldXML($document, 'publicationCreationTime');
@@ -251,7 +248,7 @@ class IssuuDocument extends IssuuServiceAPI
         $doc->commentsAllowed = $this->validFieldJson($document, 'commentsAllowed', 2);
         $doc->showDetectedLinks = $this->validFieldJson($document, 'showDetectedLinks', 2);
 
-        $doc->pageCount = $this->validFieldJson($document, 'pageCount', 1);
+        $doc->pageCount = $this->validFieldJson($document, 'pageCount');
         $doc->dcla = $this->validFieldJson($document, 'dcla');
         $doc->ep = $this->validFieldJson($document, 'ep');
         $doc->publicationCreationTime = $this->validFieldJson($document, 'publicationCreationTime');
@@ -281,4 +278,21 @@ class IssuuDocument extends IssuuServiceAPI
 
         return $doc;
     }
+
+    private function setFile($file)
+    {
+        if (version_compare(PHP_VERSION, '5.5', '>='))
+        {
+            $this->params['file'] = new CURLFile(
+                $file['tmp_name'],
+                $file['type'],
+                $file['name']
+            );
+        }
+        else
+        {
+            $this->params['file'] = '@' . $file['tmp_name'];
+        }
+    }
+ 
 }

@@ -10,7 +10,7 @@ if (!class_exists('IssuuServiceAPI'))
 *
 *   @author Pedro Marcelo de Sá Alves
 *   @link https://github.com/pedromarcelojava/
-*   @version 1.0
+*   @version 1.2
 */
 class IssuuDocumentEmbed extends IssuuServiceAPI
 {
@@ -89,7 +89,7 @@ class IssuuDocumentEmbed extends IssuuServiceAPI
         $params['action'] = 'issuu.document_embed.get_html_code';
         $this->setParams($params);
 
-        return file_get_contents($this->buildUrl());
+        return $this->curlRequest($this->getApiUrl(), $this->getParams());
     }
 
     /**

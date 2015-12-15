@@ -5,7 +5,7 @@
 *
 *   @author Pedro Marcelo de Sá Alves
 *   @link https://github.com/pedromarcelojava/
-*   @version 1.0.3
+*   @version 1.2
 */
 abstract class IssuuServiceAPI
 {
@@ -150,11 +150,11 @@ abstract class IssuuServiceAPI
     *
     *   Monta a URL da requisição
     *
-    *   @access public
+    *   @access protected
     *   @param boolean $is_api_url
     *   @return string Retorna a URL da api ou upload junto com os parâmetros passados
     */
-    public function buildUrl($is_api_url = true)
+    protected function buildUrl($is_api_url = true)
     {
         if ($is_api_url == true)
         {
@@ -175,11 +175,11 @@ abstract class IssuuServiceAPI
     *
     *   Seta os parâmetros da requisição
     *
-    *   @access protected
+    *   @access public
     *   @param array $params
     *   @throws Exception Lança um exceção caso não tenha parâmetros
     */
-    protected function setParams($params)
+    public function setParams($params)
     {
         if (is_array($params) && !empty($params))
         {
@@ -196,20 +196,33 @@ abstract class IssuuServiceAPI
     }
 
     /**
+    *   IssuuServiceAPI::getParams()
+    *
+    *   Retorna os parâmetros da requisição
+    *
+    *   @access public
+    *   @return array
+    */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
     *   IssuuServiceAPI::calculateSignature()
     *
     *   Faz o cálculo da assinatura
     *
-    *   @access protected
+    *   @access public
     *   @return string A assinatura
     */
-    final protected function calculateSignature()
+    final public function calculateSignature()
     {
         if (ksort($this->params))
         {
             $this->params_str = http_build_query($this->params);
-            $this->params_str = rawurldecode($this->params_str);
-            $sign_str = strtr($this->params_str, array('&' => '', '=' => '', '+' => ' '));
+            $this->params_str = urldecode($this->params_str);
+            $sign_str = strtr($this->params_str, array('&' => '', '=' => ''));
             $this->signature = md5($this->api_secret . $sign_str);
             return $this->signature;
         }
@@ -220,17 +233,54 @@ abstract class IssuuServiceAPI
     }
 
     /**
+    *   IssuuServiceAPI::curlRequest()
+    *
+    *   @access public
+    *   @param string $url URL que será enviada a requisição
+    *   @param string|array $data Dados que serão enviados
+    *   @param array $headers Cabeçalhos adicionais da requisição
+    *   @return mixed Reposta da requisição
+    */
+    public function curlRequest(
+        $url,
+        array $data,
+        array $headers = array(),
+        $decodeData = true,
+        array $additionalOptions = array()
+    ) {
+        if ($decodeData == true)
+            $data = urldecode(http_build_query($data));
+
+        $options = array(
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+        );
+        
+        foreach ($additionalOptions as $key => $value) {
+            $options[$key] = $value;
+        }
+        $curl = curl_init();
+        curl_setopt_array($curl, $options);
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
+
+    /**
     *   IssuuServiceAPI::validFieldJson()
     *
     *   Valida uma variável
     *
-    *   @access protected
+    *   @access public
     *   @param object $object
     *   @param string $field Nome da variável a ser validada
     *   @param int $type Corresponde ao tipo que a variável será convertida
     *   @return string Retorna a variável validada ou uma string vazia caso ela não exista
     */
-    protected function validFieldJson($object, $field, $type = 0)
+    public function validFieldJson($object, $field, $type = 0)
     {
         if (isset($object->$field))
         {
@@ -240,11 +290,15 @@ abstract class IssuuServiceAPI
             }
             else if ($type == 1)
             {
-                return (int) $object->$field;
+                return intval($object->$field);
             }
             else if ($type == 2)
             {
                 return (is_bool($object->$field))? $object->$field : (($object->$field == 'true')? true : false);
+            }
+            else if ($type == 3)
+            {
+                return floatval($object->$field);
             }
             else
             {
@@ -262,13 +316,13 @@ abstract class IssuuServiceAPI
     *
     *   Valida uma variável
     *
-    *   @access protected
+    *   @access public
     *   @param array $object
     *   @param string $field Nome da variável a ser validada
     *   @param int $type Corresponde ao tipo que a variável será convertida
     *   @return string Retorna a variável validada ou uma string vazia caso ela não exista
     */
-    protected function validFieldXML($object, $field, $type = 0)
+    public function validFieldXML($object, $field, $type = 0)
     {
         if (isset($object[$field]))
         {
@@ -278,11 +332,15 @@ abstract class IssuuServiceAPI
             }
             else if ($type == 1)
             {
-                return (int) $object[$field];
+                return intval($object[$field]);
             }
             else if ($type == 2)
             {
                 return (is_bool($object[$field]))? $object[$field] : (($object[$field] == 'true')? true : false);
+            }
+            else if ($type == 3)
+            {
+                return floatval($object[$field]);
             }
             else
             {
@@ -298,7 +356,7 @@ abstract class IssuuServiceAPI
     /**
     *   IssuuServiceAPI::returnErrorJson()
     *
-    *   Retorna objeto de erro
+    *   Lista registros da requisição
     *
     *   @access protected
     *   @param object $response Correspondente ao objeto de resposta da requisição
@@ -308,16 +366,16 @@ abstract class IssuuServiceAPI
     {
         return array(
             'stat' => 'fail',
-            'code' => $response->_content->error->code,
-            'message' => $response->_content->error->message,
-            'field' => $response->_content->error->field
+            'code' => (string) $response->_content->error->code,
+            'message' => (string) $response->_content->error->message,
+            'field' => (string) $response->_content->error->field
         );
     }
 
     /**
     *   IssuuServiceAPI::returnErrorXML()
     *
-    *   Retorna objeto do erros
+    *   Lista registros da requisição
     *
     *   @access protected
     *   @param object $response Correspondente ao objeto de resposta da requisição
@@ -345,11 +403,10 @@ abstract class IssuuServiceAPI
     final protected function returnSingleResult($params)
     {
         $this->setParams($params);
-
-        $curl = curl_init($this->buildUrl());
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $response = $this->curlRequest(
+            $this->getApiUrl(),
+            $this->params
+        );
 
         $slug = $this->slug_section;
 
@@ -400,11 +457,10 @@ abstract class IssuuServiceAPI
     {
         $params['action'] = $this->delete;
         $this->setParams($params);
-
-        $curl = curl_init($this->buildUrl());
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $response = $this->curlRequest(
+            $this->getApiUrl(),
+            $this->params
+        );
 
         if (isset($params['format']) && $params['format'] == 'json')
         {
@@ -447,11 +503,10 @@ abstract class IssuuServiceAPI
     {
         $params['action'] = $this->list;
         $this->setParams($params);
-
-        $curl = curl_init($this->buildUrl());
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $response = $this->curlRequest(
+            $this->getApiUrl(),
+            $this->params
+        );
 
         $slug = $this->slug_section;
 
@@ -512,6 +567,29 @@ abstract class IssuuServiceAPI
                 return $this->returnErrorXML($response);
             }
         }
+    }
+
+    /**
+    *   IssuuServiceAPI::getApiUrl()
+    *
+    *   @access public
+    *   @return string URL da API de dados do Issuu
+    */
+    public function getApiUrl()
+    {
+        return $this->api_url;
+    }
+
+
+    /**
+    *   IssuuServiceAPI::getUploadUrl()
+    *
+    *   @access public
+    *   @return string URL da API para upload do Issuu
+    */
+    public function getUploadUrl()
+    {
+        return $this->upload_url;
     }
 
     /**
