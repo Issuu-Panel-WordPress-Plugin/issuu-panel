@@ -1,2 +1,4 @@
 sftp-config.json
 images/Thumbs.db
+vendor/
+issuuservice-lib/vendor/
