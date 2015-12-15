@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Issuu Panel
-Plugin URI: https://github.com/pedromarcelojava/Issuu-Painel
+Plugin URI: https://github.com/Issuu-Panel/issuu-panel
 Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
 Version: 1.6
 Author: Pedro Marcelo
@@ -31,13 +31,13 @@ if (defined('ISSUU_PANEL_VERSION'))
 */
 
 define('ISSUU_PANEL_VERSION', '1.6.1');
-define('ISSUU_PAINEL_DIR', plugin_dir_path(__FILE__));
-define('ISSUU_PAINEL_URL', plugin_dir_url(__FILE__));
-define('ISSUU_PAINEL_PREFIX', 'issuu_painel_');
-define('ISSUU_PAINEL_DOMAIN_LANG', 'issuu-panel-domain-lang');
-define('ISSUU_PAINEL_MENU', 'issuu-panel-admin');
-define('ISSUU_PAINEL_PLUGIN_FILE', __FILE__);
-define('ISSUU_PAINEL_PLUGIN_FILE_LANG', dirname(plugin_basename(__FILE__)) . '/lang/');
+define('ISSUU_PANEL_DIR', plugin_dir_path(__FILE__));
+define('ISSUU_PANEL_URL', plugin_dir_url(__FILE__));
+define('ISSUU_PANEL_PREFIX', 'issuu_painel_');
+define('ISSUU_PANEL_DOMAIN_LANG', 'issuu-panel-domain-lang');
+define('ISSUU_PANEL_MENU', 'issuu-panel-admin');
+define('ISSUU_PANEL_PLUGIN_FILE', __FILE__);
+define('ISSUU_PANEL_PLUGIN_FILE_LANG', dirname(plugin_basename(__FILE__)) . '/lang/');
 
 /*
 |--------------------------------------
@@ -45,20 +45,23 @@ define('ISSUU_PAINEL_PLUGIN_FILE_LANG', dirname(plugin_basename(__FILE__)) . '/l
 |--------------------------------------
 */
 
-require(ISSUU_PAINEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupaneldebug.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelcron.php');
-require(ISSUU_PAINEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelconfig.php');
-require(ISSUU_PAINEL_DIR . 'issuuservice-lib/bootstrap.php');
-require(ISSUU_PAINEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelinitplugin.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelscripts.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupaneltinymcebutton.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelpaginate.php');
-require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelsubmenu.php');
-require(ISSUU_PAINEL_DIR . 'includes/functions.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelhook.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelaction.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfilter.php');
+require(ISSUU_PANEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneldebug.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcron.php');
+require(ISSUU_PANEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelconfig.php');
+require(ISSUU_PANEL_DIR . 'issuuservice-lib/bootstrap.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelinitplugin.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelscripts.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneltinymcebutton.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelpaginate.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelsubmenu.php');
+require(ISSUU_PANEL_DIR . 'includes/functions.php');
 
 /*
 |--------------------------------------
@@ -66,10 +69,18 @@ require(ISSUU_PAINEL_DIR . 'includes/functions.php');
 |--------------------------------------
 */
 
-include(ISSUU_PAINEL_DIR . 'menu/principal/config.php');
-include(ISSUU_PAINEL_DIR . 'menu/documento/config.php');
-include(ISSUU_PAINEL_DIR . 'menu/pasta/config.php');
-include(ISSUU_PAINEL_DIR . 'menu/sobre/config.php');
+require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelupdatedatalistener.php');
+
+/*
+|--------------------------------------
+|  MENU
+|--------------------------------------
+*/
+
+include(ISSUU_PANEL_DIR . 'menu/principal/config.php');
+include(ISSUU_PANEL_DIR . 'menu/documento/config.php');
+include(ISSUU_PANEL_DIR . 'menu/pasta/config.php');
+include(ISSUU_PANEL_DIR . 'menu/sobre/config.php');
 
 /*
 |--------------------------------------
@@ -77,9 +88,9 @@ include(ISSUU_PAINEL_DIR . 'menu/sobre/config.php');
 |--------------------------------------
 */
 
-include(ISSUU_PAINEL_DIR . 'shortcode/document-list.php');
-include(ISSUU_PAINEL_DIR . 'shortcode/folder-list.php');
-include(ISSUU_PAINEL_DIR . 'shortcode/the-last-document.php');
+include(ISSUU_PANEL_DIR . 'shortcode/document-list.php');
+include(ISSUU_PANEL_DIR . 'shortcode/folder-list.php');
+include(ISSUU_PANEL_DIR . 'shortcode/the-last-document.php');
 
 /*
 |--------------------------------------
@@ -87,4 +98,4 @@ include(ISSUU_PAINEL_DIR . 'shortcode/the-last-document.php');
 |--------------------------------------
 */
 
-include(ISSUU_PAINEL_DIR . 'widget/class.issuupanelwidget.php');
+include(ISSUU_PANEL_DIR . 'widget/class.issuupanelwidget.php');

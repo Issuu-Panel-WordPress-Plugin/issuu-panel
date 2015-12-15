@@ -76,7 +76,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 				);
 			}
 			
-			include(ISSUU_PAINEL_DIR . 'shortcode/generator.php');
+			include(ISSUU_PANEL_DIR . 'shortcode/generator.php');
 
 			issuu_panel_debug("Shortcode [issuu-painel-document-list]: List of documents successfully displayed");
 

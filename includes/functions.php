@@ -44,12 +44,12 @@ function issuu_panel_quick_sort($array, $order = 'asc')
 
 function get_issuu_message($text)
 {
-	return __($text, ISSUU_PAINEL_DOMAIN_LANG);
+	return __($text, ISSUU_PANEL_DOMAIN_LANG);
 }
 
 function the_issuu_message($text)
 {
-	_e($text, ISSUU_PAINEL_DOMAIN_LANG);
+	_e($text, ISSUU_PANEL_DOMAIN_LANG);
 }
 
 function issuu_panel_link_page($page, $permalink, $page_name)
@@ -110,13 +110,13 @@ function ip_menu_admin()
 	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
 	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
 
-	do_action(ISSUU_PAINEL_PREFIX . 'menu_page');
+	do_action(ISSUU_PANEL_PREFIX . 'menu_page');
 	issuu_panel_debug("Issuu Panel menu loaded");
 
 	if ((!is_null($issuu_panel_api_key) && strlen($issuu_panel_api_key) > 0) &&
 		(!is_null($issuu_panel_api_secret) && strlen($issuu_panel_api_secret) > 0))
 	{
-		do_action(ISSUU_PAINEL_PREFIX . 'submenu_pages');
+		do_action(ISSUU_PANEL_PREFIX . 'submenu_pages');
 		issuu_panel_debug("Issuu Panel submenus loaded");
 	}
 }

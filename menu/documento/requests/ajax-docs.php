@@ -4,8 +4,8 @@ require($_GET['abspath'] . '/wp-load.php');
 
 try {
 	$document = new IssuuDocument(
-		get_option(ISSUU_PAINEL_PREFIX . 'api_key'),
-		get_option(ISSUU_PAINEL_PREFIX . 'api_secret')
+		get_option(ISSUU_PANEL_PREFIX . 'api_key'),
+		get_option(ISSUU_PANEL_PREFIX . 'api_secret')
 	);
 
 	$params['orgDocName'] = $_GET['name'];

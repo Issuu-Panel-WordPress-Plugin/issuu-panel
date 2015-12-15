@@ -72,7 +72,7 @@
 		function atualizaDocs()
 		{
 			var $con = $('.converting');
-			var url = '<?= ISSUU_PAINEL_URL; ?>menu/documento/requests/ajax-docs.php';
+			var url = '<?= ISSUU_PANEL_URL; ?>menu/documento/requests/ajax-docs.php';
 			var abspath = '<?= str_replace("\\", "/", ABSPATH); ?>';
 
 			if ($con.length)

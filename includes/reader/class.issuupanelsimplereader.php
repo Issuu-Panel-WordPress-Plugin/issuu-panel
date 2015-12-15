@@ -12,7 +12,7 @@ class IssuuPanelSimpleReader
 	{
 		$docId = filter_input(INPUT_GET, 'docId');
 		$pageCount = filter_input(INPUT_GET, 'pageCount');
-		include(ISSUU_PAINEL_DIR . 'includes/reader/reader.phtml');
+		include(ISSUU_PANEL_DIR . 'includes/reader/reader.phtml');
 		die();
 	}
 }

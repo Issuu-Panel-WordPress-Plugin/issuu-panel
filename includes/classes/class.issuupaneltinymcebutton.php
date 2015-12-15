@@ -24,7 +24,7 @@ class IssuuPanelTinyMCEButton
 
 	public function addIssuuPanelTinyMCEPlugin($plugin_array)
 	{
-		$plugin_array['issuupanel'] = ISSUU_PAINEL_URL . 'js/tinymce-button.js';
+		$plugin_array['issuupanel'] = ISSUU_PANEL_URL . 'js/tinymce-button.js';
 		return $plugin_array;
 	}
 
@@ -61,7 +61,7 @@ class IssuuPanelTinyMCEButton
 		<head>
 			<title>Issuu Panel Shortcode</title>
 			<meta charset="utf-8">
-			<link rel="stylesheet" href="<?= ISSUU_PAINEL_URL; ?>css/issuu-painel-tinymce-popup.css">
+			<link rel="stylesheet" href="<?= ISSUU_PANEL_URL; ?>css/issuu-painel-tinymce-popup.css">
 			<?php
 				wp_enqueue_script('tiny_mce_popup.js', includes_url('js/tinymce/tiny_mce_popup.js'));
 				wp_print_scripts('jquery');

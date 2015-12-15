@@ -108,7 +108,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 					$docs = issuu_panel_quick_sort($docs, $atts['result_order']);
 
-					include(ISSUU_PAINEL_DIR . 'shortcode/generator.php');
+					include(ISSUU_PANEL_DIR . 'shortcode/generator.php');
 
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: List of documents successfully displayed");
 
@@ -196,7 +196,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 						);
 					}
 
-					include(ISSUU_PAINEL_DIR . 'shortcode/generator.php');
+					include(ISSUU_PANEL_DIR . 'shortcode/generator.php');
 
 					issuu_panel_debug("Shortcode [issuu-painel-folder-list]: List of documents successfully displayed");
 

@@ -64,7 +64,7 @@ class IssuuPanelConfig
 	public static function init()
 	{
 		// IssuuPanelDebug
-		self::$issuuPanelDebug = new IssuuPanelDebug(get_option(ISSUU_PAINEL_PREFIX . 'debug'));
+		self::$issuuPanelDebug = new IssuuPanelDebug(get_option(ISSUU_PANEL_PREFIX . 'debug'));
 		self::$issuuPanelDebug->appendMessage("-----------------------", false);
 		self::$issuuPanelDebug->appendMessage("Browser: " . $_SERVER['HTTP_USER_AGENT']);
 
@@ -191,7 +191,7 @@ class IssuuPanelConfig
         {
             self::setCache($shortcode, $content, $params, $page);
         }
-        update_option(ISSUU_PAINEL_PREFIX . 'shortcode_cache', self::serializeCache());
+        update_option(ISSUU_PANEL_PREFIX . 'shortcode_cache', self::serializeCache());
     }
 
     public static function serializeCache()
@@ -202,22 +202,21 @@ class IssuuPanelConfig
     public static function flushCache()
     {
         self::$issuu_panel_shortcode_cache = array();
-        update_option(ISSUU_PAINEL_PREFIX . 'shortcode_cache', self::serializeCache());
+        update_option(ISSUU_PANEL_PREFIX . 'shortcode_cache', self::serializeCache());
     }
 
     public function isBot()
     {
         $utilities = self::$mobileDetect->getUtilities();
         $bots = spliti("\|", $utilities['Bot']);
-        $mobileBots = spliti("\|", $utilities['MobileBot']);
         $userAgent = self::$mobileDetect->getHttpHeader('USER_AGENT');
-
         foreach ($bots as $bot) {
             if (strpos($userAgent, $bot) !== false)
             {
                 return true;
             }
         }
+        $mobileBots = spliti("\|", $utilities['MobileBot']);
         foreach ($mobileBots as $bot) {
             if (strpos($userAgent, $bot) !== false)
             {

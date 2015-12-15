@@ -44,7 +44,7 @@ class IssuuPanelCron
 
 	public function __construct()
 	{
-		$this->setActions(get_option(ISSUU_PAINEL_PREFIX . 'cron'));
+		$this->setActions(get_option(ISSUU_PANEL_PREFIX . 'cron'));
 		add_action('init', array($this, 'trigger'));
 	}
 
@@ -66,7 +66,7 @@ class IssuuPanelCron
 			}
 		}
 
-		update_option(ISSUU_PAINEL_PREFIX . 'cron', serialize($this->scheduledActions));
+		update_option(ISSUU_PANEL_PREFIX . 'cron', serialize($this->scheduledActions));
 	}
 
 	public function addScheduledAction($key, $callback, $interval = 'week')

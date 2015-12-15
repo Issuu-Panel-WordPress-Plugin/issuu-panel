@@ -4,7 +4,7 @@ class IssuuPanelWidget extends WP_Widget
 {
 	public function __construct()
 	{
-		parent::WP_Widget(
+		parent::__construct(
 			false,
 			'Issuu Panel',
 			array('description' => get_issuu_message('Get and display the last document'))

@@ -12,13 +12,13 @@ abstract class IssuuPanelSubmenu implements IssuuPanelPage
 
 	public function __construct()
 	{
-		add_action(ISSUU_PAINEL_PREFIX . 'submenu_pages', array($this, 'init'), $this->priority);
+		add_action(ISSUU_PANEL_PREFIX . 'submenu_pages', array($this, 'init'), $this->priority);
 	}
 
 	public function init()
 	{
 		add_submenu_page(
-			ISSUU_PAINEL_MENU,
+			ISSUU_PANEL_MENU,
 			get_issuu_message($this->page_title),
 			get_issuu_message($this->menu_title),
 			IssuuPanelConfig::getVariable('issuu_panel_capacity'),

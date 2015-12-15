@@ -11,13 +11,13 @@ class IssuuPanelScripts
 	public function wpScripts()
 	{
 		$jsDependences = array('jquery');
-		wp_enqueue_style('issuu-painel-documents', ISSUU_PAINEL_URL . 'assets/css/issuu-painel-documents.min.css');
+		wp_enqueue_style('issuu-painel-documents', ISSUU_PANEL_URL . 'assets/css/issuu-painel-documents.min.css');
 
 		switch (IssuuPanelConfig::getVariable('issuu_panel_reader')) {
 			case 'issuu_embed':
 				wp_enqueue_script(
 					'issuu-panel-swfobject',
-					ISSUU_PAINEL_URL . 'assets/js/swfobject/swfobject.js',
+					ISSUU_PANEL_URL . 'assets/js/swfobject/swfobject.js',
 					array('jquery'),
 					null,
 					true
@@ -27,7 +27,7 @@ class IssuuPanelScripts
 			case 'issuu_panel_simple_reader':
 				wp_enqueue_script(
 					'issuu-panel-simple-reader',
-					ISSUU_PAINEL_URL . 'includes/reader/assets/js/jquery.issuupanelreader.min.js',
+					ISSUU_PANEL_URL . 'includes/reader/assets/js/jquery.issuupanelreader.min.js',
 					array('jquery'),
 					null,
 					true
@@ -38,7 +38,7 @@ class IssuuPanelScripts
 		
 		wp_enqueue_script(
 			'issuu-panel-reader',
-			ISSUU_PAINEL_URL . 'assets/js/issuu-panel-reader.min.js',
+			ISSUU_PANEL_URL . 'assets/js/issuu-panel-reader.min.js',
 			$jsDependences,
 			null,
 			true
@@ -58,13 +58,13 @@ class IssuuPanelScripts
 	{
 		wp_enqueue_style(
 			'issuu-painel-pagination',
-			ISSUU_PAINEL_URL . 'assets/css/issuu-painel-pagination.min.css',
+			ISSUU_PANEL_URL . 'assets/css/issuu-painel-pagination.min.css',
 			array(),
 			null,
 			'screen, print'
 		);
-		wp_enqueue_style('document-list', ISSUU_PAINEL_URL . 'assets/css/document-list.min.css', array(), null, 'screen, print');
-		wp_enqueue_style('folder-list', ISSUU_PAINEL_URL . 'assets/css/folder-list.min.css', array('dashicons'), null, 'screen, print');
+		wp_enqueue_style('document-list', ISSUU_PANEL_URL . 'assets/css/document-list.min.css', array(), null, 'screen, print');
+		wp_enqueue_style('folder-list', ISSUU_PANEL_URL . 'assets/css/folder-list.min.css', array('dashicons'), null, 'screen, print');
 		wp_enqueue_script('json2');
 		wp_enqueue_script('jquery');
 
@@ -74,7 +74,7 @@ class IssuuPanelScripts
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-upload-js',
-					ISSUU_PAINEL_URL . 'assets/js/document-upload.min.js',
+					ISSUU_PANEL_URL . 'assets/js/document-upload.min.js',
 					array('jquery'),
 					null,
 					true
@@ -84,7 +84,7 @@ class IssuuPanelScripts
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-update-js',
-					ISSUU_PAINEL_URL . 'assets/js/document-update.min.js',
+					ISSUU_PANEL_URL . 'assets/js/document-update.min.js',
 					array('jquery'),
 					null,
 					true
@@ -94,7 +94,7 @@ class IssuuPanelScripts
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-url-upload-js',
-					ISSUU_PAINEL_URL . 'assets/js/document-url-upload.min.js',
+					ISSUU_PANEL_URL . 'assets/js/document-url-upload.min.js',
 					array('jquery'),
 					null,
 					true

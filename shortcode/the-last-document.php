@@ -44,7 +44,7 @@ function issuu_panel_the_last_document($atts)
 		} catch (Exception $e) {
 			issuu_panel_debug("Shortcode [issuu-panel-last-document]: Exception - " . $e->getMessage());
 		}
-		include(ISSUU_PAINEL_DIR . 'shortcode/the-last-document-folder.php');
+		include(ISSUU_PANEL_DIR . 'shortcode/the-last-document-folder.php');
 	}
 	else
 	{
