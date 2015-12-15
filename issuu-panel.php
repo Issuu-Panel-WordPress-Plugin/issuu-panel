@@ -9,12 +9,28 @@ Author URI: https://www.linkedin.com/profile/view?id=265534858
 License: GPL3
 */
 
+if (defined('ISSUU_PANEL_VERSION'))
+{
+	switch (version_compare(ISSUU_PANEL_VERSION, '1.6.1')) {
+		case -1:
+			wp_die("A lower version of Issuu Panel plugin is already installed");
+			break;
+		case 0:
+			wp_die("Issuu Panel plugin is already installed");
+			break;
+		case 1:
+			wp_die("An upper version of Issuu Panel plugin is already installed");
+			break;
+	}
+}
+
 /*
 |--------------------------------------
 |  CONSTANTS
 |--------------------------------------
 */
 
+define('ISSUU_PANEL_VERSION', '1.6.1');
 define('ISSUU_PAINEL_DIR', plugin_dir_path(__FILE__));
 define('ISSUU_PAINEL_URL', plugin_dir_url(__FILE__));
 define('ISSUU_PAINEL_PREFIX', 'issuu_painel_');
@@ -35,7 +51,7 @@ require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupaneldebug.php');
 require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelcron.php');
 require(ISSUU_PAINEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
 require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelconfig.php');
-require(ISSUU_PAINEL_DIR . 'issuuservice/issuu-lib.php');
+require(ISSUU_PAINEL_DIR . 'issuuservice-lib/bootstrap.php');
 require(ISSUU_PAINEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelinitplugin.php');
 require(ISSUU_PAINEL_DIR . 'includes/classes/class.issuupanelscripts.php');
