@@ -15,6 +15,7 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
 		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
 		issuu_panel_debug("Issuu Panel Page (Documents)");
+		$action = new IssuuPanelAction();
 
 		echo '<div class="wrap">';
 
@@ -25,20 +26,14 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 			return "";
 		}
 
+		$action->setParam('issuuDocument', $issuu_document);
+
 		if (isset($_GET['upload']) && !isset($_POST['delete']))
 		{
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$date = date_i18n('Y-m-d') . 'T';
-				$time = date_i18n('H:i:s') . 'Z';
-				$datetime = $date . $time;
-				
-				try {
-					require(ISSUU_PANEL_DIR . 'menu/documento/requests/upload.php');
-				} catch (Exception $e) {
-					issuu_panel_debug("Document Upload Exception - " . $e->getMessage());
-					return "";
-				}
+				$action->setName('issuu-panel-document-upload');
+				do_action($action->getName(), $action);
 			}
 			else
 			{
@@ -59,16 +54,8 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 		{
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$date = date_i18n('Y-m-d') . 'T';
-				$time = date_i18n('H:i:s') . 'Z';
-				$datetime = $date . $time;
-
-				try {
-					require(ISSUU_PANEL_DIR . 'menu/documento/requests/url-upload.php');
-				} catch (Exception $e) {
-					issuu_panel_debug("Document URL Upload Exception - " . $e->getMessage());
-					return "";
-				}
+				$action->setName('issuu-panel-document-url-upload');
+				do_action($action->getName(), $action);
 			}
 			else
 			{
@@ -85,29 +72,21 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 				$load = true;
 			}
 		}
-		else if (isset($_GET['update']) && strlen($_GET['update']) > 0)
+		else if (isset($_GET['ip-update']) && strlen($_GET['ip-update']) > 0)
 		{
 			$load = true;
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$date = date_i18n('Y-m-d') . 'T';
-				$time = date_i18n('H:i:s') . 'Z';
-				$datetime = $date . $time;
+				$action->setName('issuu-panel-document-update');
+				do_action($action->getName(), $action);
 
-				try {
-					require(ISSUU_PANEL_DIR . 'menu/documento/requests/update.php');
-				} catch (Exception $e) {
-					issuu_panel_debug("Document Update Exception - " . $e->getMessage());
-					return "";
-				}
-
-				$doc = $result;
+				$doc = $action->getParam('result');
 				$load = false;
 			}
 			else
 			{
-				$params['name'] = strtr($_GET['update'], array('%20' => '+', ' ' => '+'));
+				$params['name'] = strtr($_GET['ip-update'], array('%20' => '+', ' ' => '+'));
 
 				try {
 					$doc = $issuu_document->update($params);
@@ -136,7 +115,7 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 
 			$tags = '';
 
-			if ($doc->tags)
+			if (isset($doc->tags))
 			{
 				foreach ($doc->tags as $tag) {
 					$tags .= $tag . ',';
@@ -150,6 +129,8 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 
 			include(ISSUU_PANEL_DIR . 'menu/documento/forms/update.php');
 		}
+
+		echo $action->getParam('message', '');
 
 		if (!isset($load))
 		{

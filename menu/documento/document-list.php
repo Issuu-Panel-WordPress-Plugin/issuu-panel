@@ -33,7 +33,7 @@
 						<div class="document-box">
 							<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
 							<div class="update-document">
-								<a href="admin.php?page=issuu-document-admin&update=<?= $doc->name; ?>">
+								<a href="admin.php?page=issuu-document-admin&ip-update=<?= $doc->name; ?>">
 									<?php the_issuu_message('Edit'); ?>
 								</a>
 							</div>
