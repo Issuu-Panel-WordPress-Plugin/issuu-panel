@@ -62,7 +62,7 @@ class IssuuPanelOptionEntity
 	{
 		if (is_string($apiKey))
 		{
-			$this->apiKey = $apiKey;
+			$this->apiKey = trim($apiKey);
 		}
 	}
 
@@ -75,7 +75,7 @@ class IssuuPanelOptionEntity
 	{
 		if (is_string($apiSecret))
 		{
-			$this->apiSecret = $apiSecret;
+			$this->apiSecret = trim($apiSecret);
 		}
 	}
 
@@ -86,6 +86,7 @@ class IssuuPanelOptionEntity
 			'Editor',
 			'Author',
 		);
+		$enabledUser = trim($enabledUser);
 
 		if (in_array($enabledUser, $valids))
 		{
@@ -104,6 +105,7 @@ class IssuuPanelOptionEntity
 			'active',
 			'disable',
 		);
+		$debug = trim($debug);
 
 		if (in_array($debug, $valids))
 		{
@@ -139,6 +141,7 @@ class IssuuPanelOptionEntity
 			'active',
 			'disable',
 		);
+		$cacheStatus = trim($cacheStatus);
 
 		if (in_array($cacheStatus, $valids))
 		{
@@ -157,6 +160,7 @@ class IssuuPanelOptionEntity
 			'issuu_embed',
 			'issuu_panel_simple_reader',
 		);
+		$reader = trim($reader);
 
 		if (in_array($reader, $valids))
 		{
