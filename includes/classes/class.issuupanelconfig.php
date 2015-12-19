@@ -15,6 +15,8 @@ class IssuuPanelConfig
 
     private static $instance;
 
+    private $issuuPanelOptionEntity;
+
     /*
     |----------------------------------------
     |  VARIABLES
