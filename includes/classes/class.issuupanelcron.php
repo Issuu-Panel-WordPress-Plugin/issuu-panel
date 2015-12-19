@@ -44,7 +44,6 @@ class IssuuPanelCron
 
 	public function __construct()
 	{
-		$this->setActions(get_option(ISSUU_PANEL_PREFIX . 'cron'));
 		add_action('init', array($this, 'trigger'));
 	}
 
@@ -140,7 +139,7 @@ class IssuuPanelCron
 		}
 	}
 
-	protected function setActions($actions)
+	public function setActions($actions)
 	{
 		if (is_string($actions))
 		{
