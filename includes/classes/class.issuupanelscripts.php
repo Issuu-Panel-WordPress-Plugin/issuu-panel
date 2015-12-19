@@ -104,5 +104,3 @@ class IssuuPanelScripts
 		issuu_panel_debug("Hook admin_enqueue_scripts");
 	}
 }
-
-new IssuuPanelScripts();
