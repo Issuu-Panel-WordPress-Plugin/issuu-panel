@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Issuu Panel
-Plugin URI: https://github.com/Issuu-Panel/issuu-panel
+Plugin URI: https://github.com/Issuu-Panel-WordPress-Plugin/issuu-panel
 Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
-Version: 1.6
+Version: 1.6.1
 Author: Pedro Marcelo
 Author URI: https://www.linkedin.com/profile/view?id=265534858
 License: GPL3
@@ -41,11 +41,20 @@ define('ISSUU_PANEL_PLUGIN_FILE_LANG', dirname(plugin_basename(__FILE__)) . '/la
 
 /*
 |--------------------------------------
-|  INCLUDES
+|  INTERFACES
 |--------------------------------------
 */
 
 require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelhook.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelservice.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
+
+/*
+|--------------------------------------
+|  INCLUDES
+|--------------------------------------
+*/
+
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelaction.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfilter.php');
 require(ISSUU_PANEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
@@ -55,7 +64,6 @@ require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcron.php');
 require(ISSUU_PANEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelconfig.php');
 require(ISSUU_PANEL_DIR . 'issuuservice-lib/bootstrap.php');
-require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelinitplugin.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelscripts.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneltinymcebutton.php');
@@ -65,7 +73,7 @@ require(ISSUU_PANEL_DIR . 'includes/functions.php');
 
 /*
 |--------------------------------------
-|  MENU
+|  LISTENER
 |--------------------------------------
 */
 
