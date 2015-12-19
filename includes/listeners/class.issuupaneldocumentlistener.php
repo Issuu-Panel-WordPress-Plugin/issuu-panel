@@ -33,7 +33,7 @@ class IssuuPanelDocumentListener
 		else if ($result['stat'] == 'fail')
 		{
 			$message .= '<div class="error"><p>' . get_issuu_message($result['message'])
-				. (($result['field'] != '')? ': ' . $result['field'] : '') . '</p></div>';
+				. ((isset($result['field']))? ': ' . $result['field'] : '') . '</p></div>';
 		}
 
 		$hook->setParam('message', $message);
@@ -63,7 +63,7 @@ class IssuuPanelDocumentListener
 		else if ($result['stat'] == 'fail')
 		{
 			$message .= '<div class="error"><p>' . get_issuu_message($result['message'])
-				. (($result['field'] != '')? ': ' . $result['field'] : '') . '</p></div>';
+				. ((isset($result['field']))? ': ' . $result['field'] : '') . '</p></div>';
 		}
 
 		$hook->setParam('message', $message);
@@ -139,7 +139,7 @@ class IssuuPanelDocumentListener
 		else if ($result['stat'] == 'fail')
 		{
 			$message .= '<div class="error"><p>' . get_issuu_message($result['message'])
-				. (($result['field'] != '')? ': ' . $result['field'] : '') . '</p></div>';
+				. ((isset($result['field']))? ': ' . $result['field'] : '') . '</p></div>';
 		}
 
 		$hook->setParam('message', $message);
