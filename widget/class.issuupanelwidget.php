@@ -1,7 +1,9 @@
 <?php
 
-class IssuuPanelWidget extends WP_Widget
+class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 {
+	private $config;
+
 	public function __construct()
 	{
 		parent::__construct(
@@ -100,6 +102,16 @@ class IssuuPanelWidget extends WP_Widget
 	public function update($new_instance, $old_instance)
 	{
 		return array_merge($old_instance, $new_instance);
+	}
+
+	public function setConfig($config)
+	{
+		$this->config = $config;
+	}
+
+	public function getConfig()
+	{
+		return $this->config;
 	}
 }
 

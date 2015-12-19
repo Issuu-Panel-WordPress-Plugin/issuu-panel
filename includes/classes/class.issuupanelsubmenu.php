@@ -10,6 +10,8 @@ abstract class IssuuPanelSubmenu implements IssuuPanelPage
 
 	protected $priority = 1;
 
+	private $config = null;
+
 	public function __construct()
 	{
 		add_action(ISSUU_PANEL_PREFIX . 'submenu_pages', array($this, 'init'), $this->priority);
@@ -25,5 +27,15 @@ abstract class IssuuPanelSubmenu implements IssuuPanelPage
 			$this->slug,
 			array($this, 'page')
 		);	
+	}
+
+	public function setConfig($config)
+	{
+		$this->config = $config;
+	}
+
+	public function getConfig()
+	{
+		return $this->config;
 	}
 }

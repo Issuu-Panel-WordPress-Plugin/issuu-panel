@@ -2,6 +2,8 @@
 
 class IssuuPanelMenu implements IssuuPanelPage
 {
+	private $config = null;
+
 	public function __construct()
 	{
 		add_action(ISSUU_PANEL_PREFIX . 'menu_page', array($this, 'init'));
@@ -34,6 +36,16 @@ class IssuuPanelMenu implements IssuuPanelPage
 		$issuu_panel_cache_status = (get_option(ISSUU_PANEL_PREFIX . 'cache_status') == 'active')? 'checked' : '';
 
 		require(ISSUU_PANEL_DIR . 'menu/principal/page.phtml');
+	}
+
+	public function setConfig($config)
+	{
+		$this->config = $config;
+	}
+
+	public function getConfig()
+	{
+		return $this->config;
 	}
 }
 
