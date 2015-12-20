@@ -104,21 +104,3 @@ function issuu_panel_link_page($page, $permalink, $page_name)
 
 	return preg_replace('/\&{2,}/', '&', $link);
 }
-
-function ip_menu_admin()
-{
-	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-
-	do_action(ISSUU_PANEL_PREFIX . 'menu_page');
-	issuu_panel_debug("Issuu Panel menu loaded");
-
-	if ((!is_null($issuu_panel_api_key) && strlen($issuu_panel_api_key) > 0) &&
-		(!is_null($issuu_panel_api_secret) && strlen($issuu_panel_api_secret) > 0))
-	{
-		do_action(ISSUU_PANEL_PREFIX . 'submenu_pages');
-		issuu_panel_debug("Issuu Panel submenus loaded");
-	}
-}
-
-add_action('admin_menu', 'ip_menu_admin');
