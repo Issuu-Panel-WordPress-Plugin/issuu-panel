@@ -123,6 +123,7 @@ include(ISSUU_PANEL_DIR . 'widget/class.issuupanelwidget.php');
 */
 
 include(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelpluginmanager.php');
+include(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanel.php');
 
 /*
 |--------------------------------------
@@ -130,4 +131,4 @@ include(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelpluginmanager.php');
 |--------------------------------------
 */
 
-new IssuuPanelPluginManager();
+IssuuPanel::init();
