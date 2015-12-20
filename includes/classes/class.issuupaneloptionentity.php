@@ -124,7 +124,7 @@ class IssuuPanelOptionEntity
 		{
 			$this->shortcodeCache = $shortcodeCache;
 		}
-		else
+		else if(is_string($shortcodeCache))
 		{
 			$this->shortcodeCache = unserialize($shortcodeCache);
 		}
