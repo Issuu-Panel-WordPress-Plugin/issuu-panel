@@ -129,11 +129,16 @@ class IssuuPanelConfig
         return $this->iterator_per_template[$key];
     }
 
+    public function getCapabilities()
+    {
+        return $this->ISSUU_PANEL_CAPABILITIES;
+    }
+
     public function getCapability()
     {
         $name = $this->getOptionEntity()->getEnabledUser();
         if (is_null($name) || !isset($this->ISSUU_PANEL_CAPABILITIES[$name]))
-            return $this->ISSUU_PANEL_CAPABILITIES;
+            return null;
         return $this->ISSUU_PANEL_CAPABILITIES[$name];
     }
 
@@ -248,10 +253,3 @@ class IssuuPanelConfig
         return $this->issuuPanelCron;
     }
 }
-
-// IssuuPanelConfig::init();
-
-// function issuu_panel_debug($message)
-// {
-// 	IssuuPanelConfig::getIssuuPanelDebug()->appendMessage($message);
-// }
