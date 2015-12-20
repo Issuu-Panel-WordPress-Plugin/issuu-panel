@@ -14,26 +14,27 @@ class IssuuPanelMenu implements IssuuPanelPage
 		add_menu_page(
 			'Issuu Panel',
 			'Issuu Panel',
-			IssuuPanelConfig::getVariable('issuu_panel_capacity'),
+			$this->getConfig()->getCapability(),
 			ISSUU_PANEL_MENU,
 			array($this, 'page'),
 			ISSUU_PANEL_URL . 'assets/images/icon2.png'
 		);
-		issuu_panel_debug("Issuu Panel Page (Main)");
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel Page (Main)");
 	}
 
 	public function page()
 	{
-		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-		$issuu_panel_capacity = IssuuPanelConfig::getVariable('issuu_panel_capacity');
-		$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
+		$issuu_panel_api_key = $this->getConfig()->getOptionEntity()->getApiKey();
+		$issuu_panel_api_secret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$issuu_panel_capacity = $this->getConfig()->getCapability();
+		$issuu_panel_reader = $this->getConfig()->getOptionEntity()->getReader();
 		$issuu_embed = ($issuu_panel_reader == 'issuu_embed')? 'checked' : '';
 		$issuu_panel_simple_reader = ($issuu_panel_reader == 'issuu_panel_simple_reader')? 'checked' : '';
+		$capabilities = $this->getConfig()->getCapabilities();
 
 		$link_api_service = '<a target="_blank" href="https://issuu.com/home/settings/apikey">click here</a>';
-		$issuu_panel_debug = (get_option(ISSUU_PANEL_PREFIX . 'debug') == 'active')? 'checked' : '';
-		$issuu_panel_cache_status = (get_option(ISSUU_PANEL_PREFIX . 'cache_status') == 'active')? 'checked' : '';
+		$issuu_panel_debug = ($this->getConfig()->getOptionEntity()->getDebug() == 'active')? 'checked' : '';
+		$issuu_panel_cache_status = ($this->getConfig()->getOptionEntity()->getCacheStatus() == 'active')? 'checked' : '';
 
 		require(ISSUU_PANEL_DIR . 'menu/principal/page.phtml');
 	}
@@ -48,5 +49,3 @@ class IssuuPanelMenu implements IssuuPanelPage
 		return $this->config;
 	}
 }
-
-new IssuuPanelMenu();

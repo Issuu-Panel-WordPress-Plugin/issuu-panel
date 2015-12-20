@@ -74,7 +74,7 @@
 					<td colspan="2" class="no-padding-left no-padding-bottom">
 						<?php the_issuu_message('Users with capacities from'); ?>
 						<select name="enabled_user" id="enabled_user">
-							<?php foreach (IssuuPanelConfig::getCapability() as $key => $value) : ?>
+							<?php foreach ($capabilities as $key => $value) : ?>
 								<?php if ($value == $issuu_panel_capacity) : ?>
 									<option value="<?= $key; ?>" selected><?php the_issuu_message($key); ?></option>
 								<?php else : ?>

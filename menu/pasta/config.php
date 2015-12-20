@@ -12,17 +12,15 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 
 	public function page()
 	{
-		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-		issuu_panel_debug("Issuu Panel Page (Folders)");
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel Page (Folders)");
 
 		echo '<div class="wrap">';
 
 		try {
-			$issuu_folder = new IssuuFolder($issuu_panel_api_key, $issuu_panel_api_secret);
-			$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
+			$issuu_document = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		} catch (Exception $e) {
-			issuu_panel_debug("Page Exception - " . $e->getMessage());
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 			return "";
 		}
 
@@ -33,7 +31,7 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 				try {
 					require(ISSUU_PANEL_DIR . 'menu/pasta/requests/add.php');
 				} catch (Exception $e) {
-					issuu_panel_debug("Folder Add Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Folder Add Exception - " . $e->getMessage());
 					return "";
 				}
 			}
@@ -49,17 +47,17 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 			try {
 				$fo = $issuu_folder->update(array('folderId' => $_GET['folder']));
 			} catch (Exception $e) {
-				issuu_panel_debug("Page Exception - " . $e->getMessage());
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 				return "";
 			}
 
 			if ($fo['stat'] == 'ok')
 			{
 				try {
-					$issuu_bookmark = new IssuuBookmark($issuu_panel_api_key, $issuu_panel_api_secret);
+					$issuu_bookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 					$bookmarks = $issuu_bookmark->issuuList(array('folderId' => $_GET['folder']));
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 
@@ -96,7 +94,7 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 				try {
 					require(ISSUU_PANEL_DIR . 'menu/pasta/requests/delete.php');
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 			}
@@ -114,7 +112,7 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 			try {
 				$folders = $issuu_folder->issuuList($params);
 			} catch (Exception $e) {
-				issuu_panel_debug("Page Exception - " . $e->getMessage());
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 				return "";
 			}
 
@@ -126,7 +124,7 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 			if (isset($folders['folder']) && !empty($folders['folder']))
 			{
 				try {
-					$issuu_bookmark = new IssuuBookmark($issuu_panel_api_key, $issuu_panel_api_secret);
+					$issuu_bookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 			
 					foreach ($folders['folder'] as $f) {
 						$fId = $f->folderId;
@@ -147,7 +145,7 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 						}
 					}
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 			}
@@ -158,5 +156,3 @@ class IssuuPanelFolders extends IssuuPanelSubmenu
 		echo '</div><!-- FIM wrap -->';
 	}
 }
-
-new IssuuPanelFolders();

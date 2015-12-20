@@ -12,17 +12,15 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 
 	public function page()
 	{
-		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-		issuu_panel_debug("Issuu Panel Page (Documents)");
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel Page (Documents)");
 		$action = new IssuuPanelAction();
 
 		echo '<div class="wrap">';
 
 		try {
-			$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_document = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		} catch (Exception $e) {
-			issuu_panel_debug("Page Exception - " . $e->getMessage());
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 			return "";
 		}
 
@@ -32,16 +30,21 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 		{
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$action->setName('issuu-panel-document-upload');
-				do_action($action->getName(), $action);
+				$action = $this->getConfig()->getHookManager()->triggerAction(
+					'issuu-panel-document-upload',
+					null,
+					array(
+						'issuuDocument' => $issuu_document
+					)
+				);
 			}
 			else
 			{
 				try {
-					$issuu_folder = new IssuuFolder($issuu_panel_api_key, $issuu_panel_api_secret);
+					$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 					$folders = $issuu_folder->issuuList();
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 
@@ -54,16 +57,21 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 		{
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$action->setName('issuu-panel-document-url-upload');
-				do_action($action->getName(), $action);
+				$action = $this->getConfig()->getHookManager()->triggerAction(
+					'issuu-panel-document-url-upload',
+					null,
+					array(
+						'issuuDocument' => $issuu_document
+					)
+				);
 			}
 			else
 			{
 				try {
-					$issuu_folder = new IssuuFolder($issuu_panel_api_key, $issuu_panel_api_secret);
+					$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 					$folders = $issuu_folder->issuuList();
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 
@@ -78,8 +86,13 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 
 			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
-				$action->setName('issuu-panel-document-update');
-				do_action($action->getName(), $action);
+				$action = $this->getConfig()->getHookManager()->triggerAction(
+					'issuu-panel-document-update',
+					null,
+					array(
+						'issuuDocument' => $issuu_document
+					)
+				);
 
 				$doc = $action->getParam('result');
 				$load = false;
@@ -91,7 +104,7 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 				try {
 					$doc = $issuu_document->update($params);
 				} catch (Exception $e) {
-					issuu_panel_debug("Page Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
 				}
 			}
@@ -134,12 +147,22 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 
 		if (!isset($load))
 		{
-			if ($_SERVER['REQUEST_METHOD'] == 'POST' && (isset($_POST['delete']) && $_POST['delete'] == 'true'))
+			if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST' && filter_input(INPUT_POST, 'delete') == 'true')
 			{
 				try {
+					$action = $this->getConfig()->getHookManager()->triggerAction(
+						'issuu-panel-document-delete',
+						null,
+						array(
+							'issuuDocument' => $issuu_document,
+							'postData' => filter_input_array(INPUT_POST),
+						)
+					);
 					require(ISSUU_PANEL_DIR . 'menu/documento/requests/delete.php');
 				} catch (Exception $e) {
-					issuu_panel_debug("Document Delete Exception - " . $e->getMessage());
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+						"Document Delete Exception - " . $e->getMessage()
+					);
 					return "";
 				}
 			}
@@ -155,7 +178,7 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 			try {
 				$docs = $issuu_document->issuuList($params);
 			} catch (Exception $e) {
-				issuu_panel_debug("Page Exception - " . $e->getMessage());
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 				return "";
 			}
 			
@@ -168,5 +191,3 @@ class IssuuPageDocuments extends IssuuPanelSubmenu
 		}
 	}
 }
-
-new IssuuPageDocuments();
