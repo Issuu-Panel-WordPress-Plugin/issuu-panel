@@ -23,7 +23,7 @@ abstract class IssuuPanelSubmenu implements IssuuPanelPage
 			ISSUU_PANEL_MENU,
 			get_issuu_message($this->page_title),
 			get_issuu_message($this->menu_title),
-			IssuuPanelConfig::getVariable('issuu_panel_capacity'),
+			$this->getConfig()->getCapability(),
 			$this->slug,
 			array($this, 'page')
 		);	

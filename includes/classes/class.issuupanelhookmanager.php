@@ -33,6 +33,7 @@ class IssuuPanelHookManager
 		$action->setTarget($target);
 		$action->setParams($data);
 		do_action($name, $action);
+		return $action;
 	}
 
 	public function addFilter($name, $callback, $priority = 10, $acceptedArgs = 1)
