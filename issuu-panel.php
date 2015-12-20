@@ -57,6 +57,10 @@ require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelaction.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfilter.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelhookmanager.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneloptionentity.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneloptionentitymanager.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcachemanager.php');
 require(ISSUU_PANEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneldebug.php');
@@ -79,6 +83,7 @@ require(ISSUU_PANEL_DIR . 'includes/functions.php');
 
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelupdatedatalistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupaneldocumentlistener.php');
+require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelpluginconfiglistener.php');
 
 /*
 |--------------------------------------
@@ -97,9 +102,11 @@ include(ISSUU_PANEL_DIR . 'menu/sobre/config.php');
 |--------------------------------------
 */
 
-include(ISSUU_PANEL_DIR . 'shortcode/document-list.php');
-include(ISSUU_PANEL_DIR . 'shortcode/folder-list.php');
-include(ISSUU_PANEL_DIR . 'shortcode/the-last-document.php');
+include(ISSUU_PANEL_DIR . 'shortcode/class.issuupanelshortcodegenerator.php');
+include(ISSUU_PANEL_DIR . 'shortcode/class.issuupanelshortcodes.php');
+// include(ISSUU_PANEL_DIR . 'shortcode/document-list.php');
+// include(ISSUU_PANEL_DIR . 'shortcode/folder-list.php');
+// include(ISSUU_PANEL_DIR . 'shortcode/the-last-document.php');
 
 /*
 |--------------------------------------
@@ -108,3 +115,19 @@ include(ISSUU_PANEL_DIR . 'shortcode/the-last-document.php');
 */
 
 include(ISSUU_PANEL_DIR . 'widget/class.issuupanelwidget.php');
+
+/*
+|--------------------------------------
+|  PLUGIN MANAGER
+|--------------------------------------
+*/
+
+include(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelpluginmanager.php');
+
+/*
+|--------------------------------------
+|  THAT'S ALL!
+|--------------------------------------
+*/
+
+new IssuuPanelPluginManager();
