@@ -1,7 +1,9 @@
 <?php
 
-class IssuuPanelTinyMCEButton
+class IssuuPanelTinyMCEButton implements IssuuPanelService
 {
+	private $config;
+
 	public function __construct()
 	{
 		add_action('init', array($this, 'init'));
@@ -38,6 +40,16 @@ class IssuuPanelTinyMCEButton
 	{
 		$ver += 3;
 		return $ver;
+	}
+
+	public function setConfig($config)
+	{
+		$this->config = $config;
+	}
+
+	public function getConfig()
+	{
+		return $this->config;
 	}
 
 	public function tinymceButtonPage()
@@ -171,5 +183,3 @@ class IssuuPanelTinyMCEButton
 		die();
 	}
 }
-
-new IssuuPanelTinyMCEButton();
