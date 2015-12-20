@@ -7,15 +7,30 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 	public function __construct()
 	{
 		add_action('plugins_loaded', array($this, 'loadTextdomain'));
+		add_action('admin_menu', array($this, 'adminMenu'));
 		add_action('init', array($this, 'initHook'));
-		register_activation_hook(ISSUU_PANEL_PLUGIN_FILE, array($this, 'activePlugin'));
-		register_uninstall_hook(ISSUU_PANEL_PLUGIN_FILE, array($this, 'uninstallPlugin'));
+		add_action('issuu-panel-active-plugin-action', array($this, 'activePlugin'));
+		add_action('issuu-panel-uninstall-plugin-action', array($this, 'uninstallPlugin'));
 	}
 
 	public function loadTextdomain()
 	{
 		load_plugin_textdomain(ISSUU_PANEL_DOMAIN_LANG, false, ISSUU_PANEL_PLUGIN_FILE_LANG);
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Text domain loaded");
+	}
+
+	public function adminMenu()
+	{
+		$apiKey = $this->getConfig()->getOptionEntity()->getApiKey();
+		$apiSecret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$this->getConfig()->getHookManager()->triggerAction(ISSUU_PANEL_PREFIX . 'menu_page');
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel menu loaded");
+
+		if (!empty($apiKey) && !empty($apiSecret))
+		{
+			$this->getConfig()->getHookManager()->triggerAction(ISSUU_PANEL_PREFIX . 'submenu_pages');
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel submenus loaded");
+		}
 	}
 	
 	public function initHook()
