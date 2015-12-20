@@ -63,6 +63,26 @@ class IssuuPanelCatcher
 		else if (is_year()) $this->template = 'year';
 	}
 
+    public function inHeader()
+    {
+        return ($this->getCurrentHookIs() == 'header');
+    }
+
+    public function inFooter()
+    {
+        return ($this->getCurrentHookIs() == 'footer');
+    }
+
+    public function inSidebar()
+    {
+        return ($this->getCurrentHookIs() == 'sidebar');
+    }
+
+    public function inContent()
+    {
+        return ($this->getCurrentHookIs() == 'content');
+    }
+
     /**
      * Gets the value of params.
      *

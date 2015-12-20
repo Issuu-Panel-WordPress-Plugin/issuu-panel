@@ -9,7 +9,6 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 		add_action('init', array($this, 'init'));
 		add_filter('tiny_mce_version', array($this, 'issuuPanelRefreshMCE'));
 		add_action('wp_ajax_issuu_panel_tinymce_ajax', array($this, 'tinymceButtonPage'));
-		issuu_panel_debug("TinyMCE Button");
 	}
 
 	public function init()
@@ -22,6 +21,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 			add_filter('mce_external_plugins', array($this, 'addIssuuPanelTinyMCEPlugin'));
 			add_filter('mce_buttons', array($this, 'registerIssuuPanelButton'));
 		}
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Button");
 	}
 
 	public function addIssuuPanelTinyMCEPlugin($plugin_array)
@@ -54,15 +54,12 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 
 	public function tinymceButtonPage()
 	{
-		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
-
 		try {
-			$issuu_folder = new IssuuFolder($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 			$result = $issuu_folder->issuuList();
-			issuu_panel_debug("TinyMCE Modal URL folder - " . $issuu_folder->buildUrl());
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal URL folder - " . $issuu_folder->buildUrl());
 		} catch (Exception $e) {
-			issuu_panel_debug("TinyMCE Modal Exception - " . $e->getMessage());
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal Exception - " . $e->getMessage());
 			die($e->getMessage());
 		}
 		

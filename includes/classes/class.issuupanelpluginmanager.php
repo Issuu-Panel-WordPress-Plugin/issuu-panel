@@ -4,31 +4,97 @@ class IssuuPanelPluginManager
 {
 	private $issuuPanelHookManager;
 
+	private $issuuPanelOptionEntity;
+
+	private $issuuPanelConfig;
+
+	private $issuuPanelOptionEntityManager;
+
 	public function __construct()
 	{
-		$entity = $this->initOptionEntity();
-		// Debug
-		$debug = new IssuuPanelDebug($entity->getDebug());
-		// Scripts
-		$script = new IssuuPanelScripts();
-		// Cron
-		$cron = new IssuuPanelCron();
-		$cron->setActions($entity->getCron());
-		// Hook Manager
-		$this->issuuPanelHookManager = new IssuuPanelHookManager();
+		$this->initListeners();
+		$this->issuuPanelOptionEntityManager = new IssuuPanelOptionEntityManager();
+		$this->issuuPanelOptionEntity = $this->getOptionEntityManager()->getOptionEntity();
+		$this->issuuPanelConfig = new IssuuPanelConfig(
+			$this->issuuPanelOptionEntity,
+			$this->issuuPanelOptionEntityManager
+		);
+		$this->issuuPanelHookManager = $this->issuuPanelConfig->getHookManager();
+		$this->initPlugin();
+		$this->initMenus();
+		$this->initShortcodes();
+		$this->initWidgets();
+		$this->getHookManager()->triggerAction(
+			'on-construct-issuu-panel-plugin-manager',
+			$this,
+			array(
+				'entity' => $this->issuuPanelOptionEntity,
+				'config' => $this->issuuPanelConfig,
+			)
+		);
 	}
 
-	private function initOptionEntity()
+	public function __destruct()
 	{
-		$issuuPanelOptionEntity = new IssuuPanelOptionEntity();
-		$issuuPanelOptionEntity->setApiKey(get_option(ISSUU_PANEL_PREFIX . 'api_key'));
-		$issuuPanelOptionEntity->setApiSecret(get_option(ISSUU_PANEL_PREFIX . 'api_secret'));
-		$issuuPanelOptionEntity->setEnabledUser(get_option(ISSUU_PANEL_PREFIX . 'enabled_user'));
-		$issuuPanelOptionEntity->setDebug(get_option(ISSUU_PANEL_PREFIX . 'debug'));
-		$issuuPanelOptionEntity->setShortcodeCache(get_option(ISSUU_PANEL_PREFIX . 'shortcode_cache'));
-		$issuuPanelOptionEntity->setCacheStatus(get_option(ISSUU_PANEL_PREFIX . 'cache_status'));
-		$issuuPanelOptionEntity->setReader(get_option(ISSUU_PANEL_PREFIX . 'reader'));
-		$issuuPanelOptionEntity->setCron(get_option(ISSUU_PANEL_PREFIX . 'cron'));
-		return $issuuPanelOptionEntity;
+		$this->getHookManager()->triggerAction(
+			'on-destruct-issuu-panel-plugin-manager',
+			$this,
+			array(
+				'config' => $this->issuuPanelConfig,
+			)
+		);
+	}
+
+	public function getOptionEntityManager()
+	{
+		return $this->issuuPanelOptionEntityManager;
+	}
+
+	public function getHookManager()
+	{
+		return $this->issuuPanelHookManager;
+	}
+
+	public function initPlugin()
+	{
+		$initPlugin = new IssuuPanelInitPlugin();
+		$initPlugin->setConfig($this->issuuPanelConfig);
+		$scripts = new IssuuPanelScripts();
+		$scripts->setConfig($this->issuuPanelConfig);
+		$tinymce = new IssuuPanelTinyMCEButton();
+		$tinymce->setConfig($this->issuuPanelConfig);
+	}
+
+	private function initListeners()
+	{
+		new IssuuPanelDocumentListener();
+		new IssuuPanelUpdateDataListener();
+		new IssuuPanelPluginConfigListener();
+	}
+
+	private function initMenus()
+	{
+		$main = new IssuuPanelMenu();
+		$main->setConfig($this->issuuPanelConfig);
+
+		$document = new IssuuPageDocuments();
+		$document->setConfig($this->issuuPanelConfig);
+
+		$folder = new IssuuPanelFolders();
+		$folder->setConfig($this->issuuPanelConfig);
+
+		$about = new IssuuPageAbout();
+		$about->setConfig($this->issuuPanelConfig);
+	}
+
+	private function initShortcodes()
+	{
+		$shortcode = new IssuuPanelShortcodes();
+		$shortcode->setConfig($this->issuuPanelConfig);
+	}
+
+	private function initWidgets()
+	{
+
 	}
 }

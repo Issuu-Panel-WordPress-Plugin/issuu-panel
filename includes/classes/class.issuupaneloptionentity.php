@@ -79,6 +79,11 @@ class IssuuPanelOptionEntity
 		}
 	}
 
+	public function getApiSecret()
+	{
+		return $this->apiSecret;
+	}
+
 	public function setEnabledUser($enabledUser)
 	{
 		$valids = array(

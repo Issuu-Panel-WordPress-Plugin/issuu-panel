@@ -16,5 +16,3 @@ class IssuuPageAbout extends IssuuPanelSubmenu
 		issuu_panel_debug("Issuu Panel page (About)");
 	}
 }
-
-new IssuuPageAbout();

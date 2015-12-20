@@ -5,43 +5,69 @@ class IssuuPanelUpdateDataListener
 	public function __construct()
 	{
 		add_action('post-issuu-panel-config', array($this, 'postConfigData'));
+		add_action('on-flush-issuu-panel-cache', array($this, 'onFlushCache'));
+		add_action('on-construct-issuu-panel-plugin-manager', array($this, 'initListener'));
+		add_action('on-destruct-issuu-panel-plugin-manager', array($this, 'persistConfigData'));
 	}
 
-	public function postConfigData()
+	public function postConfigData(IssuuPanelHook $hook)
 	{
-		update_option(ISSUU_PANEL_PREFIX . 'api_key', trim($_POST['api_key']));
-		update_option(ISSUU_PANEL_PREFIX . 'api_secret', trim($_POST['api_secret']));
-		update_option(ISSUU_PANEL_PREFIX . 'reader', trim($_POST['issuu_panel_reader']));
+		$config = $hook->getParam('config');
+		$postData = $hook->getParam('postData');
 
-		if (in_array($_POST['enabled_user'], array('Administrator', 'Editor', 'Author')))
+		$config->getOptionEntity()->setApiKey($postData['api_key']);
+		$config->getOptionEntity()->setApiSecret($postData['api_secret']);
+		$config->getOptionEntity()->setReader($postData['issuu_panel_reader']);
+		$config->getOptionEntity()->setEnabledUser($postData['enabled_user']);
+
+		if (isset($postData['issuu_panel_debug']) && $postData['issuu_panel_debug'] == 'active')
 		{
-			update_option(ISSUU_PANEL_PREFIX . 'enabled_user', $_POST['enabled_user']);
+			$config->getOptionEntity()->setDebug('active');
 		}
 		else
 		{
-			$_POST['enabled_user'] = 'Administrator';
-			update_option(ISSUU_PANEL_PREFIX . 'enabled_user', 'Administrator');
+			$postData['issuu_panel_debug'] = 'disable';
+			$config->getOptionEntity()->setDebug('disable');
 		}
 
-		if (isset($_POST['issuu_panel_debug']) && $_POST['issuu_panel_debug'] == 'active')
+		if (isset($postData['issuu_panel_cache_status']) && $postData['issuu_panel_cache_status'] == 'active')
 		{
-			update_option(ISSUU_PANEL_PREFIX . 'debug', 'active');
+			$config->getOptionEntity()->setCacheStatus('active');
 		}
 		else
 		{
-			update_option(ISSUU_PANEL_PREFIX . 'debug', 'disable');
+			$postData['issuu_panel_cache_status'] = 'disable';
+			$config->getOptionEntity()->setCacheStatus('disable');
 		}
+		$config->getIssuuPanelDebug()->appendMessage("Issuu Panel options updated in init hook");
+		$hook->setParam('postData', $postData);
+	}
 
-		if (isset($_POST['issuu_panel_cache_status']) && $_POST['issuu_panel_cache_status'] == 'active')
-		{
-			update_option(ISSUU_PANEL_PREFIX . 'cache_status', 'active');
-		}
-		else
-		{
-			$_POST['issuu_panel_cache_status'] = 'disable';
-			update_option(ISSUU_PANEL_PREFIX . 'cache_status', 'disable');
-		}
+	public function initListener(IssuuPanelHook $hook)
+	{
+		$hook->getParam('config')->getIssuuPanelCron()->addScheduledAction(
+            'issuu_panel_flush_cache',
+            array($this, 'flushCache'),
+            'hour'
+        );
+	}
+
+	public function persistConfigData(IssuuPanelHook $hook)
+	{
+		$config = $hook->getParam('config');
+		$hook->getTarget()->getOptionEntityManager()->updateOptionEntity(
+			$config->getOptionEntity()
+		);
+	}
+
+	public function onFlushCache(IssuuPanelHook $hook)
+	{
+		$config = $hook->getParam('config');
+		$config->getOptionEntity()->setShortcodeCache(array());
+	}
+
+	public function flushCache()
+	{
+
 	}
 }
-
-new IssuuPanelUpdateDataListener();

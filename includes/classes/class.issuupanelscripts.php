@@ -1,7 +1,9 @@
 <?php
 
-class IssuuPanelScripts
+class IssuuPanelScripts implements IssuuPanelService
 {
+	private $config;
+
 	public function __construct()
 	{
 		add_action('wp_enqueue_scripts', array($this, 'wpScripts'));
@@ -13,7 +15,7 @@ class IssuuPanelScripts
 		$jsDependences = array('jquery');
 		wp_enqueue_style('issuu-painel-documents', ISSUU_PANEL_URL . 'assets/css/issuu-painel-documents.min.css');
 
-		switch (IssuuPanelConfig::getVariable('issuu_panel_reader')) {
+		switch ($this->getConfig()->getOptionEntity()->gtReader()) {
 			case 'issuu_embed':
 				wp_enqueue_script(
 					'issuu-panel-swfobject',
@@ -51,7 +53,7 @@ class IssuuPanelScripts
 				'adminAjax' => admin_url('admin-ajax.php')
 			)
 		);
-		issuu_panel_debug("Hook wp_enqueue_scripts");
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Hook wp_enqueue_scripts");
 	}
 
 	public function adminScripts()
@@ -68,9 +70,9 @@ class IssuuPanelScripts
 		wp_enqueue_script('json2');
 		wp_enqueue_script('jquery');
 
-		if (isset($_GET['page']) && $_GET['page'] == 'issuu-document-admin')
+		if (filter_input(INPUT_GET, 'page') == 'issuu-document-admin')
 		{
-			if (isset($_GET['upload']))
+			if (!is_null(filter_input(INPUT_GET, 'upload')))
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-upload-js',
@@ -80,7 +82,7 @@ class IssuuPanelScripts
 					true
 				);
 			}
-			else if (isset($_GET['update']))
+			else if (!is_null(filter_input(INPUT_GET, 'update')))
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-update-js',
@@ -90,7 +92,7 @@ class IssuuPanelScripts
 					true
 				);
 			}
-			else if (isset($_GET['url_upload']))
+			else if (!is_null(filter_input(INPUT_GET, 'url_upload')))
 			{
 				wp_enqueue_script(
 					'issuu-painel-document-url-upload-js',
@@ -101,6 +103,16 @@ class IssuuPanelScripts
 				);
 			}
 		}
-		issuu_panel_debug("Hook admin_enqueue_scripts");
+		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Hook admin_enqueue_scripts");
+	}
+
+	public function setConfig($config)
+	{
+		$this->config = $config;
+	}
+
+	public function getConfig()
+	{
+		return $this->config;
 	}
 }
