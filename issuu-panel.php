@@ -39,15 +39,6 @@ define('ISSUU_PANEL_MENU', 'issuu-panel-admin');
 define('ISSUU_PANEL_PLUGIN_FILE', __FILE__);
 define('ISSUU_PANEL_PLUGIN_FILE_LANG', dirname(plugin_basename(__FILE__)) . '/lang/');
 
-/*
-|--------------------------------------
-|  INTERFACES
-|--------------------------------------
-*/
-
-require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelhook.php');
-require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelservice.php');
-require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 
 /*
 |--------------------------------------
@@ -55,6 +46,7 @@ require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 |--------------------------------------
 */
 
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelhook.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelaction.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfilter.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelhookmanager.php');
@@ -66,8 +58,10 @@ require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneldebug.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcron.php');
 require(ISSUU_PANEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
-require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelconfig.php');
 require(ISSUU_PANEL_DIR . 'issuuservice-lib/bootstrap.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelconfig.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelservice.php');
+require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelpage.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelinitplugin.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelscripts.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneltinymcebutton.php');
