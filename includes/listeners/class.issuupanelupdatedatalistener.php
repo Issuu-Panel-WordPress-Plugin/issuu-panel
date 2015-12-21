@@ -66,8 +66,14 @@ class IssuuPanelUpdateDataListener
 		$config->getOptionEntity()->setShortcodeCache(array());
 	}
 
-	public function flushCache()
+	public function flushCache(IssuuPanelConfig $config)
 	{
-
+		$config->getHookManager()->triggerAction(
+			'on-flush-issuu-panel-cache',
+			null,
+			array(
+				'config' => $config
+			)
+		);
 	}
 }

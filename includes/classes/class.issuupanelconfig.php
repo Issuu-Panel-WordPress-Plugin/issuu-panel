@@ -89,7 +89,7 @@ class IssuuPanelConfig
         $this->issuuPanelSimpleReader = new IssuuPanelSimpleReader();
 
         // IssuuPanelCron
-        $this->issuuPanelCron = new IssuuPanelCron();
+        $this->issuuPanelCron = new IssuuPanelCron($this);
 
         // IssuuPanelHookManager
         $this->issuuPanelHookManager = new IssuuPanelHookManager();

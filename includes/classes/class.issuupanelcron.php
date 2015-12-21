@@ -42,8 +42,17 @@ class IssuuPanelCron
 	*/
 	private $scheduledActions = array();
 
-	public function __construct()
+	/**
+	*	Issuu Panel config
+	*
+	*	@var IssuuPanelConfig
+	*	@access private
+	*/
+	private $config;
+
+	public function __construct($config)
 	{
+		$this->config = $config;
 		add_action('init', array($this, 'trigger'));
 	}
 
@@ -52,7 +61,7 @@ class IssuuPanelCron
 		foreach ($this->scheduledActions as $key => $action) {
 			if ($action['init'] + $action['next_trigger'] <= current_time('timestamp'))
 			{
-				$run = call_user_func($action['callback'], $action['args']);
+				$run = call_user_func($action['callback'], $this->config, $action['args']);
 
 				if ($run === false)
 				{
@@ -65,7 +74,7 @@ class IssuuPanelCron
 			}
 		}
 
-		update_option(ISSUU_PANEL_PREFIX . 'cron', serialize($this->scheduledActions));
+		$this->config->getOptionEntity()->setCron($this->scheduledActions);
 	}
 
 	public function addScheduledAction($key, $callback, $interval = 'week')
