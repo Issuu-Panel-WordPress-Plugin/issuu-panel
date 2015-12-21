@@ -7,7 +7,7 @@ class IssuuPanelUpdateDataListener
 		add_action('post-issuu-panel-config', array($this, 'postConfigData'));
 		add_action('on-flush-issuu-panel-cache', array($this, 'onFlushCache'));
 		add_action('on-construct-issuu-panel-plugin-manager', array($this, 'initListener'));
-		add_action('on-destruct-issuu-panel-plugin-manager', array($this, 'persistConfigData'));
+		add_action('on-shutdown-issuu-panel', array($this, 'persistConfigData'));
 	}
 
 	public function postConfigData(IssuuPanelHook $hook)
@@ -55,7 +55,7 @@ class IssuuPanelUpdateDataListener
 	public function persistConfigData(IssuuPanelHook $hook)
 	{
 		$config = $hook->getParam('config');
-		$hook->getTarget()->getOptionEntityManager()->updateOptionEntity(
+		$config->getOptionEntityManager()->updateOptionEntity(
 			$config->getOptionEntity()
 		);
 	}

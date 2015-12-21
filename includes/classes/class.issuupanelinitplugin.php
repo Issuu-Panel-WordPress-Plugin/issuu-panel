@@ -9,6 +9,7 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 		add_action('plugins_loaded', array($this, 'loadTextdomain'));
 		add_action('admin_menu', array($this, 'adminMenu'));
 		add_action('init', array($this, 'initHook'));
+		add_action('shutdown', array($this, 'shutdownHook'));
 		add_action('issuu-panel-active-plugin-action', array($this, 'activePlugin'));
 		add_action('issuu-panel-uninstall-plugin-action', array($this, 'uninstallPlugin'));
 	}
@@ -74,6 +75,17 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 		}
 	}
 
+	public function shutdownHook()
+	{
+		$this->getConfig()->getHookManager()->triggerAction(
+			'on-shutdown-issuu-panel',
+			null,
+			array(
+				'config' => $this->getConfig(),
+			)
+		);
+	}
+
 	public function activePlugin()
 	{
 		$this->getConfig()->getHookManager()->triggerAction(
@@ -124,7 +136,7 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 		);
 	}
 
-	public function setConfig($config)
+	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
 	}
