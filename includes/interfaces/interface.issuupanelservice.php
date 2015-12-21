@@ -2,7 +2,7 @@
 
 interface IssuuPanelService
 {
-	public function setConfig($config);
+	public function setConfig(IssuuPanelConfig $config);
 
 	public function getConfig();
 }

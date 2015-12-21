@@ -33,18 +33,7 @@ class IssuuPanelPluginManager
 			)
 		);
 	}
-
-	public function __destruct()
-	{
-		$this->getHookManager()->triggerAction(
-			'on-destruct-issuu-panel-plugin-manager',
-			$this,
-			array(
-				'config' => $this->issuuPanelConfig,
-			)
-		);
-	}
-
+	
 	public function getOptionEntityManager()
 	{
 		return $this->issuuPanelOptionEntityManager;

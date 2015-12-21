@@ -26,7 +26,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 
 	}
 
-	public function setConfig($config)
+	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
 	}

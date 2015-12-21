@@ -67,7 +67,9 @@ class IssuuPanelConfig
         'Author' => 'upload_files'
     );
 
-    public function __construct($issuuPanelOptionEntity, $issuuPanelOptionEntityManager)
+    public function __construct(
+        IssuuPanelOptionEntity $issuuPanelOptionEntity,
+        IssuuPanelOptionEntityManager $issuuPanelOptionEntityManager)
     {
         $this->setOptionEntity($issuuPanelOptionEntity);
         $this->setOptionEntityManager($issuuPanelOptionEntityManager);
@@ -96,24 +98,27 @@ class IssuuPanelConfig
         $this->issuuPanelCacheManager = new IssuuPanelCacheManager($this->getOptionEntity());
 
         // IssuuServiceApi
-        $this->issuuServiceApi = array(
-            'IssuuDocument' => new IssuuDocument(
-                $this->getOptionEntity()->getApiKey(),
-                $this->getOptionEntity()->getApiSecret()
-            ),
-            'IssuuFolder' => new IssuuFolder(
-                $this->getOptionEntity()->getApiKey(),
-                $this->getOptionEntity()->getApiSecret()
-            ),
-            'IssuuBookmark' => new IssuuBookmark(
-                $this->getOptionEntity()->getApiKey(),
-                $this->getOptionEntity()->getApiSecret()
-            ),
-            'IssuuDocumentEmbed' => new IssuuDocumentEmbed(
-                $this->getOptionEntity()->getApiKey(),
-                $this->getOptionEntity()->getApiSecret()
-            ),
-        );
+        if (!empty($this->getOptionEntity()->getApiKey()) && !empty($this->getOptionEntity()->getApiSecret()))
+        {
+            $this->issuuServiceApi = array(
+                'IssuuDocument' => new IssuuDocument(
+                    $this->getOptionEntity()->getApiKey(),
+                    $this->getOptionEntity()->getApiSecret()
+                ),
+                'IssuuFolder' => new IssuuFolder(
+                    $this->getOptionEntity()->getApiKey(),
+                    $this->getOptionEntity()->getApiSecret()
+                ),
+                'IssuuBookmark' => new IssuuBookmark(
+                    $this->getOptionEntity()->getApiKey(),
+                    $this->getOptionEntity()->getApiSecret()
+                ),
+                'IssuuDocumentEmbed' => new IssuuDocumentEmbed(
+                    $this->getOptionEntity()->getApiKey(),
+                    $this->getOptionEntity()->getApiSecret()
+                ),
+            );
+        }
     }
 
     public function getNextIterator()
@@ -193,7 +198,7 @@ class IssuuPanelConfig
         return $this->issuuPanelCatcher;
     }
 
-    private function setOptionEntity($issuuPanelOptionEntity)
+    private function setOptionEntity(IssuuPanelOptionEntity $issuuPanelOptionEntity)
     {
         $this->issuuPanelOptionEntity = $issuuPanelOptionEntity;
     }
@@ -203,14 +208,14 @@ class IssuuPanelConfig
         return $this->issuuPanelOptionEntity;
     }
 
-    private function setOptionEntityManager($issuuPanelOptionEntityManager)
+    private function setOptionEntityManager(IssuuPanelOptionEntityManager $issuuPanelOptionEntityManager)
     {
         $this->issuuPanelOptionEntityManager = $issuuPanelOptionEntityManager;
     }
 
     public function getOptionEntityManager()
     {
-        return $this->issuuPanelOptionEntity;
+        return $this->issuuPanelOptionEntityManager;
     }
 
     /**

@@ -39,7 +39,7 @@ class IssuuPanelMenu implements IssuuPanelPage
 		require(ISSUU_PANEL_DIR . 'menu/principal/page.phtml');
 	}
 
-	public function setConfig($config)
+	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
 	}

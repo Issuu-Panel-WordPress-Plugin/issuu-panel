@@ -106,7 +106,7 @@ class IssuuPanelScripts implements IssuuPanelService
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Hook admin_enqueue_scripts");
 	}
 
-	public function setConfig($config)
+	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
 	}

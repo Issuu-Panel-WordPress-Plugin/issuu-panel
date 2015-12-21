@@ -104,7 +104,7 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 		return array_merge($old_instance, $new_instance);
 	}
 
-	public function setConfig($config)
+	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
 	}
@@ -115,4 +115,4 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 	}
 }
 
-add_action('widgets_init', create_function('', 'return register_widget("IssuuPanelWidget");'));
+// add_action('widgets_init', create_function('', 'return register_widget("IssuuPanelWidget");'));
