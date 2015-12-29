@@ -26,7 +26,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 
 	public function addIssuuPanelTinyMCEPlugin($plugin_array)
 	{
-		$plugin_array['issuupanel'] = ISSUU_PANEL_URL . 'js/tinymce-button.js';
+		$plugin_array['issuupanel'] = ISSUU_PANEL_URL . 'assets/js/tinymce-button.js';
 		return $plugin_array;
 	}
 
@@ -57,7 +57,9 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 		try {
 			$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 			$result = $issuu_folder->issuuList();
-			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal URL folder - " . $issuu_folder->buildUrl());
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal");
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal params - " .
+				serialize($issuu_folder->getParams()));
 		} catch (Exception $e) {
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal Exception - " . $e->getMessage());
 			die($e->getMessage());
@@ -70,7 +72,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 		<head>
 			<title>Issuu Panel Shortcode</title>
 			<meta charset="utf-8">
-			<link rel="stylesheet" href="<?= ISSUU_PANEL_URL; ?>css/issuu-painel-tinymce-popup.css">
+			<link rel="stylesheet" href="<?= ISSUU_PANEL_URL; ?>assets/css/issuu-painel-tinymce-popup.css">
 			<?php
 				wp_enqueue_script('tiny_mce_popup.js', includes_url('js/tinymce/tiny_mce_popup.js'));
 				wp_print_scripts('jquery');
