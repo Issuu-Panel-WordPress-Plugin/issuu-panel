@@ -15,7 +15,7 @@ class IssuuPanelScripts implements IssuuPanelService
 		$jsDependences = array('jquery');
 		wp_enqueue_style('issuu-painel-documents', ISSUU_PANEL_URL . 'assets/css/issuu-painel-documents.min.css');
 
-		switch ($this->getConfig()->getOptionEntity()->gtReader()) {
+		switch ($this->getConfig()->getOptionEntity()->getReader()) {
 			case 'issuu_embed':
 				wp_enqueue_script(
 					'issuu-panel-swfobject',
