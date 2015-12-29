@@ -7,6 +7,8 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 	public function __construct()
 	{
 		add_action('plugins_loaded', array($this, 'loadTextdomain'));
+		add_action('dynamic_sidebar', array($this, 'dependencyInjectorSidebar'), -600);
+		add_filter('widget_form_callback', array($this, 'dependencyInjectorWidget'), -600, 2);
 		add_action('admin_menu', array($this, 'adminMenu'));
 		add_action('init', array($this, 'initHook'));
 		add_action('shutdown', array($this, 'shutdownHook'));
@@ -18,6 +20,24 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 	{
 		load_plugin_textdomain(ISSUU_PANEL_DOMAIN_LANG, false, ISSUU_PANEL_PLUGIN_FILE_LANG);
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Text domain loaded");
+	}
+
+	public function dependencyInjectorSidebar($params)
+	{
+		$obj = $params['callback'][0];
+
+		if (is_object($obj) && $obj instanceof IssuuPanelService)
+		{
+			$obj->setConfig($this->getConfig());
+		}
+	}
+
+	public function dependencyInjectorWidget($instance, $widget)
+	{
+		if (is_object($widget) && $widget instanceof IssuuPanelService)
+		{
+			$widget->setConfig($this->getConfig());
+		}
 	}
 
 	public function adminMenu()

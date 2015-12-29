@@ -23,7 +23,7 @@ class IssuuPanelPluginManager
 		$this->initPlugin();
 		$this->initMenus();
 		$this->initShortcodes();
-		$this->initWidgets();
+		add_action('widgets_init', array($this, 'initWidgets'));
 		$this->getHookManager()->triggerAction(
 			'on-construct-issuu-panel-plugin-manager',
 			$this,
@@ -82,8 +82,8 @@ class IssuuPanelPluginManager
 		$shortcode->setConfig($this->issuuPanelConfig);
 	}
 
-	private function initWidgets()
+	public function initWidgets()
 	{
-
+		register_widget('IssuuPanelWidget');
 	}
 }

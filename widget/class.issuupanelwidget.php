@@ -39,8 +39,8 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 		$ipanel_url_page = $instance['issuu_panel_url_page'];
 		$ipanel_order_by = $instance['issuu_panel_order_by'];
 		$ipanel_title = $instance['issuu_panel_title'];
-		$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-		$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
+		$issuu_panel_api_key = $this->getConfig()->getOptionEntity()->getApiKey();
+		$issuu_panel_api_secret = $this->getConfig()->getOptionEntity()->getApiSecret();
 
 		$issuu_folder = new IssuuFolder($issuu_panel_api_key, $issuu_panel_api_secret);
 		$result = $issuu_folder->issuuList();
