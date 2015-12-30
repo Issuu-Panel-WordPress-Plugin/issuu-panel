@@ -78,7 +78,9 @@ class IssuuPanelPluginManager
 
 	private function initShortcodes()
 	{
-		$shortcode = new IssuuPanelShortcodes();
+		$shortcodeGenerator = new IssuuPanelShortcodeGenerator();
+		$shortcodeGenerator->setConfig($this->issuuPanelConfig);
+		$shortcode = new IssuuPanelShortcodes($shortcodeGenerator);
 		$shortcode->setConfig($this->issuuPanelConfig);
 	}
 
