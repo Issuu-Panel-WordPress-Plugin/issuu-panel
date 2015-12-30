@@ -209,6 +209,11 @@ class IssuuPanelOptionEntity
 		);
 	}
 
+	public function toJSON()
+	{
+		return json_encode($this->toArray());
+	}
+
 	public function exchangeArray(array $options)
 	{
 		foreach ($options as $key => $value) {
