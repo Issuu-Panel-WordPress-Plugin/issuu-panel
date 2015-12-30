@@ -22,6 +22,18 @@ class IssuuPanelDebug
 
 	/**
 	*
+	*	@var string $htaccessFile
+	*/
+	private $htaccessFile;
+
+	/**
+	*
+	*	@var string $nginxConfigFile
+	*/
+	private $nginxConfigFile;
+
+	/**
+	*
 	*	@var string $debugFile
 	*/
 	private $debugFile;
@@ -34,26 +46,19 @@ class IssuuPanelDebug
 
 	public function __construct($status = 'disable')
 	{
-		if (!is_dir(WP_CONTENT_DIR . '/uploads')) mkdir(WP_CONTENT_DIR . '/uploads');
+		add_action('pre-active-issuu-panel', array($this, 'createFiles') ,-600);
+		add_action('pos-uninstall-issuu-panel', array($this, 'deleteFiles'), 600);
 
 		$this->status = $status;
 		$upload = wp_upload_dir();
 		$this->dir = $upload['basedir'];
 		$this->logDir = $this->dir . '/issuu-panel-folder/';
+		$this->htaccessFile = $this->logDir . '.htaccess';
+		$this->nginxConfigFile = $this->logDir . 'nginx.conf';
 		$this->debugFile = $this->logDir . 'issuu-panel-debug.txt';
 		$this->message = '';
 
 		if (!$this->status) $this->status = 'disable';
-
-		if (!is_dir($this->logDir))
-		{
-			mkdir($this->logDir);
-		}
-
-		if (!is_file($this->debugFile))
-		{
-			file_put_contents($this->debugFile, "");
-		}
 	}
 
 	public function __destruct()
@@ -112,5 +117,41 @@ class IssuuPanelDebug
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function createFiles()
+    {
+    	if (!is_dir(WP_CONTENT_DIR . '/uploads'))
+    		mkdir(WP_CONTENT_DIR . '/uploads');
+
+    	$htaccessContent = "deny from all";
+		$nginxConfigContent = "location ~ (issuu-panel-debug)\.(txt)$ {\n\tdeny all;\n\treturn 403;\n}";
+
+		if (!is_dir($this->logDir))
+		{
+			mkdir($this->logDir);
+		}
+
+		if (!is_file($this->htaccessFile) || file_get_contents($this->htaccessFile) == $htaccessContent)
+		{
+			file_put_contents($this->htaccessFile, $htaccessContent);
+			chmod($this->htaccessFile, 0644);
+		}
+
+		if (!is_file($this->nginxConfigFile) || file_get_contents($this->nginxConfigFile) == $nginxConfigContent)
+		{
+			file_put_contents($this->nginxConfigFile, $nginxConfigContent);
+			chmod($this->nginxConfigFile, 0644);
+		}
+
+		if (!is_file($this->debugFile))
+		{
+			file_put_contents($this->debugFile, "");
+		}
+    }
+
+    public function deleteFiles()
+    {
+    	unlink($this->logDir);
     }
 }
