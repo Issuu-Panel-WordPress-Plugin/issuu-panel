@@ -38,6 +38,7 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 		{
 			$widget->setConfig($this->getConfig());
 		}
+		return $instance;
 	}
 
 	public function adminMenu()
