@@ -150,7 +150,7 @@ class IssuuPanelConfig
     public function isBot()
     {
         $utilities = $this->mobileDetect->getUtilities();
-        $bots = spliti("\|", $utilities['Bot']);
+        $bots = explode("|", $utilities['Bot']);
         $userAgent = $this->mobileDetect->getHttpHeader('USER_AGENT');
         foreach ($bots as $bot) {
             if (strpos($userAgent, $bot) !== false)
@@ -158,7 +158,7 @@ class IssuuPanelConfig
                 return true;
             }
         }
-        $mobileBots = spliti("\|", $utilities['MobileBot']);
+        $mobileBots = explode("|", $utilities['MobileBot']);
         foreach ($mobileBots as $bot) {
             if (strpos($userAgent, $bot) !== false)
             {
