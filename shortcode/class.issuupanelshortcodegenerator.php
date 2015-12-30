@@ -136,7 +136,7 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 			$content = '<em><strong>Issuu Panel:</strong> ' . get_issuu_message('No documents in list') . '</em>';
 		}
 		
-		if ($cacheManager->cacheIsActive() && $this->getConfig()->isBot())
+		if ($cacheManager->cacheIsActive() && !$this->getConfig()->isBot())
 		{
 			$cacheManager = $this->getConfig()->getCacheManager();
 			$cacheManager->updateCache($shortcodeData['shortcode'], $content, $atts, $shortcodeData['page']);
@@ -153,7 +153,7 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 		$cache = '';
 		$sc = preg_replace("/^([\D]+)(.*)$/", "$1", $shortcode);
 
-		if ($cacheManager->cacheIsActive() && $this->getConfig()->isBot())
+		if ($cacheManager->cacheIsActive() && !$this->getConfig()->isBot())
 		{
 			$cache = $cacheManager->getCache($shortcode, $atts, $page);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Shortcode [$sc]: Cache active");
