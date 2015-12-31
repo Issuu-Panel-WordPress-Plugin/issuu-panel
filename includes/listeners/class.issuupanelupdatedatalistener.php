@@ -6,6 +6,7 @@ class IssuuPanelUpdateDataListener
 	{
 		add_action('post-issuu-panel-config', array($this, 'postConfigData'));
 		add_action('on-flush-issuu-panel-cache', array($this, 'onFlushCache'));
+		add_action('on-cron-flush-issuu-panel-cache', array($this, 'onFlushCache'));
 		add_action('on-construct-issuu-panel-plugin-manager', array($this, 'initListener'));
 		add_action('on-shutdown-issuu-panel', array($this, 'persistConfigData'));
 	}
@@ -45,11 +46,7 @@ class IssuuPanelUpdateDataListener
 
 	public function initListener(IssuuPanelHook $hook)
 	{
-		$hook->getParam('config')->getIssuuPanelCron()->addScheduledAction(
-            'issuu_panel_flush_cache',
-            array($this, 'flushCache'),
-            'hour'
-        );
+		$hook->getParam('config')->getIssuuPanelCron()->addScheduledAction('on-cron-flush-issuu-panel-cache', 'hour');
 	}
 
 	public function persistConfigData(IssuuPanelHook $hook)
@@ -64,16 +61,5 @@ class IssuuPanelUpdateDataListener
 	{
 		$config = $hook->getParam('config');
 		$config->getOptionEntity()->setShortcodeCache(array());
-	}
-
-	public function flushCache(IssuuPanelConfig $config)
-	{
-		$config->getHookManager()->triggerAction(
-			'on-flush-issuu-panel-cache',
-			null,
-			array(
-				'config' => $config
-			)
-		);
 	}
 }
