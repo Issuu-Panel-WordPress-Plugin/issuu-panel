@@ -118,36 +118,11 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			{
 				unset($params['resultOrder']);
 				unset($params['bookmarkSortBy']);
+				$content .= $this->listOrderedByDate($params, $shortcodeData, $atts);
 			}
 			else
 			{
-				try {
-					$result = $issuuBookmark->issuuList($params);
-					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-						"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
-					);
-
-					if ($result['stat'] == 'ok')
-					{
-						$docs = $this->getDocsFolder($result);
-						$content = $this->shortcodeGenerator->getFromRequest($shortcodeData, $atts, $result, $docs);
-					}
-					else
-					{
-						$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-							"Shortcode [issuu-panel-folder-list]: " . $results['message']
-						);
-						$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
-							. get_issuu_message($documents['message']) . '</em>';
-					}
-				} catch (Exception $e) {
-					$content = "<em><strong>Issuu Panel:</strong> ";
-					$content .= get_issuu_message("An error occurred while we try list your publications");
-					$content .= "</em>";
-					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-						"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
-					);
-				}
+				$content .= $this->listNotOrderedByDate($params, $shortcodeData, $atts);
 			}
 		}
 		return $content;
@@ -241,13 +216,90 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		return $docs;
 	}
 
-	private function listOrderedByDate($params)
+	private function listOrderedByDate($params, $shortcodeData, $atts)
 	{
+		$content = '';
+		try {
+			$result = $issuuBookmark->issuuList($params);
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
+			);
 
+			if ($result['stat'] == 'ok')
+			{
+				$docs = $this->getConfig()->getFolderCacheEntity()->getFolder($atts['id']);
+
+				if (empty($docs) && !empty($result['bookmark']))
+				{
+					$docs = $this->getDocsFolder($result);
+				}
+				$docs = issuu_panel_quick_sort($docs, $atts['result_order']);
+				$content = $this->shortcodeGenerator->getFromRequest(
+					$shortcodeData,
+					$atts,
+					$result,
+					$docs
+				);
+			}
+			else
+			{
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"Shortcode [issuu-panel-folder-list]: " . $results['message']
+				);
+				$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
+					. get_issuu_message($documents['message']) . '</em>';
+			}
+		} catch (Exception $e) {
+			$content = "<em><strong>Issuu Panel:</strong> ";
+			$content .= get_issuu_message("An error occurred while we try list your publications");
+			$content .= "</em>";
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
+			);
+		}
+		return $content;
 	}
 
-	private function listNotOrderedByDate($params)
+	private function listNotOrderedByDate($params, $shortcodeData, $atts)
 	{
+		$content = '';
+		try {
+			$result = $issuuBookmark->issuuList($params);
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
+			);
 
+			if ($result['stat'] == 'ok')
+			{
+				$docs = $this->getConfig()->getFolderCacheEntity()->getFolder($atts['id']);
+
+				if (empty($docs) && !empty($result['bookmark']))
+				{
+					$docs = $this->getDocsFolder($result);
+				}
+				$content = $this->shortcodeGenerator->getFromRequest(
+					$shortcodeData,
+					$atts,
+					$result,
+					$docs
+				);
+			}
+			else
+			{
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"Shortcode [issuu-panel-folder-list]: " . $results['message']
+				);
+				$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
+					. get_issuu_message($documents['message']) . '</em>';
+			}
+		} catch (Exception $e) {
+			$content = "<em><strong>Issuu Panel:</strong> ";
+			$content .= get_issuu_message("An error occurred while we try list your publications");
+			$content .= "</em>";
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
+			);
+		}
+		return $content;
 	}
 }
