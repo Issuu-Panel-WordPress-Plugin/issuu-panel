@@ -68,7 +68,7 @@ class IssuuPanelCron
 				}
 				else
 				{
-					$this->config->getHookManager($key, null, array('config' => $this->config));
+					$this->config->getHookManager()->triggerAction($key, null, array('config' => $this->config));
 					$this->updateAction($key);
 				}
 			}
@@ -121,6 +121,11 @@ class IssuuPanelCron
 		}
 
 		return $this;
+	}
+
+	public function getActionsKeys()
+	{
+		return array_keys($this->scheduledActions);
 	}
 
 	protected function updateAction($key)
