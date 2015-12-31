@@ -131,6 +131,33 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	public function lastDocument($atts)
 	{
 		$content = '';
+		$shortcodeData = $this->getShortcodeData('issuu-panel-last-document');
+		$atts = shortcode_atts(array(
+			'id' => '',
+			'link' => '',
+			'order_by' => 'publishDate',
+			'result_order' => 'desc',
+			'per_page' => '12'
+		), $atts);
+		$content .= $this->shortcodeGenerator->getFromCache($shortcodeData['shortcode'], $atts, 1);
+
+		if (empty($content))
+		{
+			try {
+				if ($atts['id'] == '')
+				{
+
+				}
+				else
+				{
+
+				}
+			} catch (Exception $e) {
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"Shortcode [issuu-panel-last-document]: Exception - " . $e->getMessage()
+				);
+			}
+		}
 		return $content;
 	}
 
@@ -298,6 +325,85 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			$content .= "</em>";
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 				"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
+			);
+		}
+		return $content;
+	}
+
+	private function getDocumentOrderedByDate($params, $shortcodeData, $atts)
+	{
+		$content = '';
+		return $content;
+	}
+
+	public function getDocumentNotOrderedByDate($params, $shortcodeData, $atts)
+	{
+		$content = '';
+		$params = array(
+			'pageSize' => '1',
+			'resultOrder' => 'desc',
+			'startIndex' => '0',
+			'documentSortBy' => $atts['order_by'],
+		);
+		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
+		$result = $issuuDocument->issuuList($params);
+
+		if ($result['stat'] == 'ok')
+		{
+			if (!empty($result['document']))
+			{
+				$docs = $result['document'];
+				$doc = array(
+					'thumbnail' => 'http://image.issuu.com/' . $docs[0]->documentId . '/jpg/page_1_thumb_large.jpg',
+					'title' => $docs[0]->title,
+					'url' => 'http://issuu.com/' . $docs[0]->username . '/docs/' . $docs[0]->name
+				);
+			}
+			else
+			{
+				$doc = array();
+			}
+
+			if (!empty($doc))
+			{
+				if ($atts['link'] != '')
+				{
+					$content .= '<a href="' . $atts['link'] . '">';
+				}
+				else
+				{
+					$content .= '<a href="' . $doc['url'] . '" target="_blank">';
+				}
+
+				$content .= sprintf(
+					'<img id="issuu-panel-last-document" src="%s" alt="%s">',
+					$doc['thumbnail'],
+					$doc['title']
+				);
+				$content .= '</a>';
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"Shortcode [issuu-panel-last-document]: Document displayed"
+				);
+			}
+			else
+			{
+				$content = '<p>';
+				$content .= get_issuu_message('No documents');
+				$content .= '</p>';
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"Shortcode [issuu-panel-last-document]: No documents"
+				);
+			}
+		}
+		else
+		{
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-last-document]: " . $results['message']
+			);
+			$content = sprintf(
+				'<em><strong>Issuu Panel:</strong> E%s %s</em>',
+				$results['code'],
+				get_issuu_message($documents['message'])
 			);
 		}
 		return $content;

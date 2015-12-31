@@ -163,6 +163,49 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 		return $cache;
 	}
 
+	public function getLastDocument($doc, $shortcodeData, $atts)
+	{
+		$content = '';
+
+		if (!empty($doc))
+		{
+			if ($atts['link'] != '')
+			{
+				$content .= '<a href="' . $atts['link'] . '">';
+			}
+			else
+			{
+				$content .= '<a href="' . $doc['url'] . '" target="_blank">';
+			}
+
+			$content .= sprintf(
+				'<img id="issuu-panel-last-document" src="%s" alt="%s">',
+				$doc['thumbnail'],
+				$doc['title']
+			);
+			$content .= '</a>';
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-last-document]: Document displayed"
+			);
+		}
+		else
+		{
+			$content = '<p>';
+			$content .= get_issuu_message('No documents');
+			$content .= '</p>';
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+				"Shortcode [issuu-panel-last-document]: No documents"
+			);
+		}
+
+		if ($cacheManager->cacheIsActive() && !$this->getConfig()->isBot())
+		{
+			$cacheManager = $this->getConfig()->getCacheManager();
+			$cacheManager->updateCache($shortcodeData['shortcode'], $content, $atts, 1);
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Shortcode [$sc]: Cache updated");
+		}
+	}
+
 	public function setConfig(IssuuPanelConfig $config)
 	{
 		$this->config = $config;
