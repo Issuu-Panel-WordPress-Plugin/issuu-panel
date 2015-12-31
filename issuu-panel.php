@@ -52,6 +52,8 @@ require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfilter.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelhookmanager.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneloptionentity.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneloptionentitymanager.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfoldercacheentity.php');
+require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelfoldercacheentitymanager.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcachemanager.php');
 require(ISSUU_PANEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
@@ -78,6 +80,7 @@ require(ISSUU_PANEL_DIR . 'includes/functions.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelupdatedatalistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupaneldocumentlistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelpluginconfiglistener.php');
+require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelfoldercachelistener.php');
 
 /*
 |--------------------------------------
