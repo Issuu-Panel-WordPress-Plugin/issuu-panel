@@ -68,7 +68,7 @@ class IssuuPanelUpdateDataListener
 
 	public function onUpdateFolderDocuments(IssuuPanelHook $hook)
 	{
-		$docs = array();
+		$documents = array();
 		$config = $hook->getParam('config');
 		$debug = $config->getIssuuPanelDebug();
 		$filepath = $debug->getLogDir() . 'folder-documents.txt';
@@ -88,6 +88,7 @@ class IssuuPanelUpdateDataListener
 				if ($folders['stat'] == 'ok')
 				{
 					foreach ($folders['folder'] as $folder) {
+						$docs = array();
 						do {
 							$bookmarks = $issuuBookmark->issuuList(array(
 								'folderId' => $folder->folderId,
@@ -117,6 +118,7 @@ class IssuuPanelUpdateDataListener
 							}
 							$pageBookmark++;
 						} while (isset($bookmarks['more']) && $bookmarks['more']);
+						$documents[$folder->folderId] = $docs;
 					}
 				}
 			} catch (Exception $e) {
@@ -126,6 +128,6 @@ class IssuuPanelUpdateDataListener
 			}
 			$pageFolder++;
 		} while (isset($folders['more']) && $folders['more']);
-		file_put_contents($filepath, serialize($docs));
+		file_put_contents($filepath, serialize($documents));
 	}
 }
