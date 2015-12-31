@@ -53,6 +53,7 @@ class IssuuPanelCron
 	public function __construct($config)
 	{
 		$this->config = $config;
+		$this->scheduledActions = $this->config->getOptionEntity()->getCron();
 		add_action('init', array($this, 'trigger'));
 	}
 
@@ -61,14 +62,13 @@ class IssuuPanelCron
 		foreach ($this->scheduledActions as $key => $action) {
 			if ($action['init'] + $action['next_trigger'] <= current_time('timestamp'))
 			{
-				$run = call_user_func($action['callback'], $this->config, $action['args']);
-
-				if ($run === false)
+				if (has_action($key) === false)
 				{
 					unset($this->scheduledActions[$key]);
 				}
 				else
 				{
+					$this->config->getHookManager($key, null, array('config' => $this->config));
 					$this->updateAction($key);
 				}
 			}
@@ -77,60 +77,43 @@ class IssuuPanelCron
 		$this->config->getOptionEntity()->setCron($this->scheduledActions);
 	}
 
-	public function addScheduledAction($key, $callback, $interval = 'week')
+	public function addScheduledAction($key, $interval = 'week')
 	{
-		$args = func_get_args();
-
-		if (count($args) > 3)
+		if (is_int($interval) && $interval > 0)
 		{
-			$args = array_slice($args, 3);
+			$time = $interval;
 		}
 		else
 		{
-			$args = array();
+			switch ($interval) {
+				case 'hour':
+					$time = self::$HOUR;
+					break;
+				case 'day':
+					$time = self::$DAY;
+					break;
+				case 'week':
+					$time = self::$WEEK;
+					break;
+				case 'month':
+					$time = self::$MONTH;
+					break;
+				default:
+					$time = self::$WEEK;
+					break;
+			}
 		}
 
-		switch ($interval) {
-			case 'hour':
-				$time = self::$HOUR;
-				break;
-			case 'day':
-				$time = self::$DAY;
-				break;
-			case 'week':
-				$time = self::$WEEK;
-				break;
-			case 'month':
-				$time = self::$MONTH;
-				break;
-			default:
-				$time = self::$WEEK;
-				break;
-		}
 
 		if (!isset($this->scheduledActions[$key]))
 		{
 			$this->scheduledActions[$key] = array(
 				'init' => current_time('timestamp'),
 				'next_trigger' => $time,
-				'callback' => $callback,
-				'args' => $args
 			);
 		}
 		else
 		{
-			$this->scheduledActionsForUpdate[$key] = array();
-
-			if ($this->scheduledActions[$key]['callback'] != $callback)
-			{
-				$this->scheduledActions[$key]['callback'] = $callback; 
-			}
-
-			if ($this->scheduledActions[$key]['args'] != $args)
-			{
-				$this->scheduledActions[$key]['args'] = $args;
-			}
-
 			if ($this->scheduledActions[$key]['next_trigger'] != $time)
 			{
 				$this->scheduledActions[$key]['next_trigger'] = $time;
@@ -148,21 +131,21 @@ class IssuuPanelCron
 		}
 	}
 
-	public function setActions($actions)
-	{
-		if (is_string($actions))
-		{
-			$this->scheduledActions = unserialize($actions);
-		}
-		else if (is_array($actions))
-		{
-			$this->scheduledActions = $actions;
-		}
-		else
-		{
-			$this->scheduledActions = array();
-		}
+	// public function setActions($actions)
+	// {
+	// 	if (is_string($actions))
+	// 	{
+	// 		$this->scheduledActions = unserialize($actions);
+	// 	}
+	// 	else if (is_array($actions))
+	// 	{
+	// 		$this->scheduledActions = $actions;
+	// 	}
+	// 	else
+	// 	{
+	// 		$this->scheduledActions = array();
+	// 	}
 
-		return $this;
-	}
+	// 	return $this;
+	// }
 }
