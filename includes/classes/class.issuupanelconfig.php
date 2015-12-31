@@ -13,11 +13,15 @@ class IssuuPanelConfig
 
     private $issuuPanelCron;
 
-    private $issuuPanelOptionEntity;
-
     private $issuuPanelHookManager;
 
+    private $issuuPanelOptionEntity;
+
     private $issuuPanelOptionEntityManager;
+
+    private $issuuPanelFolderCacheEntity;
+
+    private $issuuPanelFolderCacheEntityManager;
 
     private $issuuPanelCacheManager;
 
@@ -71,6 +75,7 @@ class IssuuPanelConfig
         IssuuPanelOptionEntity $issuuPanelOptionEntity,
         IssuuPanelOptionEntityManager $issuuPanelOptionEntityManager)
     {
+        // IssuuPanelOptionEntityManager & IssuuPanelOptionEntity
         $this->setOptionEntity($issuuPanelOptionEntity);
         $this->setOptionEntityManager($issuuPanelOptionEntityManager);
 
@@ -78,6 +83,10 @@ class IssuuPanelConfig
         $this->issuuPanelDebug = new IssuuPanelDebug($this->getOptionEntity()->getDebug());
         $this->issuuPanelDebug->appendMessage("-----------------------", false);
         $this->issuuPanelDebug->appendMessage("Browser: " . filter_input(INPUT_SERVER, 'HTTP_USER_AGENT'));
+
+        // IssuuPanelFolderCacheEntityManager & IssuuPanelFolderCacheEntity
+        $this->setFolderCacheEntityManager(new IssuuPanelFolderCacheEntityManager($this->issuuPanelDebug->getLogDir()));
+        $this->setFolderCacheEntity($this->getFolderCacheEntityManager()->getCache());
 
         // Mobile_Detect
         $this->mobileDetect = new Mobile_Detect();
@@ -216,6 +225,26 @@ class IssuuPanelConfig
     public function getOptionEntityManager()
     {
         return $this->issuuPanelOptionEntityManager;
+    }
+
+    private function setFolderCacheEntity(IssuuPanelFolderCacheEntity $issuuPanelFolderCacheEntity)
+    {
+        $this->issuuPanelFolderCacheEntity = $issuuPanelFolderCacheEntity;
+    }
+
+    public function getFolderCacheEntity()
+    {
+        return $this->issuuPanelFolderCacheEntity;
+    }
+
+    private function setFolderCacheEntityManager(IssuuPanelFolderCacheEntityManager $issuuPanelFolderCacheEntityManager)
+    {
+        $this->issuuPanelFolderCacheEntityManager = $issuuPanelFolderCacheEntityManager;
+    }
+
+    public function getFolderCacheEntityManager()
+    {
+        return $this->issuuPanelFolderCacheEntityManager;
     }
 
     /**

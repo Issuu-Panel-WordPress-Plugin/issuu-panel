@@ -59,6 +59,7 @@ class IssuuPanelPluginManager
 		new IssuuPanelDocumentListener();
 		new IssuuPanelUpdateDataListener();
 		new IssuuPanelPluginConfigListener();
+		new IssuuPanelFolderCacheListener();
 	}
 
 	private function initMenus()
