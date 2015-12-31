@@ -101,6 +101,55 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			'result_order' => 'desc',
 			'per_page' => '12',
 		), $atts);
+		$params = array(
+			'folderId' => $atts['id'],
+			'pageSize' => $atts['per_page'],
+			'startIndex' => ($atts['per_page'] * ($shortcodeData['page'] - 1)),
+			'resultOrder' => $atts['result_order'],
+			'bookmarkSortBy' => $atts['order_by']
+		);
+		$content .= $this->shortcodeGenerator->getFromCache($shortcodeData['shortcode'], $atts, $shortcodeData['page']);
+
+		if (empty($content))
+		{
+			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
+
+			if ($atts['order_by'] == 'publishDate')
+			{
+				unset($params['resultOrder']);
+				unset($params['bookmarkSortBy']);
+			}
+			else
+			{
+				try {
+					$result = $issuuBookmark->issuuList($params);
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+						"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
+					);
+
+					if ($result['stat'] == 'ok')
+					{
+						$docs = $this->getDocsFolder($result);
+						$content = $this->shortcodeGenerator->getFromRequest($shortcodeData, $atts, $result, $docs);
+					}
+					else
+					{
+						$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+							"Shortcode [issuu-panel-folder-list]: " . $results['message']
+						);
+						$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
+							. get_issuu_message($documents['message']) . '</em>';
+					}
+				} catch (Exception $e) {
+					$content = "<em><strong>Issuu Panel:</strong> ";
+					$content .= get_issuu_message("An error occurred while we try list your publications");
+					$content .= "</em>";
+					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+						"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
+					);
+				}
+			}
+		}
 		return $content;
 	}
 
@@ -158,5 +207,47 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			);
 		}
 		return $docs;
+	}
+
+	private function getDocsFolder($results)
+	{
+		$docs = array();
+		foreach ($results['bookmark'] as $book) {
+			try {
+				$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
+				$document = $issuuDocument->update(array('name' => $book->name));
+				$doc = array(
+					'id' => $book->documentId,
+					'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+					'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+					'title' => $book->title,
+				);
+
+				if (isset($document['document']))
+				{
+					$doc = array_merge($doc, array(
+						'date' => date_i18n('d/F/Y', strtotime($document['document']->publishDate)),
+						'pubTime' => strtotime($document['document']->publishDate),
+						'pageCount' => $document['document']->pageCount
+					));
+				}
+				$docs[] = $doc;
+			} catch (Exception $e) {
+				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
+					"IssuuDocument->update Exception - " . $e->getMessage()
+				);
+			}
+		}
+		return $docs;
+	}
+
+	private function listOrderedByDate($params)
+	{
+
+	}
+
+	private function listNotOrderedByDate($params)
+	{
+
 	}
 }
