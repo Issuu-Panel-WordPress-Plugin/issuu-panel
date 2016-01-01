@@ -1,6 +1,6 @@
 <?php
 
-class IssuuPageAbout extends IssuuPanelSubmenu
+class IssuuPanelPageAbout extends IssuuPanelSubmenu
 {
 	protected $slug = 'issuu-panel-about';
 

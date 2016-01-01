@@ -1,6 +1,6 @@
 <?php
 
-class IssuuPageDocuments extends IssuuPanelSubmenu
+class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 {
 	protected $slug = 'issuu-document-admin';
 

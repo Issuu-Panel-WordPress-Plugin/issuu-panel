@@ -67,13 +67,13 @@ class IssuuPanelPluginManager
 		$main = new IssuuPanelMenu();
 		$main->setConfig($this->issuuPanelConfig);
 
-		$document = new IssuuPageDocuments();
+		$document = new IssuuPanelPageDocuments();
 		$document->setConfig($this->issuuPanelConfig);
 
-		$folder = new IssuuPanelFolders();
+		$folder = new IssuuPanelPageFolders();
 		$folder->setConfig($this->issuuPanelConfig);
 
-		$about = new IssuuPageAbout();
+		$about = new IssuuPanelPageAbout();
 		$about->setConfig($this->issuuPanelConfig);
 	}
 
