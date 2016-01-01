@@ -49,7 +49,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 				}
 
 				$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
-				include(ISSUU_PANEL_DIR . 'menu/documento/forms/upload.php');
+				include(ISSUU_PANEL_DIR . 'menu/document/forms/upload.php');
 				$load = true;
 			}
 		}
@@ -76,7 +76,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 				}
 
 				$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
-				include(ISSUU_PANEL_DIR . 'menu/documento/forms/url-upload.php');
+				include(ISSUU_PANEL_DIR . 'menu/document/forms/url-upload.php');
 				$load = true;
 			}
 		}
@@ -140,7 +140,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 				$tags = substr($tags, 0, $length - 1);
 			}
 
-			include(ISSUU_PANEL_DIR . 'menu/documento/forms/update.php');
+			include(ISSUU_PANEL_DIR . 'menu/document/forms/update.php');
 		}
 
 		echo $action->getParam('message', '');
@@ -158,7 +158,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 							'postData' => filter_input_array(INPUT_POST),
 						)
 					);
-					require(ISSUU_PANEL_DIR . 'menu/documento/requests/delete.php');
+					require(ISSUU_PANEL_DIR . 'menu/document/requests/delete.php');
 				} catch (Exception $e) {
 					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 						"Document Delete Exception - " . $e->getMessage()
@@ -187,7 +187,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 				$number_pages = ceil($docs['totalCount'] / $per_page);
 			}
 
-			require(ISSUU_PANEL_DIR . 'menu/documento/document-list.php');
+			require(ISSUU_PANEL_DIR . 'menu/document/document-list.php');
 		}
 	}
 }

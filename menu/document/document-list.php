@@ -67,12 +67,12 @@
 			}
 		});
 
-		var idInt = window.setInterval(atualizaDocs, 5000);
+		var idInt = window.setInterval(updateDocs, 5000);
 
-		function atualizaDocs()
+		function updateDocs()
 		{
 			var $con = $('.converting');
-			var url = '<?= ISSUU_PANEL_URL; ?>menu/documento/requests/ajax-docs.php';
+			var url = '<?= ISSUU_PANEL_URL; ?>menu/document/requests/ajax-docs.php';
 			var abspath = '<?= str_replace("\\", "/", ABSPATH); ?>';
 
 			if ($con.length)
