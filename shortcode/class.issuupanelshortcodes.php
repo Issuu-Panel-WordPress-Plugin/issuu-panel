@@ -75,7 +75,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				}
 				else
 				{
-					$content = $this->getErroApiMessage('issuu-panel-document-list', $results);
+					$content = $this->getErroApiMessage('issuu-panel-document-list', $result);
 				}
 			} catch (Exception $e) {
 				$content = $this->getExceptionMessage('issuu-panel-document-list', $e);
@@ -185,10 +185,10 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		);
 	}
 
-	private function getDocs($results)
+	private function getDocs($result)
 	{
 		$docs = array();
-		foreach ($results['document'] as $doc) {
+		foreach ($result['document'] as $doc) {
 			$docs[] = array(
 				'id' => $doc->documentId,
 				'thumbnail' => 'http://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
@@ -202,10 +202,10 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		return $docs;
 	}
 
-	private function getDocsFolder($results)
+	private function getDocsFolder($result)
 	{
 		$docs = array();
-		foreach ($results['bookmark'] as $book) {
+		foreach ($result['bookmark'] as $book) {
 			try {
 				$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 				$document = $issuuDocument->update(array('name' => $book->name));
@@ -262,7 +262,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			}
 			else
 			{
-				$content = $this->getErroApiMessage('issuu-panel-folder-list', $results);
+				$content = $this->getErroApiMessage('issuu-panel-folder-list', $result);
 			}
 		} catch (Exception $e) {
 			$content = $this->getExceptionMessage('issuu-panel-folder-list', $e);
@@ -297,7 +297,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			}
 			else
 			{
-				$content = $this->getErroApiMessage('issuu-panel-folder-list', $results);
+				$content = $this->getErroApiMessage('issuu-panel-folder-list', $result);
 			}
 		} catch (Exception $e) {
 			$content = $this->getExceptionMessage('issuu-panel-folder-list', $e);
@@ -343,7 +343,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		}
 		else
 		{
-			$content = $this->getErroApiMessage('issuu-panel-last-document', $results);
+			$content = $this->getErroApiMessage('issuu-panel-last-document', $result);
 		}
 		return $content;
 	}
