@@ -76,13 +76,16 @@ class IssuuPanelShortcodes implements IssuuPanelService
 					$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 						"Shortcode [issuu-panel-document-list]: " . $results['message']
 					);
-					$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
-						. get_issuu_message($documents['message']) . '</em>';
+					$content = sprintf(
+						'<p><em><strong>Issuu Panel:</strong> E%s %s</em></p>',
+						$results['code'],
+						get_issuu_message($documents['message'])
+					);
 				}
 			} catch (Exception $e) {
-				$content = "<em><strong>Issuu Panel:</strong> ";
+				$content = "<p><em><strong>Issuu Panel:</strong> ";
 				$content .= get_issuu_message("An error occurred while we try list your publications");
-				$content .= "</em>";
+				$content .= "</em></p>";
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 					"Shortcode [issuu-panel-document-list]: Exception - " . $e->getMessage()
 				);
@@ -272,13 +275,16 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 					"Shortcode [issuu-panel-folder-list]: " . $results['message']
 				);
-				$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
-					. get_issuu_message($documents['message']) . '</em>';
+				$content = sprintf(
+					'<p><em><strong>Issuu Panel:</strong> E%s %s</em></p>',
+					$results['code'],
+					get_issuu_message($documents['message'])
+				);
 			}
 		} catch (Exception $e) {
-			$content = "<em><strong>Issuu Panel:</strong> ";
+			$content = "<p><em><strong>Issuu Panel:</strong> ";
 			$content .= get_issuu_message("An error occurred while we try list your publications");
-			$content .= "</em>";
+			$content .= "</em></p>";
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 				"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
 			);
@@ -316,13 +322,13 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 					"Shortcode [issuu-panel-folder-list]: " . $results['message']
 				);
-				$content = '<em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
-					. get_issuu_message($documents['message']) . '</em>';
+				$content = '<p><em><strong>Issuu Panel:</strong> E' . $results['code'] . ' '
+					. get_issuu_message($documents['message']) . '</em></p>';
 			}
 		} catch (Exception $e) {
-			$content = "<em><strong>Issuu Panel:</strong> ";
+			$content = "<p><em><strong>Issuu Panel:</strong> ";
 			$content .= get_issuu_message("An error occurred while we try list your publications");
-			$content .= "</em>";
+			$content .= "</em></p>";
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 				"Shortcode [issuu-panel-folder-list]: Exception - " . $e->getMessage()
 			);
@@ -372,7 +378,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				"Shortcode [issuu-panel-last-document]: " . $results['message']
 			);
 			$content = sprintf(
-				'<em><strong>Issuu Panel:</strong> E%s %s</em>',
+				'<p><em><strong>Issuu Panel:</strong> E%s %s</em></p>',
 				$results['code'],
 				get_issuu_message($documents['message'])
 			);
