@@ -137,16 +137,49 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			try {
 				if ($atts['id'] == '')
 				{
+					$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
+					$params = array(
+						'pageSize' => 1,
+						'startIndex' => 0,
+						'resultOrder' => 'desc',
+						'documentSortBy' => $atts['order_by']
+					);
+					$result = $issuuDocument->issuuList($params);
 
+					if ($result['stat'] == 'ok')
+					{
+						if (!empty($result['document']))
+						{
+							$document = $result['document'][0];
+							$doc = array(
+								'id' => $document->documentId,
+								'thumbnail' => 'http://image.issuu.com/' . $document->documentId . '/jpg/page_1_thumb_large.jpg',
+								'url' => 'http://issuu.com/' . $document->username . '/docs/' . $document->name,
+								'title' => $document->title
+							);
+						}
+						else
+						{
+							$doc = array();
+						}
+
+						$content = $this->getLastDocument($doc, $shortcodeData, $atts);
+					}
+					else
+					{
+						$content = $this->getErroApiMessage('issuu-panel-last-document', $result);
+					}
+				}
+				else if ($atts['order_by'] == 'publishDate')
+				{
+					$content = $this->getDocumentOrderedByDate($shortcodeData, $atts);
 				}
 				else
 				{
-
+					$content = $this->getDocumentNotOrderedByDate($shortcodeData, $atts);
 				}
 			} catch (Exception $e) {
-				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-					"Shortcode [issuu-panel-last-document]: Exception - " . $e->getMessage()
-				);
+				$content = $this->getExceptionMessage('issuu-panel-last-document', $e);
 			}
 		}
 		return $content;
@@ -308,38 +341,58 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	private function getDocumentOrderedByDate($params, $shortcodeData, $atts)
 	{
 		$content = '';
+		$docs = $this->getConfig()->getFolderCacheEntity()->getFolder($atts['id']);
+
+		if (!empty($docs))
+		{
+			$docs = issuu_panel_quick_sort($docs, 'desc');
+			$doc = $docs[0];
+		}
+		else
+		{
+			$doc = array();
+		}
+
+		$content = $this->shortcodeGenerator->getLastDocument($doc, $shortcodeData, $atts);
 		return $content;
 	}
 
-	public function getDocumentNotOrderedByDate($params, $shortcodeData, $atts)
+	public function getDocumentNotOrderedByDate($shortcodeData, $atts)
 	{
 		$content = '';
+		$params = array(
+			'folderId' => $atts['id'],
+			'pageSize' => 1,
+			'startIndex' => 0,
+			'resultOrder' => $atts['result_order'],
+			'bookmarkSortBy' => 'desc'
+		);
 		$params = array(
 			'pageSize' => '1',
 			'resultOrder' => 'desc',
 			'startIndex' => '0',
 			'documentSortBy' => $atts['order_by'],
 		);
-		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		$result = $issuuDocument->issuuList($params);
+		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
+		$result = $issuuBookmark->issuuList($params);
 
 		if ($result['stat'] == 'ok')
 		{
-			if (!empty($result['document']))
+			if (!empty($result['bookmark']))
 			{
-				$docs = $result['document'];
+				$book = $result['bookmark'][0];
 				$doc = array(
-					'thumbnail' => 'http://image.issuu.com/' . $docs[0]->documentId . '/jpg/page_1_thumb_large.jpg',
-					'title' => $docs[0]->title,
-					'url' => 'http://issuu.com/' . $docs[0]->username . '/docs/' . $docs[0]->name
+					'id' => $book->documentId,
+					'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+					'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+					'title' => $book->title
 				);
 			}
 			else
 			{
 				$doc = array();
 			}
-
-			
+			$content = $this->shortcodeGenerator->getLastDocument($doc, $shortcodeData, $atts);
 		}
 		else
 		{
