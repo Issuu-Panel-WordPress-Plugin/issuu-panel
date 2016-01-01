@@ -29,7 +29,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 			if ($_SERVER['REQUEST_METHOD'] == 'POST'  && !isset($_POST['delete']))
 			{
 				try {
-					require(ISSUU_PANEL_DIR . 'menu/pasta/requests/add.php');
+					require(ISSUU_PANEL_DIR . 'menu/folder/requests/add.php');
 				} catch (Exception $e) {
 					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Folder Add Exception - " . $e->getMessage());
 					return "";
@@ -39,7 +39,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 			{
 				$load = true;
 
-				include(ISSUU_PANEL_DIR . 'menu/pasta/forms/add.php');
+				include(ISSUU_PANEL_DIR . 'menu/folder/forms/add.php');
 			}
 		}
 		else if (isset($_GET['folder']) && strlen($_GET['folder']) > 1)
@@ -77,7 +77,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 					$folders_documents['documentsId'] = array();
 				}
 
-				include(ISSUU_PANEL_DIR . 'menu/pasta/forms/update.php');
+				include(ISSUU_PANEL_DIR . 'menu/folder/forms/update.php');
 			}
 			else
 			{
@@ -92,7 +92,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && (isset($_POST['delete']) && $_POST['delete'] == 'true'))
 			{
 				try {
-					require(ISSUU_PANEL_DIR . 'menu/pasta/requests/delete.php');
+					require(ISSUU_PANEL_DIR . 'menu/folder/requests/delete.php');
 				} catch (Exception $e) {
 					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
@@ -150,7 +150,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 				}
 			}
 
-			include(ISSUU_PANEL_DIR . 'menu/pasta/folder-list.php');
+			include(ISSUU_PANEL_DIR . 'menu/folder/folder-list.php');
 		}
 
 		echo '</div><!-- FIM wrap -->';
