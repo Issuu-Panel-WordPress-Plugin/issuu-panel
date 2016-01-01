@@ -88,10 +88,10 @@ require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelfoldercachelistene
 |--------------------------------------
 */
 
-include(ISSUU_PANEL_DIR . 'menu/principal/config.php');
-include(ISSUU_PANEL_DIR . 'menu/documento/config.php');
-include(ISSUU_PANEL_DIR . 'menu/pasta/config.php');
-include(ISSUU_PANEL_DIR . 'menu/sobre/config.php');
+include(ISSUU_PANEL_DIR . 'menu/main/config.php');
+include(ISSUU_PANEL_DIR . 'menu/document/config.php');
+include(ISSUU_PANEL_DIR . 'menu/folder/config.php');
+include(ISSUU_PANEL_DIR . 'menu/about/config.php');
 
 /*
 |--------------------------------------
