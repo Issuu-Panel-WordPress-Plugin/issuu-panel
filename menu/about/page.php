@@ -21,7 +21,7 @@
 		<table class="form-table">
 			<thead>
 				<tr>
-					<th colspan="3"><h3>[issuu-painel-document-list]</h3></th>
+					<th colspan="3"><h3>[issuu-panel-document-list]</h3></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,7 +61,7 @@
 			</tbody>
 			<thead>
 				<tr>
-					<th colspan="3"><h3>[issuu-painel-folder-list]</h3></th>
+					<th colspan="3"><h3>[issuu-panel-folder-list]</h3></th>
 				</tr>
 			</thead>
 			<tbody>

@@ -12,7 +12,7 @@ class IssuuPanelPageAbout extends IssuuPanelSubmenu
 
 	public function page()
 	{
-		include(ISSUU_PANEL_DIR . 'menu/sobre/page.php');
+		include(ISSUU_PANEL_DIR . 'menu/about/page.php');
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel page (About)");
 	}
 }
