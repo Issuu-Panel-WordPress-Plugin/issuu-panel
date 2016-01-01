@@ -36,7 +36,7 @@ class IssuuPanelMenu implements IssuuPanelPage
 		$issuu_panel_debug = ($this->getConfig()->getOptionEntity()->getDebug() == 'active')? 'checked' : '';
 		$issuu_panel_cache_status = ($this->getConfig()->getOptionEntity()->getCacheStatus() == 'active')? 'checked' : '';
 
-		require(ISSUU_PANEL_DIR . 'menu/principal/page.phtml');
+		require(ISSUU_PANEL_DIR . 'menu/main/page.phtml');
 	}
 
 	public function setConfig(IssuuPanelConfig $config)
