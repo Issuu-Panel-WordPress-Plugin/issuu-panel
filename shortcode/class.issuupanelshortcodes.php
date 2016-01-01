@@ -20,11 +20,11 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	{
 		$content = '';
 		$content .= $this->documentsList($atts);
-		$content = "<em>" .
+		$content = "<p><em>" .
 			get_issuu_message(
 				"The [issuu-painel-document-list] shortcode is deprecated. Please, use [issuu-panel-document-list] using the same parameters."
 			) .
-			"</em>" . $content;
+			"</em></p>" . $content;
 		return $content;
 	}
 
@@ -32,11 +32,11 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	{
 		$content = '';
 		$content .= $this->folderList($atts);
-		$content = "<em>" .
+		$content = "<p><em>" .
 			get_issuu_message(
 				"The [issuu-painel-folder-list] shortcode is deprecated. Please, use [issuu-panel-folder-list] using the same parameters."
 			) .
-			"</em>" . $content;
+			"</em></p>" . $content;
 		return $content;
 	}
 
@@ -112,8 +112,6 @@ class IssuuPanelShortcodes implements IssuuPanelService
 
 		if (empty($content))
 		{
-			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
-
 			if ($atts['order_by'] == 'publishDate')
 			{
 				unset($params['resultOrder']);
@@ -247,6 +245,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	{
 		$content = '';
 		try {
+			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 			$result = $issuuBookmark->issuuList($params);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
@@ -291,6 +290,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	{
 		$content = '';
 		try {
+			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 			$result = $issuuBookmark->issuuList($params);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
@@ -364,36 +364,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				$doc = array();
 			}
 
-			if (!empty($doc))
-			{
-				if ($atts['link'] != '')
-				{
-					$content .= '<a href="' . $atts['link'] . '">';
-				}
-				else
-				{
-					$content .= '<a href="' . $doc['url'] . '" target="_blank">';
-				}
-
-				$content .= sprintf(
-					'<img id="issuu-panel-last-document" src="%s" alt="%s">',
-					$doc['thumbnail'],
-					$doc['title']
-				);
-				$content .= '</a>';
-				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-					"Shortcode [issuu-panel-last-document]: Document displayed"
-				);
-			}
-			else
-			{
-				$content = '<p>';
-				$content .= get_issuu_message('No documents');
-				$content .= '</p>';
-				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-					"Shortcode [issuu-panel-last-document]: No documents"
-				);
-			}
+			
 		}
 		else
 		{
