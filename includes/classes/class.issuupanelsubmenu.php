@@ -38,4 +38,14 @@ abstract class IssuuPanelSubmenu implements IssuuPanelPage
 	{
 		return $this->config;
 	}
+
+	protected function getErrorMessage($message)
+	{
+		echo "<div class=\"wrap\">";
+		echo "<h1>";
+		echo "<strong>Issuu Panel:</strong> ";
+		echo $message;
+		echo "</h1>";
+		echo "</div>";
+	}
 }
