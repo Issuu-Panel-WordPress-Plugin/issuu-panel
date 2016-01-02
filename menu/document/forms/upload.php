@@ -112,6 +112,7 @@
 			var $ajaxResult = $('#issuu-panel-ajax-result > p');
 			var formData = new FormData($form[0]);
 			formData.append('action', 'issuu-panel-upload-document');
+			$('html, body').scrollTop(0);
 			$.ajax(ajaxurl, {
 				data : ,
 				type : "POST",
@@ -139,7 +140,7 @@
 				contentType : false,
 				processData : false
 			}).done(function(data){
-
+				$ajaxResult.html(data.message);
 			}).fail(function(x, y, z){
 				console.log(x);
 				console.log(y);
