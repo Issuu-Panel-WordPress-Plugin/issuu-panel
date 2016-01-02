@@ -80,6 +80,7 @@ require(ISSUU_PANEL_DIR . 'includes/functions.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelajaxrequestlistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelupdatedatalistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupaneldocumentlistener.php');
+require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelfolderlistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelpluginconfiglistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelfoldercachelistener.php');
 

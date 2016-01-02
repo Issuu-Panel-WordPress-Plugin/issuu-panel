@@ -114,7 +114,7 @@
 			formData.append('action', 'issuu-panel-upload-document');
 			$('html, body').scrollTop(0);
 			$.ajax(ajaxurl, {
-				data : ,
+				data : formData,
 				type : "POST",
 				xhr : function(){
 					var xhr = $.ajaxSettings.xhr();
@@ -141,6 +141,10 @@
 				processData : false
 			}).done(function(data){
 				$ajaxResult.html(data.message);
+
+				if (data.status == 'success') {
+					$form[0].reset();
+				}
 			}).fail(function(x, y, z){
 				console.log(x);
 				console.log(y);

@@ -1,4 +1,7 @@
 <h1><?php the_issuu_message('Documents list'); ?></h1>
+<div id="issuu-panel-ajax-result">
+	<p></p>
+</div>
 <form action="" method="post">
 	<input type="hidden" name="delete" value="true">
 	<a href="admin.php?page=issuu-document-admin&upload" class="buttons-top button-primary" title="">

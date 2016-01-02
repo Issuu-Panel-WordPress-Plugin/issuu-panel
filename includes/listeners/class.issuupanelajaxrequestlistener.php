@@ -24,11 +24,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function uploadDocument()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -36,7 +38,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -44,7 +46,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -57,11 +59,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function urlUploadDocument()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-url-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -69,7 +73,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-url-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -77,7 +81,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-url-upload-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -90,11 +94,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function updateDocument()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-update-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -102,7 +108,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-update-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -110,7 +116,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-update-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -123,11 +129,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function deleteDocument()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-delete-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -135,7 +143,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-delete-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -143,7 +151,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-delete-document',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -156,11 +164,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function ajaxDocs()
 	{
+		$getData = filter_input_array(INPUT_GET);
+		unset($getData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-ajax-docs',
 			null,
 			array(
-				'getData' => filter_input_array(INPUT_GET),
+				'getData' => $getData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -168,7 +178,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-ajax-docs',
 			null,
 			array(
-				'getData' => filter_input_array(INPUT_GET),
+				'getData' => $getData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -176,7 +186,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-ajax-docs',
 			null,
 			array(
-				'getData' => filter_input_array(INPUT_GET),
+				'getData' => $getData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -193,11 +203,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function addFolder()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-add-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -205,7 +217,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-add-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -213,7 +225,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-add-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -225,11 +237,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function updateFolder()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-update-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -237,7 +251,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-update-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -245,7 +259,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-update-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -257,11 +271,13 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function deleteFolder()
 	{
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		$preAction = $this->getConfig()->getHookManager()->triggerAction(
 			'pre-issuu-panel-delete-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -269,7 +285,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'on-issuu-panel-delete-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);
@@ -277,7 +293,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 			'pos-issuu-panel-delete-folder',
 			null,
 			array(
-				'postData' => filter_input_array(INPUT_POST),
+				'postData' => $postData,
 				'config' => $this->getConfig(),
 			)
 		);

@@ -7,6 +7,7 @@ class IssuuPanelDocumentListener
 		add_action('on-issuu-panel-upload-document', array($this, 'uploadDocument'));
 		add_action('on-issuu-panel-url-upload-document', array($this, 'urlUploadDocument'));
 		add_action('on-issuu-panel-update-document', array($this, 'updateDocument'));
+		add_action('on-issuu-panel-delete-document', array($this, 'deleteDocument'));
 	}
 
 	public function uploadDocument(IssuuPanelHook $hook)
@@ -290,5 +291,10 @@ class IssuuPanelDocumentListener
 				unset($postData[$key]);
 			}
 		}
+	}
+
+	public function deleteDocument(IssuuPanelHook $hook)
+	{
+		
 	}
 }
