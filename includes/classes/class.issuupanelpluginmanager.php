@@ -12,7 +12,6 @@ class IssuuPanelPluginManager
 
 	public function __construct()
 	{
-		$this->initListeners();
 		$this->issuuPanelOptionEntityManager = new IssuuPanelOptionEntityManager();
 		$this->issuuPanelOptionEntity = $this->getOptionEntityManager()->getOptionEntity();
 		$this->issuuPanelConfig = new IssuuPanelConfig(
@@ -20,6 +19,7 @@ class IssuuPanelPluginManager
 			$this->issuuPanelOptionEntityManager
 		);
 		$this->issuuPanelHookManager = $this->issuuPanelConfig->getHookManager();
+		$this->initListeners();
 		$this->initPlugin();
 		$this->initMenus();
 		$this->initShortcodes();
@@ -56,6 +56,8 @@ class IssuuPanelPluginManager
 
 	private function initListeners()
 	{
+		$ajaxRequestListener = new IssuuPanelAjaxRequestListener();
+		$ajaxRequestListener->setConfig($this->issuuPanelConfig);
 		new IssuuPanelDocumentListener();
 		new IssuuPanelUpdateDataListener();
 		new IssuuPanelPluginConfigListener();

@@ -70,6 +70,14 @@ class IssuuPanelScripts implements IssuuPanelService
 		wp_enqueue_script('json2');
 		wp_enqueue_script('jquery');
 
+		wp_localize_script(
+			'jquery',
+			'issuuPanelObject',
+			array(
+				'loadingText' => get_issuu_message('Loading')
+			)
+		);
+
 		if (filter_input(INPUT_GET, 'page') == 'issuu-document-admin')
 		{
 			if (!is_null(filter_input(INPUT_GET, 'upload')))

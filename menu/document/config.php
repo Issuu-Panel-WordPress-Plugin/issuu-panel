@@ -17,14 +17,9 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 
 		echo '<div class="wrap">';
 
-		try {
-			$issuu_document = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		} catch (Exception $e) {
-			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
-			return "";
-		}
+		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 
-		$action->setParam('issuuDocument', $issuu_document);
+		$action->setParam('issuuDocument', $issuuDocument);
 
 		if (isset($_GET['upload']) && !isset($_POST['delete']))
 		{
@@ -34,7 +29,8 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 					'issuu-panel-document-upload',
 					null,
 					array(
-						'issuuDocument' => $issuu_document
+						'postData' => filter_input_array(INPUT_POST),
+						'config' => $this->getConfig()
 					)
 				);
 			}
@@ -61,7 +57,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 					'issuu-panel-document-url-upload',
 					null,
 					array(
-						'issuuDocument' => $issuu_document
+						'issuuDocument' => $issuuDocument
 					)
 				);
 			}
@@ -90,7 +86,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 					'issuu-panel-document-update',
 					null,
 					array(
-						'issuuDocument' => $issuu_document
+						'issuuDocument' => $issuuDocument
 					)
 				);
 
@@ -102,7 +98,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 				$params['name'] = strtr($_GET['ip-update'], array('%20' => '+', ' ' => '+'));
 
 				try {
-					$doc = $issuu_document->update($params);
+					$doc = $issuuDocument->update($params);
 				} catch (Exception $e) {
 					$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 					return "";
@@ -154,7 +150,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 						'issuu-panel-document-delete',
 						null,
 						array(
-							'issuuDocument' => $issuu_document,
+							'issuuDocument' => $issuuDocument,
 							'postData' => filter_input_array(INPUT_POST),
 						)
 					);
@@ -176,7 +172,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 			);
 
 			try {
-				$docs = $issuu_document->issuuList($params);
+				$docs = $issuuDocument->issuuList($params);
 			} catch (Exception $e) {
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage("Page Exception - " . $e->getMessage());
 				return "";

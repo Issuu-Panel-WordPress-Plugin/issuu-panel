@@ -1,4 +1,7 @@
 <h1><?php the_issuu_message('Document'); ?></h1>
+<div id="issuu-panel-ajax-result">
+	<p></p>
+</div>
 <form action="" method="post" id="document-upload" enctype="multipart/form-data">
 	<table class="form-table">
 		<tbody>
@@ -101,3 +104,47 @@
 		</tbody>
 	</table>
 </form>
+<script type="text/javascript">
+	(function($){
+		$('#document-upload').submit(function(e){
+			e.preventDefault();
+			var $form = $(this);
+			var $ajaxResult = $('#issuu-panel-ajax-result > p');
+			var formData = new FormData($form[0]);
+			formData.append('action', 'issuu-panel-upload-document');
+			$.ajax(ajaxurl, {
+				data : ,
+				type : "POST",
+				xhr : function(){
+					var xhr = $.ajaxSettings.xhr();
+
+					if (xhr.upload) {
+						xhr.upload.addEventListener(
+							'progress', 
+							function(evt){
+								var total = evt.total;
+								var evtLoaded = evt.loaded || evt.position;
+
+								if (evt.lengthComputable) {
+									$ajaxResult.html(
+										issuuPanelObject.loadingText + " " + Math.ceil(evtLoaded / total * 100) + "%"
+									);
+								}
+							}, 
+							false
+						);
+					}
+					return xhr;
+				},
+				contentType : false,
+				processData : false
+			}).done(function(data){
+
+			}).fail(function(x, y, z){
+				console.log(x);
+				console.log(y);
+				console.log(z);
+			})
+		});
+	})(jQuery);
+</script>
