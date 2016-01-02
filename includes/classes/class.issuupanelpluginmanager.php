@@ -59,6 +59,7 @@ class IssuuPanelPluginManager
 		$ajaxRequestListener = new IssuuPanelAjaxRequestListener();
 		$ajaxRequestListener->setConfig($this->issuuPanelConfig);
 		new IssuuPanelDocumentListener();
+		new IssuuPanelFolderListener();
 		new IssuuPanelUpdateDataListener();
 		new IssuuPanelPluginConfigListener();
 		new IssuuPanelFolderCacheListener();
