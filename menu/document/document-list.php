@@ -2,7 +2,7 @@
 <div id="issuu-panel-ajax-result">
 	<p></p>
 </div>
-<form action="" method="post">
+<form action="" method="post" id="delete-documents">
 	<input type="hidden" name="delete" value="true">
 	<a href="admin.php?page=issuu-document-admin&upload" class="buttons-top button-primary" title="">
 		<?php the_issuu_message('Upload file'); ?>
@@ -68,6 +68,10 @@
 					});
 				});
 			}
+		});
+
+		$('#delete-documents').submit(function(e){
+			e.preventDefault();
 		});
 
 		var idInt = window.setInterval(updateDocs, 5000);
