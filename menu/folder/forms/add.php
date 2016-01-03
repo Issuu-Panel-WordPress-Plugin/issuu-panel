@@ -1,5 +1,8 @@
 <div class="wrap">
 	<h1><?php the_issuu_message('Create new folder'); ?></h1>
+	<div id="issuu-panel-ajax-result">
+		<p></p>
+	</div>
 	<form action="" id="add-folder" method="post" accept-charset="utf-8">
 		<table class="form-table">
 			<tbody>
@@ -27,11 +30,32 @@
 </div>
 <script type="text/javascript" charset="utf-8">
 	(function($){
-		$('#add-folder').submit(function(){
-			if ($('#folderName').val().trim() == "")
-			{
+		$('#add-folder').submit(function(e){
+			e.preventDefault();
+			var $form = $(this);
+			var $ajaxResult = $('#issuu-panel-ajax-result > p');
+			var formData;
+
+			if ($form.find('#folderName').val().trim() == "") {
 				alert('<?php the_issuu_message("Insert folder\'s name"); ?>');
-				return false;
+			} else {
+				$('html, body').scrollTop(0);
+				formData = new FormData($form[0]);
+				formData.append('action', 'issuu-panel-add-folder');
+				$.ajax(ajaxurl, {
+					type : "POST",
+					data : formData
+				}).done(function(data){
+					$ajaxResult.html(data.message);
+
+					if (data.status == 'success') {
+						$form[0].reset();
+					}
+				}).fail(function(x, y, z){
+					console.log(x);
+					console.log(y);
+					console.log(z);
+				});
 			}
 		});
 	})(jQuery);

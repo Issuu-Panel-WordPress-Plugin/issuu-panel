@@ -1,8 +1,11 @@
 <div class="wrap">
 	<h1><?php the_issuu_message('Folders list'); ?></h1>
+	<div id="issuu-panel-ajax-result">
+		<p></p>
+	</div>
 	<form action="" method="post" id="delete-folders" accept-charset="utf-8">
 		<input type="hidden" name="delete" value="true">
-		<input type="submit" class="issuu-submit-button" value="<?php the_issuu_message('Delete'); ?>">
+		<button type="submit" class="issuu-submit-button"><?php the_issuu_message('Delete'); ?></button>
 		<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize']) : ?>
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
@@ -56,6 +59,31 @@
 	(function($){
 		$('#delete-folders').submit(function(e){
 			e.preventDefault();
+			var $form = $(this);
+			var $ajaxResult = $('#issuu-panel-ajax-result > p');
+			var formData = new FormData($form[0]);
+			formData.append('action', 'issuu-panel-delete-folder');
+			$('html, body').scrollTop(0);
+			$.ajax(ajaxurl, {
+				type : "POST",
+				data : formData
+			}).done(function(data){
+				$ajaxResult.html(data.message);
+
+				if (data.folders.length > 0) {
+					$.each(data.folders, function(i, item) {
+						var folder = $('input[value="' + item + '"]');
+
+						if (folder.length > 0) {
+							folder.parents('.issuu-folder').remove();
+						}
+					});
+				}
+			}).fail(function(x, y, z){
+				console.log(x);
+				console.log(y);
+				console.log(z);
+			});
 		});
 	})(jQuery);
 </script>
