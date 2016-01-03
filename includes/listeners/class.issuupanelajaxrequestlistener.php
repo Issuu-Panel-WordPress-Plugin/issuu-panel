@@ -7,15 +7,15 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	public function __construct()
 	{
 		// Documents
-		add_action('wp_ajax_issuu-panel-upload-document', array($this, 'uploadDocument'));
-		add_action('wp_ajax_issuu-panel-url-upload-document', array($this, 'urlUploadDocument'));
-		add_action('wp_ajax_issuu-panel-update-document', array($this, 'updateDocument'));
-		add_action('wp_ajax_issuu-panel-delete-document', array($this, 'deleteDocument'));
-		add_action('wp_ajax_issuu-panel-ajax-docs', array($this, 'ajaxDocs'));
+		add_action('wp_ajax_issuu-panel-upload-document', array($this, 'uploadDocument'), 600);
+		add_action('wp_ajax_issuu-panel-url-upload-document', array($this, 'urlUploadDocument'), 600);
+		add_action('wp_ajax_issuu-panel-update-document', array($this, 'updateDocument'), 600);
+		add_action('wp_ajax_issuu-panel-delete-document', array($this, 'deleteDocument'), 600);
+		add_action('wp_ajax_issuu-panel-ajax-docs', array($this, 'ajaxDocs'), 600);
 		// Folders
-		add_action('wp_ajax_issuu-panel-add-folder', array($this, 'addFolder'));
-		add_action('wp_ajax_issuu-panel-update-folder', array($this, 'updateFolder'));
-		add_action('wp_ajax_issuu-panel-delete-folder', array($this, 'deleteFolder'));
+		add_action('wp_ajax_issuu-panel-add-folder', array($this, 'addFolder'), 600);
+		add_action('wp_ajax_issuu-panel-update-folder', array($this, 'updateFolder'), 600);
+		add_action('wp_ajax_issuu-panel-delete-folder', array($this, 'deleteFolder'), 600);
 	}
 
 	/*
@@ -26,30 +26,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
@@ -61,30 +66,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-url-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-url-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-url-upload-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-url-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-url-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-url-upload-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
@@ -96,30 +106,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-update-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-update-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-update-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-update-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-update-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-update-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
@@ -131,30 +146,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-delete-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-delete-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-delete-document',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-delete-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-delete-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-delete-document',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 			'documents' => $onAction->getParam('documents', array()),
@@ -166,30 +186,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$getData = filter_input_array(INPUT_GET);
 		unset($getData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-ajax-docs',
-			null,
-			array(
-				'getData' => $getData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-ajax-docs',
-			null,
-			array(
-				'getData' => $getData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-ajax-docs',
-			null,
-			array(
-				'getData' => $getData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-ajax-docs',
+				null,
+				array(
+					'getData' => $getData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-ajax-docs',
+				null,
+				array(
+					'getData' => $getData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-ajax-docs',
+				null,
+				array(
+					'getData' => $getData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'success'),
@@ -205,30 +230,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-add-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-add-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-add-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-add-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-add-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-add-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 
@@ -239,30 +269,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-update-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-update-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-update-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-update-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-update-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-update-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 
@@ -273,30 +308,35 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 	{
 		$postData = filter_input_array(INPUT_POST);
 		unset($postData['action']);
-		$preAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pre-issuu-panel-delete-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$onAction = $this->getConfig()->getHookManager()->triggerAction(
-			'on-issuu-panel-delete-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
-		$posAction = $this->getConfig()->getHookManager()->triggerAction(
-			'pos-issuu-panel-delete-folder',
-			null,
-			array(
-				'postData' => $postData,
-				'config' => $this->getConfig(),
-			)
-		);
+		try {
+			$preAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pre-issuu-panel-delete-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$onAction = $this->getConfig()->getHookManager()->triggerAction(
+				'on-issuu-panel-delete-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+			$posAction = $this->getConfig()->getHookManager()->triggerAction(
+				'pos-issuu-panel-delete-folder',
+				null,
+				array(
+					'postData' => $postData,
+					'config' => $this->getConfig(),
+				)
+			);
+		} catch (Exception $e) {
+			$onAction->setParam('status', 'fail');
+			$onAction->setParam('message', sprintf('<div class="error"><p>%s</p></div>', $e->getMessage()));
+		}
 
 		$this->jsonResponse(array(
 
