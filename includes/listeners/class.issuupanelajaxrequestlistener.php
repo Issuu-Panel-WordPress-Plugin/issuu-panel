@@ -261,7 +261,8 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 		}
 
 		$this->jsonResponse(array(
-
+			'status' => $onAction->getParam('status', 'success'),
+			'message' => $onAction->getParam('message', ''),
 		));
 	}
 
@@ -300,7 +301,8 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 		}
 
 		$this->jsonResponse(array(
-
+			'status' => $onAction->getParam('status', 'success'),
+			'message' => $onAction->getParam('message', ''),
 		));
 	}
 
@@ -339,7 +341,9 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 		}
 
 		$this->jsonResponse(array(
-
+			'status' => $onAction->getParam('status', 'success'),
+			'message' => $onAction->getParam('message', ''),
+			'folders' => $onAction->getParam('folders', array()),
 		));
 	}
 
