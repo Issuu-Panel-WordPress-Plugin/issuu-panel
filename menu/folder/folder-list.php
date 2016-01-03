@@ -18,7 +18,7 @@
 			<?php foreach ($folders_documents as $key => $value) : ?>
 				<div class="issuu-folder">
 					<input type="checkbox" name="folderId[]" class="issuu-checkbox" value="<?= $key; ?>">
-					<a href="admin.php?page=issuu-folder-admin&folder=<?= $key; ?>">
+					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?= $key; ?>">
 						<?php for ($i = 0; $i < 3; $i++) : ?>
 							<?php if (isset($value['documentsId'][$i])) : ?>
 								<div class="folder-item folder-item-doc">
@@ -37,7 +37,7 @@
 				</div><!-- END issuu-folder -->
 			<?php endforeach; ?>
 			<div class="issuu-folder">
-				<a href="admin.php?page=issuu-folder-admin&add">
+				<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=add">
 					<div class="folder-item"></div><!-- END folder-item -->
 					<div class="folder-item"></div><!-- END folder-item -->
 					<div class="folder-item"></div><!-- END folder-item -->
