@@ -144,6 +144,7 @@
 				contentType : false,
 				processData : false
 			}).done(function(data){
+				console.log(data);
 				$ajaxResult.html(data.message);
 
 				if (data.status == 'success') {

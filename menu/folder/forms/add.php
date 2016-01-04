@@ -43,8 +43,10 @@
 				formData = new FormData($form[0]);
 				formData.append('action', 'issuu-panel-add-folder');
 				$.ajax(ajaxurl, {
-					type : "POST",
-					data : formData
+					method : "POST",
+					data : formData,
+					contentType : false,
+					processData : false
 				}).done(function(data){
 					$ajaxResult.html(data.message);
 

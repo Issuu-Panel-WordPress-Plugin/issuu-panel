@@ -1,5 +1,8 @@
 <div class="wrap">
 	<h1><?php the_issuu_message("Update folder"); ?></h1>
+	<div id="issuu-panel-ajax-result">
+		<p></p>
+	</div>
 	<form action="" id="update-folder" method="post" accept-charset="utf-8">
 		<input type="hidden" name="folderId" value="<?= $folder->folderId; ?>">
 		<table class="form-table">
@@ -65,14 +68,12 @@
 				formData = new FormData($form[0]);
 				formData.append('action', 'issuu-panel-update-folder');
 				$.ajax(ajaxurl, {
-					type : "POST",
-					data : formData
+					method : "POST",
+					data : formData,
+					contentType : false,
+					processData : false
 				}).done(function(data){
 					$ajaxResult.html(data.message);
-
-					if (data.status == 'success') {
-						$form[0].reset();
-					}
 				}).fail(function(x, y, z){
 					console.log(x);
 					console.log(y);

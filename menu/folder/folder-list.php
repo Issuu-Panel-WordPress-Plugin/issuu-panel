@@ -65,8 +65,10 @@
 			formData.append('action', 'issuu-panel-delete-folder');
 			$('html, body').scrollTop(0);
 			$.ajax(ajaxurl, {
-				type : "POST",
-				data : formData
+				method : "POST",
+				data : formData,
+				contentType : false,
+				processData : false
 			}).done(function(data){
 				$ajaxResult.html(data.message);
 

@@ -5,10 +5,10 @@
 	</div>
 	<form action="" method="post" id="delete-documents">
 		<input type="hidden" name="delete" value="true">
-		<a href="admin.php?page=issuu-document-admin&upload" class="buttons-top button-primary" title="">
+		<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=upload" class="buttons-top button-primary" title="">
 			<?php the_issuu_message('Upload file'); ?>
 		</a>
-		<a href="admin.php?page=issuu-document-admin&url_upload" class="buttons-top button-primary" title="">
+		<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=url-upload" class="buttons-top button-primary" title="">
 			<?php the_issuu_message('Upload file by URL'); ?>
 		</a>
 		<input type="submit" class="buttons-top button-secondary button-danger" value="<?php the_issuu_message('Delete'); ?>">
@@ -37,7 +37,7 @@
 							<div class="document-box">
 								<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
 								<div class="update-document">
-									<a href="admin.php?page=issuu-document-admin&ip-update=<?= $doc->name; ?>">
+									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=<?= $doc->name; ?>">
 										<?php the_issuu_message('Edit'); ?>
 									</a>
 								</div>
