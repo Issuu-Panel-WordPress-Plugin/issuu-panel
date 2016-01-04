@@ -165,6 +165,7 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 
 	public function getLastDocument($doc, $shortcodeData, $atts)
 	{
+		$cacheManager = $this->getConfig()->getCacheManager();
 		$content = '';
 
 		if (!empty($doc))
@@ -202,7 +203,7 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 		{
 			$cacheManager = $this->getConfig()->getCacheManager();
 			$cacheManager->updateCache($shortcodeData['shortcode'], $content, $atts, 1);
-			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Shortcode [$sc]: Cache updated");
+			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Shortcode [issuu-panel-last-document]: Cache updated");
 		}
 	}
 

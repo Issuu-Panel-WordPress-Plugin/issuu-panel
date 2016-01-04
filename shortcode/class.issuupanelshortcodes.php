@@ -163,7 +163,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 							$doc = array();
 						}
 
-						$content = $this->getLastDocument($doc, $shortcodeData, $atts);
+						$content = $this->shortcodeGenerator->getLastDocument($doc, $shortcodeData, $atts);
 					}
 					else
 					{
@@ -238,26 +238,23 @@ class IssuuPanelShortcodes implements IssuuPanelService
 	private function getDocsFolder($result)
 	{
 		$docs = array();
+		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		foreach ($result['bookmark'] as $book) {
 			try {
-				$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 				$document = $issuuDocument->update(array('name' => $book->name));
-				$doc = array(
-					'id' => $book->documentId,
-					'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-					'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
-					'title' => $book->title,
-				);
 
 				if (isset($document['document']))
 				{
-					$doc = array_merge($doc, array(
+					$docs[] = array(
+						'id' => $book->documentId,
+						'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+						'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+						'title' => $book->title,
 						'date' => date_i18n('d/F/Y', strtotime($document['document']->publishDate)),
 						'pubTime' => strtotime($document['document']->publishDate),
 						'pageCount' => $document['document']->pageCount
-					));
+					);
 				}
-				$docs[] = $doc;
 			} catch (Exception $e) {
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 					"IssuuDocument->update Exception - " . $e->getMessage()
