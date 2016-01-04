@@ -68,6 +68,10 @@ class IssuuPanelCron
 				}
 				else
 				{
+					$this->config->getIssuuPanelDebug()->appendMessage(sprintf(
+						"CRON - '%s' hook triggered",
+						$key
+					));
 					$this->config->getHookManager()->triggerAction($key, null, array('config' => $this->config));
 					$this->updateAction($key);
 				}
