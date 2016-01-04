@@ -75,7 +75,7 @@ class IssuuPanelFolderListener
 		$postData = $hook->getParam('postData');
 		$config = $hook->getParam('config');
 		$postData['folderId'] = (isset($postData['folderId']))? $postData['folderId'] : array();
-		$count = count();
+		$count = count($postData['folderId']);
 
 		if ($count > 0)
 		{

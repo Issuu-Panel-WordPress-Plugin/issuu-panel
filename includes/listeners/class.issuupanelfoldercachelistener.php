@@ -5,14 +5,14 @@ class IssuuPanelFolderCacheListener
 	public function __construct()
 	{
 		add_action('on-construct-issuu-panel-plugin-manager', array($this, 'initListener'));
-		add_action('on-cron-update-folder-documents', array($this, 'onUpdateFolderDocuments'));
+		// add_action('on-cron-update-folder-documents', array($this, 'onUpdateFolderDocuments'));
 		add_action('on-shutdown-issuu-panel', array($this, 'persistData'));
 	}
 
 	public function initListener(IssuuPanelHook $hook)
 	{
 		$config = $hook->getParam('config');
-		$config->getIssuuPanelCron()->addScheduledAction('on-cron-update-folder-documents', 600);
+		// $config->getIssuuPanelCron()->addScheduledAction('on-cron-update-folder-documents', 600);
 	}
 
 	public function onUpdateFolderDocuments(IssuuPanelHook $hook)
