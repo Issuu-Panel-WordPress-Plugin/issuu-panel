@@ -165,6 +165,59 @@ class IssuuPanelDocumentListener
 		$hook->setParam('result', $result);
 	}
 
+	public function deleteDocument(IssuuPanelHook $hook)
+	{
+		$config = $hook->getParam('config');
+		$postData = $hook->getParam('postData');
+		$params = array(
+			'names' => (isset($postData['name']))? $postData['name'] : array()
+		);
+		$count = count($params['names']);
+		$message = $hook->getParam('message', '');
+
+		if ($count > 0)
+		{
+			$result = $config->getIssuuServiceApi('IssuuDocument')->delete(array(
+				'names' => implode(',', $params['names'])
+			));
+
+			if ($result['stat'] == 'ok')
+			{
+				if ($count > 1)
+				{
+					$message .= sprintf(
+						'<div class="updated"><p>%s</p></div>',
+						get_issuu_message('Documents deleted successfully')
+					);
+				}
+				else
+				{
+					$message .= sprintf(
+						'<div class="updated"><p>%s</p></div>',
+						get_issuu_message('Document deleted successfully')
+					);
+				}
+				$hook->setParam('status', 'success');
+				$hook->setParam('documents', $params['names']);
+			}
+			else if ($result['stat'] == 'fail')
+			{
+				$message .= sprintf('<div class="error"><p>%s%s</p></div>',
+					get_issuu_message($result['message']),
+					(($result['field'] != '')? ': ' . $result['field'] : '')
+				);
+			}
+		}
+		else
+		{
+			$message .= sprintf(
+				'<div class="update-nag">%s</div>',
+				get_issuu_message('Nothing was excluded')
+			);
+		}
+		$hook->setParam('message', $message);
+	}
+
 	private function createDatetime(array &$postData)
 	{
 		$date = date_i18n('Y-m-d') . 'T';
@@ -291,10 +344,5 @@ class IssuuPanelDocumentListener
 				unset($postData[$key]);
 			}
 		}
-	}
-
-	public function deleteDocument(IssuuPanelHook $hook)
-	{
-		
 	}
 }
