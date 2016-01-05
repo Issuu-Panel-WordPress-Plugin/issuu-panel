@@ -101,40 +101,30 @@
 			})
 		});
 
-		var idInt = window.setInterval(updateDocs, 5000);
+		function updateDocs() {
+			var converting = $('.converting');
 
-		function updateDocs()
-		{
-			var $con = $('.converting');
-			var url = '<?= ISSUU_PANEL_URL; ?>menu/document/requests/ajax-docs.php';
-			var abspath = '<?= str_replace("\\", "/", ABSPATH); ?>';
-
-			if ($con.length)
-			{
-				$.ajax(
-					url,
-					{
-						type: 'GET',
-						data: {name: $con.attr('id'), abspath: abspath}
+			if (converting.length > 0) {
+				var $con = $(converting.get(0));
+				$.ajax(ajaxurl, {
+					method : 'POST',
+					data : {
+						name : $con.attr('id'),
+						action : 'issuu-panel-ajax-docs'
 					}
-				).done(function(data){
-					if (data != "stat-fail")
-					{
-						$con.html(data);
+				}).done(function(data){
+					console.log(data);
+					if (data.status != "fail") {
+						$con.html(data.html);
 						$con.removeAttr('id');
 						$con.addClass('complete').removeClass('converting');
 					}
-					else
-					{
-						console.log(data);
-					}
 				});
-			}
-			else
-			{
+			} else {
 				window.clearInterval(idInt);
 			}
 		}
 
+		var idInt = window.setInterval(updateDocs, 5000);
 	})(jQuery);
 </script>
