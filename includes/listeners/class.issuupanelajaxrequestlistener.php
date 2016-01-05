@@ -58,7 +58,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
-			'message' => $onAction->getParam('response', '')
+			'message' => $onAction->getParam('message', '')
 		));
 	}
 
@@ -98,7 +98,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
-			'message' => $onAction->getParam('response', '')
+			'message' => $onAction->getParam('message', '')
 		));
 	}
 
@@ -138,7 +138,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'default'),
-			'message' => $onAction->getParam('response', '')
+			'message' => $onAction->getParam('message', '')
 		));
 	}
 
@@ -177,8 +177,9 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 		}
 
 		$this->jsonResponse(array(
+			'status' => $onAction->getParam('status', 'default'),
 			'documents' => $onAction->getParam('documents', array()),
-			'message' => $onAction->getParam('response', '')
+			'message' => $onAction->getParam('message', '')
 		));
 	}
 
