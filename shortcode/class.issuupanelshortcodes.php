@@ -64,8 +64,10 @@ class IssuuPanelShortcodes implements IssuuPanelService
 			try {
 				$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 				$result = $issuuDocument->issuuList($params);
+				$requestData = $issuuDocument->getParams();
+				unset($requestData['apiKey']);
 				$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-					"Shortcode [issuu-panel-document-list]: Request Data - " . json_encode($issuuDocument->getParams())
+					"Shortcode [issuu-panel-document-list]: Request Data - " . json_encode($requestData)
 				);
 
 				if ($result['stat'] == 'ok')
@@ -270,8 +272,10 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		try {
 			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 			$result = $issuuBookmark->issuuList($params);
+			$requestData = $issuuBookmark->getParams();
+			unset($requestData['apiKey']);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
+				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($requestData)
 			);
 
 			if ($result['stat'] == 'ok')
@@ -306,8 +310,10 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		try {
 			$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 			$result = $issuuBookmark->issuuList($params);
+			$requestData = $issuuBookmark->getParams();
+			unset($requestData['apiKey']);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage(
-				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($issuuBookmark->getParams())
+				"Shortcode [issuu-panel-folder-list]: Request Data - " . json_encode($requestData)
 			);
 
 			if ($result['stat'] == 'ok')
