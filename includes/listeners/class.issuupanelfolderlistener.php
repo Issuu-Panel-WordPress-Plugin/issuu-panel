@@ -25,8 +25,9 @@ class IssuuPanelFolderListener
 		{
 			$hook->setParam('status', 'success');
 			$message = sprintf(
-				'<div class="updated"><p>%s</p></div>',
-				get_issuu_message('Folder created successfully')
+				'<div class="updated"><p>%s - <a href="/wp-admin/admin.php?page=issuu-folder-admin">%s</a></p></div>',
+				get_issuu_message('Folder created successfully'),
+				get_issuu_message('Back')
 			);
 		}
 		else
@@ -54,8 +55,9 @@ class IssuuPanelFolderListener
 		{
 			$hook->setParam('status', 'success');
 			$message = sprintf(
-				'<div class="updated"><p>%s</p></div>',
-				get_issuu_message('Folder updated successfully')
+				'<div class="updated"><p>%s - <a href="/wp-admin/admin.php?page=issuu-folder-admin">%s</a></p></div>',
+				get_issuu_message('Folder updated successfully'),
+				get_issuu_message('Back')
 			);
 		}
 		else

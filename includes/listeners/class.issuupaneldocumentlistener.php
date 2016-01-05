@@ -8,6 +8,7 @@ class IssuuPanelDocumentListener
 		add_action('on-issuu-panel-url-upload-document', array($this, 'urlUploadDocument'));
 		add_action('on-issuu-panel-update-document', array($this, 'updateDocument'));
 		add_action('on-issuu-panel-delete-document', array($this, 'deleteDocument'));
+		add_action('on-issuu-panel-ajax-docs', array($this, 'ajaxDocs'));
 	}
 
 	public function uploadDocument(IssuuPanelHook $hook)
@@ -32,7 +33,11 @@ class IssuuPanelDocumentListener
 		if ($result['stat'] == 'ok')
 		{
 			$hook->setParam('status', 'success');
-			$message .= '<div class="updated"><p>' . get_issuu_message('Document sent successfully') . '</p></div>';
+			$message .= sprintf(
+				'<div class="updated"><p>%s - <a href="/wp-admin/admin.php?page=issuu-document-admin">%s</a></p></div>',
+				get_issuu_message('Document sent successfully'),
+				get_issuu_message('Back')
+			);
 		}
 		else if ($result['stat'] == 'fail')
 		{
@@ -66,7 +71,11 @@ class IssuuPanelDocumentListener
 		if ($result['stat'] == 'ok')
 		{
 			$hook->setParam('status', 'success');
-			$message .= '<div class="updated"><p>' . get_issuu_message('Document sent successfully') . '</p></div>';
+			$message .= sprintf(
+				'<div class="updated"><p>%s - <a href="/wp-admin/admin.php?page=issuu-document-admin">%s</a></p></div>',
+				get_issuu_message('Document sent successfully'),
+				get_issuu_message('Back')
+			);
 		}
 		else if ($result['stat'] == 'fail')
 		{
@@ -152,7 +161,11 @@ class IssuuPanelDocumentListener
 		if ($result['stat'] == 'ok')
 		{
 			$hook->setParam('status', 'success');
-			$message .= '<div class="updated"><p>' . get_issuu_message('Document updated successfully') . '</p></div>';
+			$message .= sprintf(
+				'<div class="updated"><p>%s - <a href="/wp-admin/admin.php?page=issuu-document-admin">%s</a></p></div>',
+				get_issuu_message('Document sent successfully'),
+				get_issuu_message('Back')
+			);
 		}
 		else if ($result['stat'] == 'fail')
 		{
@@ -216,6 +229,52 @@ class IssuuPanelDocumentListener
 			);
 		}
 		$hook->setParam('message', $message);
+	}
+
+	public function ajaxDocs(IssuuPanelHook $hook)
+	{
+		$config = $hook->getParam('config');
+		$postData = $hook->getParam('postData');
+
+		$doc = $config->getIssuuServiceApi('IssuuDocument')->issuuList(array(
+			'orgDocName' => $postData['name']
+		));
+
+		if ($doc['stat'] == 'ok' && !empty($doc['document']))
+		{
+			$doc = $doc['document'][0];
+
+			if (intval($doc->coverWidth) != 0 && intval($doc->coverHeight) != 0)
+			{
+				$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
+				$response = '<input type="checkbox" name="name[]" class="issuu-checkbox" value="' . $doc->name . '">' .
+					'<div class="document-box">' .
+						'<img src="' . sprintf($image, $doc->documentId) . '">' .
+						'<div class="update-document">' .
+							'<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=' .
+								$doc->orgDocName . '">Editar</a>' .
+						'</div>' .
+					'</div>' .
+					'<p class="description">' . $doc->title . '</p>';
+				$hook->setParam('status', 'success');
+				$hook->setParam('html', $response);
+			}
+			else
+			{
+				$hook->setParam('status', 'fail');
+			}
+		}
+		else
+		{
+			$hook->setParam('status', 'fail');
+			$params = $config->getIssuuServiceApi('IssuuDocument')->getParams();
+			unset($params['apiKey']);
+			$config->getIssuuPanelDebug()->appendMessage(sprintf(
+				"Fail on file request. Message: %s. Request data - %s",
+				$doc['message'],
+				json_encode($params)
+			));
+		}
 	}
 
 	private function createDatetime(array &$postData)
