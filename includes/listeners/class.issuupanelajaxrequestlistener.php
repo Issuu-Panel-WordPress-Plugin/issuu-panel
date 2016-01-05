@@ -185,14 +185,14 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 	public function ajaxDocs()
 	{
-		$getData = filter_input_array(INPUT_GET);
-		unset($getData['action']);
+		$postData = filter_input_array(INPUT_POST);
+		unset($postData['action']);
 		try {
 			$preAction = $this->getConfig()->getHookManager()->triggerAction(
 				'pre-issuu-panel-ajax-docs',
 				null,
 				array(
-					'getData' => $getData,
+					'postData' => $postData,
 					'config' => $this->getConfig(),
 				)
 			);
@@ -200,7 +200,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 				'on-issuu-panel-ajax-docs',
 				null,
 				array(
-					'getData' => $getData,
+					'postData' => $postData,
 					'config' => $this->getConfig(),
 				)
 			);
@@ -208,7 +208,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 				'pos-issuu-panel-ajax-docs',
 				null,
 				array(
-					'getData' => $getData,
+					'postData' => $postData,
 					'config' => $this->getConfig(),
 				)
 			);
@@ -219,7 +219,7 @@ class IssuuPanelAjaxRequestListener implements IssuuPanelService
 
 		$this->jsonResponse(array(
 			'status' => $onAction->getParam('status', 'success'),
-			'html' => $onAction->getParam('response', '')
+			'html' => $onAction->getParam('html', '')
 		));
 	}
 
