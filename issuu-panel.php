@@ -77,6 +77,7 @@ require(ISSUU_PANEL_DIR . 'includes/functions.php');
 |--------------------------------------
 */
 
+require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelloglistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelajaxrequestlistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupanelupdatedatalistener.php');
 require(ISSUU_PANEL_DIR . 'includes/listeners/class.issuupaneldocumentlistener.php');

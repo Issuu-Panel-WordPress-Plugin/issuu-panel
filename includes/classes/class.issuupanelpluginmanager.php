@@ -56,6 +56,7 @@ class IssuuPanelPluginManager
 
 	private function initListeners()
 	{
+		new IssuuPanelLogListener();
 		$ajaxRequestListener = new IssuuPanelAjaxRequestListener();
 		$ajaxRequestListener->setConfig($this->issuuPanelConfig);
 		new IssuuPanelDocumentListener();
