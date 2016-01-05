@@ -4,14 +4,15 @@
 		<p></p>
 	</div>
 	<form action="" method="post" id="delete-documents">
-		<input type="hidden" name="delete" value="true">
 		<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=upload" class="buttons-top button-primary" title="">
 			<?php the_issuu_message('Upload file'); ?>
 		</a>
 		<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=url-upload" class="buttons-top button-primary" title="">
 			<?php the_issuu_message('Upload file by URL'); ?>
 		</a>
-		<input type="submit" class="buttons-top button-secondary button-danger" value="<?php the_issuu_message('Delete'); ?>">
+		<button type="submit" class="buttons-top button-secondary button-danger">
+			<?php the_issuu_message('Delete'); ?>
+		</button>
 		<?php if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize']) : ?>
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
@@ -74,6 +75,30 @@
 
 		$('#delete-documents').submit(function(e){
 			e.preventDefault();
+			var $form = $(this);
+			var $ajaxResult = $('#issuu-panel-ajax-result > p');
+			var formData = new FormData($form[0]);
+			formData.append('action', 'issuu-panel-delete-document');
+			$('html, body').scrollTop(0);
+			$.ajax(ajaxurl, {
+				method : "POST",
+				data : formData,
+				contentType : false,
+				processData : false
+			}).done(function(data) {
+				console.log(data);
+				$ajaxResult.html(data.message);
+
+				if (data.status == 'success') {
+					$.each(data.documents, function(i, doc) {
+						$('[value="' + doc + '"]').parents('.document').remove();
+					});
+				}
+			}).fail(function(x,y,z) {
+				console.log(x);
+				console.log(y);
+				console.log(z);
+			})
 		});
 
 		var idInt = window.setInterval(updateDocs, 5000);
