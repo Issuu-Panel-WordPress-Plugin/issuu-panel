@@ -105,6 +105,9 @@ You can send the translation by e-mail. Send for pedromarcelodesaalves@gmail.com
 
 == Changelog ==
 
+= 1.6.4 =
+* Fixed: Check API key and API secret values with strlen function
+
 = 1.6.3 =
 * Updated: Plugin structure is event-based now
 * Fixed: Upload documents on PHP 5.5 version or upper

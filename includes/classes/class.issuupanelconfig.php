@@ -3,11 +3,11 @@
 class IssuuPanelConfig
 {
 
-	private $issuuPanelDebug;
+    private $issuuPanelDebug;
 
     private $mobileDetect;
 
-	private $issuuPanelCatcher;
+    private $issuuPanelCatcher;
 
     private $issuuPanelSimpleReader;
 
@@ -107,7 +107,7 @@ class IssuuPanelConfig
         $this->issuuPanelCacheManager = new IssuuPanelCacheManager($this->getOptionEntity());
 
         // IssuuServiceApi
-        if (!empty($this->getOptionEntity()->getApiKey()) && !empty($this->getOptionEntity()->getApiSecret()))
+        if (!strlen($this->getOptionEntity()->getApiKey()) > 0 && !strlen($this->getOptionEntity()->getApiSecret()) > 0)
         {
             $this->issuuServiceApi = array(
                 'IssuuDocument' => new IssuuDocument(
