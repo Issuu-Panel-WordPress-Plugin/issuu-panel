@@ -6,7 +6,7 @@
 		<log type="testdox-html" target="tests/testdox.html"/>
 	</logging>
 	<php>
-		<const name="ISSUU_PANEL_UNIT_TEST_WEBSITE_URL" value="http://novotema.dev/"/>
+		<const name="ISSUU_PANEL_UNIT_TEST_WEBSITE_URL" value=""/>
 		<const name="ISSUU_PANEL_UNIT_TEST_WEBSITE_PAGETEST" value="issuu-panel-tests"/>
 	</php>
 </phpunit>
