@@ -17,9 +17,9 @@
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
 					<?php if ($page == $i) : ?>
-						<span class="issuu-painel-number-page"><?= $i; ?></span>
+						<span class="issuu-painel-number-page"><?php echo $i; ?></span>
 					<?php else : ?>
-						<a class="issuu-painel-number-page" href="?page=issuu-document-admin&pn=<?= $i; ?>"><?= $i; ?></a>
+						<a class="issuu-painel-number-page" href="?page=issuu-document-admin&pn=<?php echo $i; ?>"><?php echo $i; ?></a>
 					<?php endif; ?>
 				<?php endfor; ?>
 			</div>
@@ -28,23 +28,23 @@
 			<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
 				<?php foreach ($docs['document'] as $doc) : ?>
 					<?php if (empty($doc->coverWidth) && empty($doc->coverHeight)) : ?>
-						<div id="<?= $doc->orgDocName; ?>" class="document converting">
-							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?= $doc->name; ?>">
+						<div id="<?php echo $doc->orgDocName; ?>" class="document converting">
+							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->name; ?>">
 							<div class="document-box">
 								<div class="loading-issuu"></div>
 					<?php else: ?>
 						<div class="document complete">
-							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?= $doc->name; ?>">
+							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->name; ?>">
 							<div class="document-box">
-								<img src="<?= sprintf($image, $doc->documentId) ?>" alt="">
+								<img src="<?php echo sprintf($image, $doc->documentId) ?>" alt="">
 								<div class="update-document">
-									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=<?= $doc->name; ?>">
+									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=<?php echo $doc->name; ?>">
 										<?php the_issuu_message('Edit'); ?>
 									</a>
 								</div>
 					<?php endif; ?>
 						</div>
-						<p class="description"><?= $doc->title ?></p>
+						<p class="description"><?php echo $doc->title ?></p>
 					</div>
 				<?php endforeach; ?>
 			<?php endif; ?>

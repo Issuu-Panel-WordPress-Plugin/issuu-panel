@@ -63,9 +63,9 @@
 						<?php if (isset($folders['folder']) && !empty($folders['folder'])) : ?>
 							<fieldset>
 								<?php for ($i = 0; $i < $cnt_f; $i++) : ?>
-									<label for="folder<?= $i + 1; ?>">
-										<input id="folder<?= $i + 1; ?>" type="checkbox" name="folder[]" value="<?= $folders['folder'][$i]->folderId; ?>">
-										<?= $folders['folder'][$i]->name; ?> (<?= $folders['folder'][$i]->items; ?>)
+									<label for="folder<?php echo $i + 1; ?>">
+										<input id="folder<?php echo $i + 1; ?>" type="checkbox" name="folder[]" value="<?php echo $folders['folder'][$i]->folderId; ?>">
+										<?php echo $folders['folder'][$i]->name; ?> (<?php echo $folders['folder'][$i]->items; ?>)
 									</label><br>
 								<?php endfor; ?>
 							</fieldset>

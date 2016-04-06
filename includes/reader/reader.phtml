@@ -12,15 +12,15 @@
 			<div class="ip-progress-bar"></div>
 		</div>
 	</div>
-	<ul id="issuu-panel-document" class="issuu-panel-effect" data-ip-reader-pages="<?= $pageCount; ?>">
+	<ul id="issuu-panel-document" class="issuu-panel-effect" data-ip-reader-pages="<?php echo $pageCount; ?>">
 		<?php for($i = 1; $i <= $pageCount; $i++) : ?>
 			<?php if ($i != 1) : ?>
 				<li class="issuu-panel-max-height">
 			<?php else : ?>
 				<li class="ip-doc-active issuu-panel-max-height">
 			<?php endif; ?>
-				<img class="issuu-panel-max-height" src="http://image.issuu.com/<?= $docId; ?>/jpg/page_<?= $i; ?>.jpg"
-					data-ip-reader-page="<?= $i; ?>" alt="Página 1">
+				<img class="issuu-panel-max-height" src="http://image.issuu.com/<?php echo $docId; ?>/jpg/page_<?php echo $i; ?>.jpg"
+					data-ip-reader-page="<?php echo $i; ?>">
 			</li>
 		<?php endfor; ?>
 	</ul>

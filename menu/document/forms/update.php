@@ -4,23 +4,23 @@
 		<p></p>
 	</div>
 	<form action="" method="post" id="document-update">
-		<input type="hidden" name="name" value="<?= $doc->name; ?>">
+		<input type="hidden" name="name" value="<?php echo $doc->name; ?>">
 		<table class="form-table">
 			<tbody>
 				<tr>
 					<th><label for="title"><?php the_issuu_message('Title'); ?></label></th>
-					<td><input type="text" name="title" id="title" class="regular-text code" value="<?= $doc->title; ?>"></td>
+					<td><input type="text" name="title" id="title" class="regular-text code" value="<?php echo $doc->title; ?>"></td>
 				</tr>
 				<tr>
 					<th><label for="description"><?php the_issuu_message('Description'); ?></label></th>
 					<td>
-						<textarea name="description" id="description" cols="45" rows="6"><?= $doc->description; ?></textarea>
+						<textarea name="description" id="description" cols="45" rows="6"><?php echo $doc->description; ?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="tags">Tags</label></th>
 					<td>
-						<textarea name="tags" id="tags" cols="45" rows="6"><?= $tags; ?></textarea>
+						<textarea name="tags" id="tags" cols="45" rows="6"><?php echo $tags; ?></textarea>
 						<p class="description">
 							<?php the_issuu_message('Use commas to separate tags. Do not use spaces.'); ?>
 						</p>
@@ -30,11 +30,11 @@
 					<th><label><?php the_issuu_message('Publish date'); ?></label></th>
 					<td>
 						<input type="text" name="pub[day]" id="dia" placeholder="<?php the_issuu_message('Day'); ?>" class="small-text"
-							maxlength="2" value="<?= date('d', strtotime($doc->publishDate)); ?>"> /
+							maxlength="2" value="<?php echo date('d', strtotime($doc->publishDate)); ?>"> /
 						<input type="text" name="pub[month]" id="mes" placeholder="<?php the_issuu_message('Month'); ?>" class="small-text"
-							maxlength="2" value="<?= date('m', strtotime($doc->publishDate)); ?>"> /
+							maxlength="2" value="<?php echo date('m', strtotime($doc->publishDate)); ?>"> /
 						<input type="text" name="pub[year]" id="ano" placeholder="<?php the_issuu_message('Year'); ?>" class="small-text"
-							maxlength="4" value="<?= date('Y', strtotime($doc->publishDate)); ?>">
+							maxlength="4" value="<?php echo date('Y', strtotime($doc->publishDate)); ?>">
 						<p class="description">
 							<?php the_issuu_message('Date of publication of the document.<br><strong>NOTE:</strong> If you do not enter a value, the current date will be used'); ?>
 						</p>
@@ -44,14 +44,14 @@
 					<th><label for="commentsAllowed"><?php the_issuu_message('Allow comments'); ?></label></th>
 					<td>
 						<input type="checkbox" name="commentsAllowed" id="commentsAllowed" value="true"
-							<?= ($doc->commentsAllowed == true)? 'checked' : ''; ?>>
+							<?php echo ($doc->commentsAllowed == true)? 'checked' : ''; ?>>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="downloadable"><?php the_issuu_message('Allow file download'); ?></label></th>
 					<td>
 						<input type="checkbox" name="downloadable" id="downloadable" value="true"
-							<?= ($doc->downloadable == true)? 'checked' : ''; ?>>
+							<?php echo ($doc->downloadable == true)? 'checked' : ''; ?>>
 					</td>
 				</tr>
 				<tr>

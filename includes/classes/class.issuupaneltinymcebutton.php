@@ -73,11 +73,15 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 		<head>
 			<title>Issuu Panel Shortcode</title>
 			<meta charset="utf-8">
-			<link rel="stylesheet" href="<?= ISSUU_PANEL_URL; ?>assets/css/issuu-painel-tinymce-popup.css">
 			<?php
+				wp_enqueue_script('jquery');
 				wp_enqueue_script('tiny_mce_popup.js', includes_url('js/tinymce/tiny_mce_popup.js'));
-				wp_print_scripts('jquery');
-				wp_print_scripts('tiny_mce_popup.js');
+				wp_enqueue_style('issuu-painel-tinymce-popup', ISSUU_PANEL_URL . 'assets/css/issuu-painel-tinymce-popup.css');
+				// wp_print_styles('issuu-painel-tinymce-popup');
+				// wp_print_scripts('jquery');
+				// wp_print_scripts('tiny_mce_popup.js');
+				do_action('admin_print_styles');
+				do_action('admin_print_scripts');
 			?>
 		</head>
 		<body>
@@ -90,7 +94,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 								<option value="none"><?php the_issuu_message('Select...'); ?></option>
 								<?php if ($result['stat'] == 'ok' && (isset($result['folder']) && !empty($result['folder']))) : ?>
 									<?php foreach ($result['folder'] as $folder) : ?>
-										<option value="<?= $folder->folderId; ?>"><?= $folder->name; ?></option>
+										<option value="<?php echo $folder->folderId; ?>"><?php echo $folder->name; ?></option>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</select>

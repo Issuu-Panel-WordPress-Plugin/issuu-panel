@@ -57,7 +57,7 @@
 					</th>
 					<td class="no-padding-bottom no-padding-right">
 						<input type="text" name="api_key" id="api_key" placeholder="<?php the_issuu_message('Insert API key'); ?>"
-							value="<?= $issuu_panel_api_key; ?>" class="issuu-panel-fat">
+							value="<?php echo $issuu_panel_api_key; ?>" class="issuu-panel-fat">
 					</td>
 				</tr>
 				<tr>
@@ -67,7 +67,7 @@
 					<td class="no-padding-bottom no-padding-right">
 						<input type="text" name="api_secret" id="api_secret" class="issuu-panel-fat"
 							placeholder="<?php the_issuu_message('Insert API secret'); ?>"
-							value="<?= $issuu_panel_api_secret; ?>">
+							value="<?php echo $issuu_panel_api_secret; ?>">
 					</td>
 				</tr>
 				<tr>
@@ -76,9 +76,9 @@
 						<select name="enabled_user" id="enabled_user">
 							<?php foreach ($capabilities as $key => $value) : ?>
 								<?php if ($value == $issuu_panel_capacity) : ?>
-									<option value="<?= $key; ?>" selected><?php the_issuu_message($key); ?></option>
+									<option value="<?php echo $key; ?>" selected><?php the_issuu_message($key); ?></option>
 								<?php else : ?>
-									<option value="<?= $key; ?>"><?php the_issuu_message($key); ?></option>
+									<option value="<?php echo $key; ?>"><?php the_issuu_message($key); ?></option>
 								<?php endif; ?>
 							<?php endforeach; ?>
 						</select>
@@ -91,7 +91,7 @@
 					</th>
 					<td class="no-padding-bottom no-padding-right">
 						<input type="checkbox" name="issuu_panel_debug" id="issuu_panel_debug" value="active"
-							<?= $issuu_panel_debug; ?>/>
+							<?php echo $issuu_panel_debug; ?>/>
 					</td>
 				</tr>
 				<tr>
@@ -100,7 +100,7 @@
 					</th>
 					<td class="no-padding-bottom no-padding-right">
 						<input type="checkbox" name="issuu_panel_cache_status" id="issuu_panel_cache_status" value="active"
-							<?= $issuu_panel_cache_status; ?>/>
+							<?php echo $issuu_panel_cache_status; ?>/>
 					</td>
 				</tr>
 				<tr>
@@ -111,14 +111,14 @@
 						<div class="issuu-panel-radio-group">
 							<label for="issuu_reader_1">
 								<input type="radio" name="issuu_panel_reader" id="issuu_reader_1" value="issuu_embed"
-									<?= $issuu_embed; ?>>
+									<?php echo $issuu_embed; ?>>
 								<strong>Issuu Embed</strong>
 							</label>
 						</div>
 						<div class="issuu-panel-radio-group">
 							<label for="issuu_reader_2">
 								<input type="radio" name="issuu_panel_reader" id="issuu_reader_2"
-									<?= $issuu_panel_simple_reader; ?> value="issuu_panel_simple_reader">
+									<?php echo $issuu_panel_simple_reader; ?> value="issuu_panel_simple_reader">
 								<strong>Issuu Panel Simple Reader</strong>
 							</label>
 							<p class="description">

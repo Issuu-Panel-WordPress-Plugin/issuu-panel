@@ -12,9 +12,9 @@
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
 					<?php if ($page == $i) : ?>
-						<span class="issuu-painel-number-page"><?= $i; ?></span>
+						<span class="issuu-painel-number-page"><?php echo $i; ?></span>
 					<?php else : ?>
-						<a class="issuu-painel-number-page" href="?page=issuu-folder-admin&pn=<?= $i; ?>"><?= $i; ?></a>
+						<a class="issuu-painel-number-page" href="?page=issuu-folder-admin&pn=<?php echo $i; ?>"><?php echo $i; ?></a>
 					<?php endif; ?>
 				<?php endfor; ?>
 			</div>
@@ -22,12 +22,12 @@
 		<div class="issuu-folder-content">
 			<?php foreach ($folders_documents as $key => $value) : ?>
 				<div class="issuu-folder">
-					<input type="checkbox" name="folderId[]" class="issuu-checkbox" value="<?= $key; ?>">
-					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?= $key; ?>">
+					<input type="checkbox" name="folderId[]" class="issuu-checkbox" value="<?php echo $key; ?>">
+					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?php echo $key; ?>">
 						<?php for ($i = 0; $i < 3; $i++) : ?>
 							<?php if (isset($value['documentsId'][$i])) : ?>
 								<div class="folder-item folder-item-doc">
-									<img src="<?= sprintf($image, $value['documentsId'][$i]->documentId); ?>">
+									<img src="<?php echo sprintf($image, $value['documentsId'][$i]->documentId); ?>">
 								</div><!-- END folder-item -->
 							<?php else: ?>
 								<div class="folder-item"></div><!-- END folder-item -->
@@ -35,7 +35,7 @@
 						<?php endfor; ?>
 						<div>
 							<p>
-								<span><?= $value['name']; ?></span>
+								<span><?php echo $value['name']; ?></span>
 							</p>
 						</div>
 					</a>
