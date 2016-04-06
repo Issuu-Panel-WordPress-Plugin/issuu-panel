@@ -107,7 +107,7 @@ class IssuuPanelConfig
         $this->issuuPanelCacheManager = new IssuuPanelCacheManager($this->getOptionEntity());
 
         // IssuuServiceApi
-        if (!strlen($this->getOptionEntity()->getApiKey()) > 0 && !strlen($this->getOptionEntity()->getApiSecret()) > 0)
+        if (strlen($this->getOptionEntity()->getApiKey()) > 0 && strlen($this->getOptionEntity()->getApiSecret()) > 0)
         {
             $this->issuuServiceApi = array(
                 'IssuuDocument' => new IssuuDocument(
