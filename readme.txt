@@ -3,7 +3,7 @@ Contributors: pedromjava
 Tags: issuu, shortcode, embed, documents, folders, panel, admin, widget
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 1.6.3
+Stable tag: 1.6.6
 
 Upload documents, create folders, embed documents in the posts by the WordPress admin panel.
 
@@ -104,6 +104,10 @@ You should have received a copy of the GNU General Public License along with Iss
 You can send the translation by e-mail. Send for pedromarcelodesaalves@gmail.com.
 
 == Changelog ==
+
+= 1.6.6 =
+* Fixed: If's condition would never be true
+* Fixed: Compatibility with versions lower than PHP 5.4
 
 = 1.6.4 =
 * Fixed: Check API key and API secret values with strlen function
