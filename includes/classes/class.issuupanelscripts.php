@@ -29,7 +29,7 @@ class IssuuPanelScripts implements IssuuPanelService
 			case 'issuu_panel_simple_reader':
 				wp_enqueue_script(
 					'issuu-panel-simple-reader',
-					ISSUU_PANEL_URL . 'includes/reader/assets/js/jquery.issuupanelreader.min.js',
+					ISSUU_PANEL_URL . 'includes/reader/js/jquery.issuupanelreader.min.js',
 					array('jquery'),
 					null,
 					true
