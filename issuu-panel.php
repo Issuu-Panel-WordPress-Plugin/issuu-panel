@@ -3,7 +3,7 @@
 Plugin Name: Issuu Panel
 Plugin URI: https://github.com/Issuu-Panel-WordPress-Plugin/issuu-panel
 Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
-Version: 1.6.6
+Version: 1.6.7
 Author: Pedro Marcelo
 Author URI: https://www.linkedin.com/profile/view?id=265534858
 License: GPL3
@@ -11,7 +11,7 @@ License: GPL3
 
 if (defined('ISSUU_PANEL_VERSION'))
 {
-	switch (version_compare(ISSUU_PANEL_VERSION, '1.6.6')) {
+	switch (version_compare(ISSUU_PANEL_VERSION, '1.6.7')) {
 		case -1:
 			wp_die("A lower version of Issuu Panel plugin is already installed");
 			break;
@@ -30,7 +30,7 @@ if (defined('ISSUU_PANEL_VERSION'))
 |--------------------------------------
 */
 
-define('ISSUU_PANEL_VERSION', '1.6.6');
+define('ISSUU_PANEL_VERSION', '1.6.7');
 define('ISSUU_PANEL_DIR', plugin_dir_path(__FILE__));
 define('ISSUU_PANEL_URL', plugin_dir_url(__FILE__));
 define('ISSUU_PANEL_PREFIX', 'issuu_painel_');
@@ -59,7 +59,7 @@ require(ISSUU_PANEL_DIR . 'includes/reader/class.issuupanelsimplereader.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcatcher.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupaneldebug.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelcron.php');
-require(ISSUU_PANEL_DIR . 'includes/mobile-detect/Mobile_Detect.php');
+if (!class_exists('Mobile_Detect')) { require(ISSUU_PANEL_DIR . 'includes/mobile-detect/Mobile_Detect.php'); }
 require(ISSUU_PANEL_DIR . 'issuuservice-lib/bootstrap.php');
 require(ISSUU_PANEL_DIR . 'includes/classes/class.issuupanelconfig.php');
 require(ISSUU_PANEL_DIR . 'includes/interfaces/interface.issuupanelservice.php');

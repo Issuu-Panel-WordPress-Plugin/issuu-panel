@@ -105,6 +105,9 @@ You can send the translation by e-mail. Send for pedromarcelodesaalves@gmail.com
 
 == Changelog ==
 
+= 1.6.7 =
+* Fixed: Conflict in Mobile_Detect inclusion
+
 = 1.6.6 =
 * Fixed: If's condition would never be true
 * Fixed: Compatibility with versions lower than PHP 5.4
