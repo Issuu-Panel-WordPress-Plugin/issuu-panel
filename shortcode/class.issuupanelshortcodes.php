@@ -155,8 +155,8 @@ class IssuuPanelShortcodes implements IssuuPanelService
 							$document = $result['document'][0];
 							$doc = array(
 								'id' => $document->documentId,
-								'thumbnail' => 'http://image.issuu.com/' . $document->documentId . '/jpg/page_1_thumb_large.jpg',
-								'url' => 'http://issuu.com/' . $document->username . '/docs/' . $document->name,
+								'thumbnail' => 'https://image.issuu.com/' . $document->documentId . '/jpg/page_1_thumb_large.jpg',
+								'url' => 'https://issuu.com/' . $document->username . '/docs/' . $document->name,
 								'title' => $document->title
 							);
 						}
@@ -226,8 +226,8 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		foreach ($result['document'] as $doc) {
 			$docs[] = array(
 				'id' => $doc->documentId,
-				'thumbnail' => 'http://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
-				'url' => 'http://issuu.com/' . $doc->username . '/docs/' . $doc->name,
+				'thumbnail' => 'https://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
+				'url' => 'https://issuu.com/' . $doc->username . '/docs/' . $doc->name,
 				'title' => $doc->title,
 				'date' => date_i18n('d/F/Y', strtotime($doc->publishDate)),
 				'pubTime' => strtotime($doc->publishDate),
@@ -249,8 +249,8 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				{
 					$docs[] = array(
 						'id' => $book->documentId,
-						'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-						'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+						'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+						'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 						'title' => $book->title,
 						'date' => date_i18n('d/F/Y', strtotime($document['document']->publishDate)),
 						'pubTime' => strtotime($document['document']->publishDate),
@@ -386,8 +386,8 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				$book = $result['bookmark'][0];
 				$doc = array(
 					'id' => $book->documentId,
-					'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-					'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+					'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+					'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 					'title' => $book->title
 				);
 			}

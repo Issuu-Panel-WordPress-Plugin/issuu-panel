@@ -53,9 +53,9 @@ class IssuuPanelFolderCacheListener
 									{
 										$docs[] = array(
 											'id' => $bookmark->documentId,
-											'thumbnail' => 'http://image.issuu.com/' . $bookmark->documentId .
+											'thumbnail' => 'https://image.issuu.com/' . $bookmark->documentId .
 												'/jpg/page_1_thumb_large.jpg',
-											'url' => 'http://issuu.com/' . $bookmark->username . '/docs/' . $bookmark->name,
+											'url' => 'https://issuu.com/' . $bookmark->username . '/docs/' . $bookmark->name,
 											'title' => $bookmark->title,
 											'date' => date_i18n('d/F/Y', strtotime($document['document']->publishDate)),
 											'pubTime' => strtotime($document['document']->publishDate),

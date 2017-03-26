@@ -85,7 +85,7 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
+		$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
 		$page = (intval(filter_input(INPUT_GET, 'pn')))? : 1;
 		$per_page = 10;
 		$docs = $issuuDocument->issuuList(array(

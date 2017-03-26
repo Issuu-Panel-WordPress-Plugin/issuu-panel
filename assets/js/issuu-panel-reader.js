@@ -15,12 +15,12 @@ var issuuPanel = {
 			issuuPanel.flashvars.documentId = $(this).data('document-id');
 			var id = $(this).data("issuu-viewer");
 			swfobject.embedSWF(
-				"http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
+				"https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
 				id,
 				"100%",
 				"323",
 				"9.0.0",
-				"http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
+				"https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
 				issuuPanel.flashvars,
 				issuuPanel.params,
 				{id : id}
@@ -32,12 +32,12 @@ var issuuPanel = {
 			var id = $(this).data('target');
 
 			swfobject.embedSWF(
-		    	"http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
+		    	"https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
 		    	id,
 		    	"100%",
 		    	"323",
 		    	"9.0.0",
-		    	"http://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
+		    	"https://static.issuu.com/webembed/viewers/style1/v2/IssuuReader.swf",
 		    	issuuPanel.flashvars,
 		    	issuuPanel.params,
 		    	{id : id}

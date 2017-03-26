@@ -23,8 +23,8 @@ if (trim($atts['order_by']) == 'publishDate')
 
 					$docs[] = array(
 						'id' => $book->documentId,
-						'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-						'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+						'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+						'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 						'title' => $book->title,
 						'pubTime' => strtotime($document['document']->publishDate)
 					);
@@ -60,8 +60,8 @@ else
 				foreach ($bookmarks['bookmark'] as $book) {
 					$docs[] = array(
 						'id' => $book->documentId,
-						'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-						'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+						'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+						'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 						'title' => $book->title
 					);
 				}

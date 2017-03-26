@@ -68,8 +68,8 @@ function issuu_painel_embed_documents_shortcode($atts)
 			foreach ($documents['document'] as $doc) {
 				$docs[] = array(
 					'id' => $doc->documentId,
-					'thumbnail' => 'http://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
-					'url' => 'http://issuu.com/' . $doc->username . '/docs/' . $doc->name,
+					'thumbnail' => 'https://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
+					'url' => 'https://issuu.com/' . $doc->username . '/docs/' . $doc->name,
 					'title' => $doc->title,
 					'date' => date_i18n('d/F/Y', strtotime($doc->publishDate)),
 					'pageCount' => $doc->pageCount

@@ -62,9 +62,9 @@ function issuu_panel_the_last_document($atts)
 			if (!empty($docs))
 			{
 				$doc = array(
-					'thumbnail' => 'http://image.issuu.com/' . $docs[0]->documentId . '/jpg/page_1_thumb_large.jpg',
+					'thumbnail' => 'https://image.issuu.com/' . $docs[0]->documentId . '/jpg/page_1_thumb_large.jpg',
 					'title' => $docs[0]->title,
-					'url' => 'http://issuu.com/' . $docs[0]->username . '/docs/' . $docs[0]->name
+					'url' => 'https://issuu.com/' . $docs[0]->username . '/docs/' . $docs[0]->name
 				);
 			}
 			else

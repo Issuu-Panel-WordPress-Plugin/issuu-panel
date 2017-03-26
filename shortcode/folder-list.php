@@ -98,8 +98,8 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 						$docs[] = array(
 							'id' => $book->documentId,
-							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+							'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+							'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 							'title' => $book->title,
 							'pubTime' => strtotime($document['document']->publishDate),
 							'pageCount' => $document['document']->pageCount
@@ -189,8 +189,8 @@ function issuu_painel_embed_folder_shortcode($atts)
 
 						$docs[] = array(
 							'id' => $book->documentId,
-							'thumbnail' => 'http://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
-							'url' => 'http://issuu.com/' . $book->username . '/docs/' . $book->name,
+							'thumbnail' => 'https://image.issuu.com/' . $book->documentId . '/jpg/page_1_thumb_large.jpg',
+							'url' => 'https://issuu.com/' . $book->username . '/docs/' . $book->name,
 							'title' => $book->title,
 							'pageCount' => $document['document']->pageCount
 						);

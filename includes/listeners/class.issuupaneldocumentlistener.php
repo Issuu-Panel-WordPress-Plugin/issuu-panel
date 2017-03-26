@@ -246,7 +246,7 @@ class IssuuPanelDocumentListener
 
 			if (intval($doc->coverWidth) != 0 && intval($doc->coverHeight) != 0)
 			{
-				$image = 'http://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
+				$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
 				$response = '<input type="checkbox" name="name[]" class="issuu-checkbox" value="' . $doc->name . '">' .
 					'<div class="document-box">' .
 						'<img src="' . sprintf($image, $doc->documentId) . '">' .
