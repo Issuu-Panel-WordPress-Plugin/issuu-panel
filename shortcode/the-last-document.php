@@ -18,9 +18,7 @@ function issuu_panel_the_last_document($atts)
 		array(
 			'id' => '',
 			'link' => '',
-			'order_by' => 'publishDate',
-			'result_order' => 'desc',
-			'per_page' => '12'
+			'size' => '10'
 		),
 		$atts
 	);
@@ -51,9 +49,8 @@ function issuu_panel_the_last_document($atts)
 			$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 			$params = array(
 				'resultOrder' => 'desc',
-				'startIndex' => '0',
-				'documentSortBy' => $atts['order_by'],
-				'pageSize' => '1'
+				'page' => '0',
+				'size' => '1'
 			);
 			$docs = $issuu_document->issuuList($params);
 			$docs = isset($docs['document'])? $docs['document'] : array();

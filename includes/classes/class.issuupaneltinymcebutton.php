@@ -103,27 +103,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 					<div class="issuu-painel-table-row">
 						<div class="issuu-painel-table-cell"><?php the_issuu_message('Documents per page'); ?></div>
 						<div class="issuu-painel-table-cell">
-							<input type="text" name="per_page" id="per_page" maxlength="2" size="1">
-						</div>
-					</div>
-					<div class="issuu-painel-table-row">
-						<div class="issuu-painel-table-cell"><?php the_issuu_message('Order'); ?></div>
-						<div class="issuu-painel-table-cell">
-							<select name="result_order" id="result_order">
-								<option value="asc"><?php the_issuu_message('Ascending'); ?></option>
-								<option value="desc"><?php the_issuu_message('Descending'); ?></option>
-							</select>
-						</div>
-					</div>
-					<div class="issuu-painel-table-row">
-						<div class="issuu-painel-table-cell"><?php the_issuu_message('Order by'); ?></div>
-						<div class="issuu-painel-table-cell">
-							<select name="order_by" id="order_by">
-								<option value="title"><?php the_issuu_message('Title'); ?></option>
-								<option value="publishDate"><?php the_issuu_message('Publish date'); ?></option>
-								<option value="description"><?php the_issuu_message('Description'); ?></option>
-								<option value="documentId"><?php the_issuu_message('Document ID'); ?></option>
-							</select>
+							<input type="text" name="size" id="size" maxlength="2" size="1">
 						</div>
 					</div>
 					<div class="issuu-painel-table-row">
@@ -139,7 +119,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 			</form>
 			<script type="text/javascript">
 				(function($){
-					$('#per_page').keypress(function(e){
+					$('#size').keypress(function(e){
 						if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 							return false;
 						}
@@ -147,9 +127,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 
 					$('#issuu-painel-form-popup').submit(function(){
 						var folder_id = $('#folderId').val();
-						var per_page = $('#per_page').val();
-						var result_order = $('#result_order').val();
-						var order_by = $('#order_by').val();
+						var size = $('#size').val();
 
 						if (folder_id == 'none')
 						{
@@ -160,20 +138,17 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 							var shortcode = '[issuu-painel-folder-list id="' + folder_id + '" ';
 						}
 
-						if (per_page.length > 0)
+						if (size.length > 0)
 						{
-							per_page = parseInt(per_page);
+							size = parseInt(size);
 
-							if (per_page < 0 || per_page > 30)
+							if (size < 0 || size > 30)
 							{
-								per_page = 12;
+								size = 12;
 							}
 
-							shortcode += 'per_page="' + per_page + '" ';
+							shortcode += 'size="' + size + '" ';
 						}
-
-						shortcode += 'result_order="' + result_order + '" ';
-						shortcode += 'order_by="' + order_by + '"]';
 
 						tinyMCEPopup.execCommand('mceInsertContent', false, shortcode);
 						tinyMCEPopup.close();

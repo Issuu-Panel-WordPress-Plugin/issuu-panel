@@ -80,7 +80,7 @@ A inserção desses parâmetros é feita internamente.
 					issuu.documents.list
 				</a>
 			</td>
-			<td>Lista todos os documentos do usuário</td>
+			<td>Lista todos os publicações do usuário</td>
 			<td>
 				<ul>
 					<li>$params</li>
@@ -108,7 +108,7 @@ A inserção desses parâmetros é feita internamente.
 					issuu.document.delete
 				</a>
 			</td>
-			<td>Exclui um ou mais documentos do usuário pelos respectivos names</td>
+			<td>Exclui uma ou mais publicações do usuário pelos respectivos names</td>
 			<td>
 				<ul>
 					<li>$params</li>
@@ -227,7 +227,7 @@ A inserção desses parâmetros é feita internamente.
 					issuu.folder.add
 				</a>
 			</td>
-			<td>Cria uma pasta para armazenamento de documentos e/ou marcadores para o usuário</td>
+			<td>Cria uma pasta para armazenamento de publicações e/ou marcadores para o usuário</td>
 			<td>
 				<ul>
 					<li>$params</li>

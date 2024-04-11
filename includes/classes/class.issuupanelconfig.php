@@ -40,7 +40,7 @@ class IssuuPanelConfig
     private $issuu_shortcode_index = 0;
     private $iterator_per_template = array(
         '404' => 0,
-        'page' => 0,
+        'page' => 1,
         'single' => 0,
         'tag' => 0,
         'author' => 0,

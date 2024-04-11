@@ -47,15 +47,11 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		$content = '';
 		$shortcodeData = $this->getShortcodeData('issuu-panel-document-list');
 		$atts = shortcode_atts(array(
-			'order_by' => 'publishDate',
-			'result_order' => 'desc',
-			'per_page' => '12',
+			'size' => '10',
 		), $atts);
 		$params = array(
-			'pageSize' => $atts['per_page'],
-			'startIndex' => ($atts['per_page'] * ($shortcodeData['page'] - 1)),
-			'resultOrder' => $atts['result_order'],
-			'documentSortBy' => $atts['order_by']
+			'size' => $atts['size'],
+			'page' => ($atts['size'] * ($shortcodeData['page'] - 1)),
 		);
 		$content .= $this->shortcodeGenerator->getFromCache($shortcodeData['shortcode'], $atts, $shortcodeData['page']);
 
@@ -92,31 +88,18 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		$shortcodeData = $this->getShortcodeData('issuu-panel-folder-list');
 		$atts = shortcode_atts(array(
 			'id' => '',
-			'order_by' => 'publishDate',
-			'result_order' => 'desc',
-			'per_page' => '12',
+			'size' => '10',
 		), $atts);
 		$params = array(
 			'folderId' => $atts['id'],
-			'pageSize' => $atts['per_page'],
-			'startIndex' => ($atts['per_page'] * ($shortcodeData['page'] - 1)),
-			'resultOrder' => $atts['result_order'],
-			'bookmarkSortBy' => $atts['order_by']
+			'size' => $atts['size'],
+			'page' => ($atts['size'] * ($shortcodeData['page'] - 1)),
 		);
 		$content .= $this->shortcodeGenerator->getFromCache($shortcodeData['shortcode'], $atts, $shortcodeData['page']);
 
 		if (empty($content))
 		{
-			if ($atts['order_by'] == 'publishDate')
-			{
-				unset($params['resultOrder']);
-				unset($params['bookmarkSortBy']);
-				$content .= $this->listOrderedByDate($params, $shortcodeData, $atts);
-			}
-			else
-			{
-				$content .= $this->listNotOrderedByDate($params, $shortcodeData, $atts);
-			}
+            $content .= $this->listNotOrderedByDate($params, $shortcodeData, $atts);
 		}
 		return $content;
 	}
@@ -128,9 +111,7 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		$atts = shortcode_atts(array(
 			'id' => '',
 			'link' => '',
-			'order_by' => 'publishDate',
-			'result_order' => 'desc',
-			'per_page' => '12'
+			'size' => '10'
 		), $atts);
 		$content .= $this->shortcodeGenerator->getFromCache($shortcodeData['shortcode'], $atts, 1);
 
@@ -141,10 +122,9 @@ class IssuuPanelShortcodes implements IssuuPanelService
 				{
 					$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 					$params = array(
-						'pageSize' => 1,
-						'startIndex' => 0,
+						'size' => 1,
+						'page' => 0,
 						'resultOrder' => 'desc',
-						'documentSortBy' => $atts['order_by']
 					);
 					$result = $issuuDocument->issuuList($params);
 
@@ -171,10 +151,6 @@ class IssuuPanelShortcodes implements IssuuPanelService
 					{
 						$content = $this->getErroApiMessage('issuu-panel-last-document', $result);
 					}
-				}
-				else if ($atts['order_by'] == 'publishDate')
-				{
-					$content = $this->getDocumentOrderedByDate($shortcodeData, $atts);
 				}
 				else
 				{
@@ -365,16 +341,14 @@ class IssuuPanelShortcodes implements IssuuPanelService
 		$content = '';
 		$params = array(
 			'folderId' => $atts['id'],
-			'pageSize' => 1,
-			'startIndex' => 0,
-			'resultOrder' => $atts['result_order'],
+			'size' => 1,
+			'page' => 0,
 			'bookmarkSortBy' => 'desc'
 		);
 		$params = array(
-			'pageSize' => '1',
+			'size' => '1',
 			'resultOrder' => 'desc',
-			'startIndex' => '0',
-			'documentSortBy' => $atts['order_by'],
+			'page' => '0',
 		);
 		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 		$result = $issuuBookmark->issuuList($params);

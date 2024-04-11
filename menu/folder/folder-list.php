@@ -8,7 +8,7 @@
 		<button type="submit" class="buttons-top button-secondary button-danger">
 			<?php the_issuu_message('Delete'); ?>
 		</button>
-		<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize']) : ?>
+		<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['size']) : ?>
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
 					<?php if ($page == $i) : ?>

@@ -37,7 +37,7 @@ class IssuuDocument extends IssuuServiceAPI
     *   @access protected
     *   @var string
     */
-    protected $slug_section = 'document';
+    protected $slug_section = 'results';
 
     /**
     *   IssuuDocument::upload()
@@ -70,7 +70,7 @@ class IssuuDocument extends IssuuServiceAPI
         $this->setParams($params);
         $this->setFile($_FILES['file']);
         $response = $this->curlRequest(
-            $this->getUploadUrl(),
+            $this->getUploadUrl($params['slug']),
             $this->params,
             array(),
             false
@@ -159,6 +159,7 @@ class IssuuDocument extends IssuuServiceAPI
     protected function clearObjectXML($document)
     {
         $doc = new stdClass();
+        echo json_encode($document);
 
         $doc->username = $this->validFieldXML($document, 'username');
         $doc->name = $this->validFieldXML($document, 'name');
@@ -224,56 +225,16 @@ class IssuuDocument extends IssuuServiceAPI
     */
     protected function clearObjectJson($document)
     {
-        $doc = new stdClass();
+        $doc = (object) $document;
 
-        $doc->username = $this->validFieldJson($document, 'username');
-        $doc->name = $this->validFieldJson($document, 'name');
-        $doc->documentId = $this->validFieldJson($document, 'documentId');
-        $doc->title = $this->validFieldJson($document, 'title');
-        $doc->access = $this->validFieldJson($document, 'access');
-        $doc->state = $this->validFieldJson($document, 'state');
-        $doc->errorCode = $this->validFieldJson($document, 'errorCode');
-        $doc->preview = $this->validFieldJson($document, 'preview', 2);
-        $doc->category = $this->validFieldJson($document, 'category');
-        $doc->type = $this->validFieldJson($document, 'type');
-
-        $doc->orgDocType = $this->validFieldJson($document, 'orgDocType');
-        $doc->orgDocName = $this->validFieldJson($document, 'orgDocName');
-        $doc->downloadable = $this->validFieldJson($document, 'downloadable', 2);
-        $doc->origin = $this->validFieldJson($document, 'origin');
-        $doc->language = $this->validFieldJson($document, 'language');
-        $doc->rating = $this->validFieldJson($document, 'rating');
-        $doc->ratingsAllowed = $this->validFieldJson($document, 'ratingsAllowed', 2);
-        $doc->ratingDist = $this->validFieldJson($document, 'ratingDist');
-        $doc->commentsAllowed = $this->validFieldJson($document, 'commentsAllowed', 2);
-        $doc->showDetectedLinks = $this->validFieldJson($document, 'showDetectedLinks', 2);
-
-        $doc->pageCount = $this->validFieldJson($document, 'pageCount');
-        $doc->dcla = $this->validFieldJson($document, 'dcla');
-        $doc->ep = $this->validFieldJson($document, 'ep');
-        $doc->publicationCreationTime = $this->validFieldJson($document, 'publicationCreationTime');
-        $doc->publishDate = $this->validFieldJson($document, 'publishDate');
-        $doc->publicOnIssuuTime = $this->validFieldJson($document, 'publicOnIssuuTime');
-        $doc->description = $this->validFieldJson($document, 'description');
-        $doc->coverWidth = $this->validFieldJson($document, 'coverWidth', 1);
-        $doc->coverHeight = $this->validFieldJson($document, 'coverHeight', 1);
-
-        if (isset($document->tags))
-        {
-            $doc->tags = array();
-
-            foreach ($document->tags as $tag) {
-                $doc->tags[] = utf8_decode($tag);
-            }
+        if(isset($doc->cover['small'])) {
+            $doc->coverImage = $doc->cover['small']['url'];
         }
-
-        if (isset($document->folders))
-        {
-            $doc->folders = array();
-
-            foreach ($document->folders as $folder) {
-                $doc->folders[] = (string) $folder;
-            }
+        if(isset($doc->cover['medium'])) {
+            $doc->coverImage = $doc->cover['medium']['url'];
+        }
+        if(isset($doc->cover['large'])) {
+            $doc->coverImage = $doc->cover['large']['url'];
         }
 
         return $doc;

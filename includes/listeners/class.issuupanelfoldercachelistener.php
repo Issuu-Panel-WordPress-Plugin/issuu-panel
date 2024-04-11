@@ -29,8 +29,8 @@ class IssuuPanelFolderCacheListener
 		do {
 			try {
 				$folders = $issuuFolder->issuuList(array(
-					'pageSize' => $perPage,
-					'startIndex' => $perPage * ($pageFolder - 1),
+					'size' => $perPage,
+					'page' => $perPage * ($pageFolder - 1),
 				));
 
 				if ($folders['stat'] == 'ok')
@@ -40,8 +40,8 @@ class IssuuPanelFolderCacheListener
 						do {
 							$bookmarks = $issuuBookmark->issuuList(array(
 								'folderId' => $folder->folderId,
-								'pageSize' => $perPage,
-								'startIndex' => $perPage * ($pageBookmark - 1),
+								'size' => $perPage,
+								'page' => $perPage * ($pageBookmark - 1),
 							));
 
 							if ($bookmarks['stat'] == 'ok')

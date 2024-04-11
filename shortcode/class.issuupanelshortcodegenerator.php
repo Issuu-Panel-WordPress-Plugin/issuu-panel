@@ -73,15 +73,15 @@ class IssuuPanelShortcodeGenerator implements IssuuPanelService
 	{
 		$content = '';
 		$pagination = array(
-			'pageSize' => $results['pageSize'],
+			'size' => $results['size'],
 			'totalCount' => $results['totalCount']
 		);
 		$pageQueryName = $shortcodeData['page_query_name'];
 		$page = $shortcodeData['page'];
 
-		if ($pagination['pageSize'] < $pagination['totalCount'])
+		if ($pagination['size'] < $pagination['totalCount'])
 		{
-			$numberPages = ceil($pagination['totalCount'] / $pagination['pageSize']);
+			$numberPages = ceil($pagination['totalCount'] / $pagination['size']);
 			$permalink = get_permalink();
 
 			$content .= '<div class="issuu-painel-paginate">';
