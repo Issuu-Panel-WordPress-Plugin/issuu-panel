@@ -131,6 +131,15 @@ class IssuuDocument extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
+    public function update($params = array())
+    {
+        return array('stat' => 'error', 'message' => 'Method not implemented');
+    }
+
+    /**
+     *  IssuuDocument::getUpdateData()
+     *  
+     */
     public function getUpdateData($params = array())
     {
         return $this->returnSingleResult($params);
