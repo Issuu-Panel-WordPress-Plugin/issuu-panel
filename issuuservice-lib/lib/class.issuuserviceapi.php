@@ -11,20 +11,12 @@ abstract class IssuuServiceAPI
 {
 
     /**
-    *   Chave de API da aplicação
+    *   Token Bearer da API
     *
     *   @access private
     *   @var string
     */
-    private $api_key;
-
-    /**
-    *   Chave secreta de API da aplicação
-    *
-    *   @access private
-    *   @var string
-    */
-    private $api_secret;
+    private $api_bearer_token;
 
     /**
     *   URL da API do Issuu
@@ -32,7 +24,7 @@ abstract class IssuuServiceAPI
     *   @access private
     *   @var string
     */
-    private $api_url = 'http://api.issuu.com/1_0';
+    private $api_url = 'https://api.issuu.com/v2';
 
     /**
     *   URL de upload do Issuu
@@ -51,20 +43,18 @@ abstract class IssuuServiceAPI
     protected $params;
 
     /**
+     * Header da requisição
+     * @var array
+     */
+    protected $headers = array();
+
+    /**
     *   Parâmetros da requisição em forma de string
     *
     *   @access protected
     *   @var string
     */
     protected $params_str;
-
-    /**
-    *   Assinatura calculada
-    *
-    *   @access protected
-    *   @var string
-    */
-    protected $signature;
 
     /**
     *   Nome do método list
@@ -96,27 +86,18 @@ abstract class IssuuServiceAPI
     *   Construtor da classe
     *
     *   @access public
-    *   @param string $api_key Correspondente a chave de API da aplicação
-    *   @param string $api_secret Correspondente a chave secreta de API da aplicação
-    *   @throws Exception Lança uma exceção caso não seja informada a chave de API ou API secreta
+    *   @param string $api_bearer_token Correspondente ao token Bearer da API
+    *   @throws Exception Lança uma exceção caso não seja informada o token Bearer da API
     */
-    public function __construct($api_key, $api_secret)
+    public function __construct($api_bearer_token)
     {
-        if (is_string($api_key) && strlen($api_key) >= 1)
+        if (is_string($api_bearer_token) && strlen($api_bearer_token) >= 1)
         {
-            if (is_string($api_secret) && strlen($api_secret) >= 1)
-            {
-                $this->api_key = $api_key;
-                $this->api_secret = $api_secret;
-            }
-            else
-            {
-                throw new Exception('A API secreta não é uma String ou está vazia');
-            }
+            $this->api_bearer_token = $api_bearer_token;
         }
         else
         {
-            throw new Exception('A chave de API não é uma String ou está vazia');
+            throw new Exception('O token Bearer da API não foi informado');
         }
     }
 
@@ -130,19 +111,6 @@ abstract class IssuuServiceAPI
     public function __destruct()
     {
         return false;
-    }
-
-    /**
-    *   IssuuServiceAPI::getSignature()
-    *
-    *   Método acessor da variável $signature
-    *
-    *   @access public
-    *   @return string Assinatura que será passada por parâmetro
-    */
-    public function getSignature()
-    {
-        return $this->signature;
     }
 
     /**
@@ -184,10 +152,9 @@ abstract class IssuuServiceAPI
         if (is_array($params) && !empty($params))
         {
             $this->params = $params;
-            $this->params['apiKey'] = $this->api_key;
-            $this->signature = $this->calculateSignature();
-            $this->params['signature'] = $this->signature;
-            $this->params_str = $this->params_str . '&signature=' . $this->signature;
+            $this->headers = array(
+                'Authorization: Bearer ' . $this->api_bearer_token
+            );
         }
         else
         {
@@ -206,30 +173,6 @@ abstract class IssuuServiceAPI
     public function getParams()
     {
         return $this->params;
-    }
-
-    /**
-    *   IssuuServiceAPI::calculateSignature()
-    *
-    *   Faz o cálculo da assinatura
-    *
-    *   @access public
-    *   @return string A assinatura
-    */
-    final public function calculateSignature()
-    {
-        if (ksort($this->params))
-        {
-            $this->params_str = http_build_query($this->params);
-            $this->params_str = urldecode($this->params_str);
-            $sign_str = strtr($this->params_str, array('&' => '', '=' => ''));
-            $this->signature = md5($this->api_secret . $sign_str);
-            return $this->signature;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     /**
@@ -405,7 +348,8 @@ abstract class IssuuServiceAPI
         $this->setParams($params);
         $response = $this->curlRequest(
             $this->getApiUrl(),
-            $this->params
+            $this->params,
+            $this->headers
         );
 
         $slug = $this->slug_section;
@@ -459,7 +403,8 @@ abstract class IssuuServiceAPI
         $this->setParams($params);
         $response = $this->curlRequest(
             $this->getApiUrl(),
-            $this->params
+            $this->params,
+            $this->headers
         );
 
         if (isset($params['format']) && $params['format'] == 'json')
@@ -505,7 +450,8 @@ abstract class IssuuServiceAPI
         $this->setParams($params);
         $response = $this->curlRequest(
             $this->getApiUrl(),
-            $this->params
+            $this->params,
+            $this->headers
         );
 
         $slug = $this->slug_section;

@@ -49,7 +49,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		$folderId = filter_input(INPUT_GET, 'folder');
 		$folder = $issuuFolder->update(array('folderId' => $folderId));
 		$params = $issuuFolder->getParams();
-		unset($params['apiKey']);
+		unset($params['apiBearerToken']);
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 			"Request Data - " . json_encode($params)
 		);

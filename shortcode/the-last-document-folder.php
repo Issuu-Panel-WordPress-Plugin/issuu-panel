@@ -16,7 +16,7 @@ if (trim($atts['order_by']) == 'publishDate')
 			if (isset($bookmarks['bookmark']) && !empty($bookmarks['bookmark']))
 			{
 				$docs = array();
-				$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+				$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 
 				foreach ($bookmarks['bookmark'] as $book) {
 					$document = $issuu_document->update(array('name' => $book->name));

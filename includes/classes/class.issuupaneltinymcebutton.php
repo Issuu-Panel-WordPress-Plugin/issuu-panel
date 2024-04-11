@@ -58,7 +58,7 @@ class IssuuPanelTinyMCEButton implements IssuuPanelService
 			$issuu_folder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 			$result = $issuu_folder->issuuList();
 			$params = $issuu_folder->getParams();
-			unset($params['apiKey']);
+			unset($params['apiBearerToken']);
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal");
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage("TinyMCE Modal params - " . json_encode($params));
 		} catch (Exception $e) {

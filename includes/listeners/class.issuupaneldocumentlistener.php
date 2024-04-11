@@ -268,7 +268,7 @@ class IssuuPanelDocumentListener
 		{
 			$hook->setParam('status', 'fail');
 			$params = $config->getIssuuServiceApi('IssuuDocument')->getParams();
-			unset($params['apiKey']);
+			unset($params['apiBearerToken']);
 			$config->getIssuuPanelDebug()->appendMessage(sprintf(
 				"Fail on file request. Message: %s. Request data - %s",
 				$doc['message'],

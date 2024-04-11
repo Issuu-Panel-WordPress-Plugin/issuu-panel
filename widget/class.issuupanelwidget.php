@@ -39,8 +39,7 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 		$ipanel_url_page = $instance['issuu_panel_url_page'];
 		$ipanel_order_by = $instance['issuu_panel_order_by'];
 		$ipanel_title = $instance['issuu_panel_title'];
-		$issuu_panel_api_key = $this->getConfig()->getOptionEntity()->getApiKey();
-		$issuu_panel_api_secret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$issuu_panel_api_bearer_token = $this->getConfig()->getOptionEntity()->getApiBearerToken();
 
 		$result = $this->getConfig()->getIssuuServiceApi('IssuuFolder')->issuuList();
 		include(ISSUU_PANEL_DIR . 'widget/forms/last-document-shortcode.phtml');

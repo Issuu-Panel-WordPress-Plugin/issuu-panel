@@ -5,8 +5,7 @@ function issuu_panel_the_last_document($atts)
 	$post = get_post();
 	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
 	$issuuPanelConfig = IssuuPanelConfig::getInstance();
-	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
+	$issuu_panel_api_bearer_token = IssuuPanelConfig::getVariable('issuu_panel_api_bearer_token');
 	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
 	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
 	issuu_panel_debug("Shortcode [issuu-panel-last-document]: Init");
@@ -40,7 +39,7 @@ function issuu_panel_the_last_document($atts)
 	if (trim($atts['id']) != '')
 	{
 		try {
-			$issuu_bookmark = new IssuuBookmark($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_bookmark = new IssuuBookmark($issuu_panel_api_bearer_token);
 		} catch (Exception $e) {
 			issuu_panel_debug("Shortcode [issuu-panel-last-document]: Exception - " . $e->getMessage());
 		}
@@ -49,7 +48,7 @@ function issuu_panel_the_last_document($atts)
 	else
 	{
 		try {
-			$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 			$params = array(
 				'resultOrder' => 'desc',
 				'startIndex' => '0',

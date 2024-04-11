@@ -5,8 +5,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	$post = get_post();
 	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
 	$issuuPanelConfig = IssuuPanelConfig::getInstance();
-	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
+	$issuu_panel_api_bearer_token = IssuuPanelConfig::getVariable('issuu_panel_api_bearer_token');
 	$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
 	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
 	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
@@ -46,7 +45,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	);
 
 	try {
-		$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+		$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 		$documents = $issuu_document->issuuList($params);
 		issuu_panel_debug("Shortcode [issuu-painel-document-list]: URL - " . $issuu_document->buildUrl());
 	} catch (Exception $e) {

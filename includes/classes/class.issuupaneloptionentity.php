@@ -3,18 +3,11 @@
 class IssuuPanelOptionEntity
 {
 	/**
-	*	issuu_painel_api_key option
+	*	issuu_painel_api_bearer_token option
 	*
 	*	@var string
 	*/
-	private $apiKey = '';
-
-	/**
-	*	issuu_painel_api_secret option
-	*
-	*	@var string
-	*/
-	private $apiSecret = '';
+	private $apiBearerToken = '';
 
 	/**
 	*	issuu_painel_enabled_user option
@@ -58,30 +51,17 @@ class IssuuPanelOptionEntity
 	*/
 	private $cron = array();
 
-	public function setApiKey($apiKey)
+	public function setApiBearerToken($apiBearerToken)
 	{
-		if (is_string($apiKey))
+		if (is_string($apiBearerToken))
 		{
-			$this->apiKey = trim($apiKey);
+			$this->apiBearerToken = trim($apiBearerToken);
 		}
 	}
 
-	public function getApiKey()
+	public function getApiBearerToken()
 	{
-		return $this->apiKey;
-	}
-
-	public function setApiSecret($apiSecret)
-	{
-		if (is_string($apiSecret))
-		{
-			$this->apiSecret = trim($apiSecret);
-		}
-	}
-
-	public function getApiSecret()
-	{
-		return $this->apiSecret;
+		return $this->apiBearerToken;
 	}
 
 	public function setEnabledUser($enabledUser)
@@ -198,8 +178,7 @@ class IssuuPanelOptionEntity
 	public function toArray($serialize = false)
 	{
 		return array(
-			ISSUU_PANEL_PREFIX . 'api_key' => $this->getApiKey(),
-			ISSUU_PANEL_PREFIX . 'api_secret' => $this->getApiSecret(),
+			ISSUU_PANEL_PREFIX . 'api_bearer_token' => $this->getApiBearerToken(),
 			ISSUU_PANEL_PREFIX . 'enabled_user' => $this->getEnabledUser(),
 			ISSUU_PANEL_PREFIX . 'debug' => $this->getDebug(),
 			ISSUU_PANEL_PREFIX . 'shortcode_cache' => $this->getShortcodeCache($serialize),

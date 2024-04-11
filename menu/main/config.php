@@ -24,8 +24,7 @@ class IssuuPanelMenu implements IssuuPanelPage
 
 	public function page()
 	{
-		$issuu_panel_api_key = $this->getConfig()->getOptionEntity()->getApiKey();
-		$issuu_panel_api_secret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$issuu_panel_api_bearer_token = $this->getConfig()->getOptionEntity()->getApiBearerToken();
 		$issuu_panel_capacity = $this->getConfig()->getCapability();
 		$issuu_panel_reader = $this->getConfig()->getOptionEntity()->getReader();
 		$issuu_embed = ($issuu_panel_reader == 'issuu_embed')? 'checked' : '';

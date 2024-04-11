@@ -16,8 +16,7 @@ class IssuuPanelUpdateDataListener
 		$config = $hook->getParam('config');
 		$postData = $hook->getParam('postData');
 
-		$config->getOptionEntity()->setApiKey($postData['api_key']);
-		$config->getOptionEntity()->setApiSecret($postData['api_secret']);
+		$config->getOptionEntity()->setApiBearerToken($postData['api_bearer_token']);
 		$config->getOptionEntity()->setReader($postData['issuu_panel_reader']);
 		$config->getOptionEntity()->setEnabledUser($postData['enabled_user']);
 

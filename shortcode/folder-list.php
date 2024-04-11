@@ -5,8 +5,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 	$post = get_post();
 	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
 	$issuuPanelConfig = IssuuPanelConfig::getInstance();
-	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
+	$issuu_panel_api_bearer_token = IssuuPanelConfig::getVariable('issuu_panel_api_bearer_token');
 	$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
 	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
 	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
@@ -43,7 +42,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 	if (is_string($atts['id']) && strlen(trim($atts['id'])) > 0)
 	{
 		try {
-			$issuu_bookmark = new IssuuBookmark($issuu_panel_api_key, $issuu_panel_api_secret);
+			$issuu_bookmark = new IssuuBookmark($issuu_panel_api_bearer_token);
 		} catch (Exception $e) {
 			issuu_panel_debug("Shortcode [issuu-painel-folder-list]: IssuuBookmark object Exception - " .
 				$e->getMessage());
@@ -73,7 +72,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 				{
 					$docs = array();
 					try {
-						$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+						$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 					} catch (Exception $e) {
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: IssuuDocument object Exception - " .
 							$e->getMessage());
@@ -169,7 +168,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 				{
 					$docs = array();
 					try {
-						$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+						$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 					} catch (Exception $e) {
 						issuu_panel_debug("Shortcode [issuu-painel-folder-list]: IssuuDocument object Exception - " .
 							$e->getMessage());
