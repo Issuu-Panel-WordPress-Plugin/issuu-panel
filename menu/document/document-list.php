@@ -34,7 +34,7 @@
 								<div class="loading-issuu"></div>
 					<?php else: ?>
 						<div class="document complete">
-							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->fileInfo->name; ?>">
+							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->slug; ?>">
 							<div class="document-box">
 								<img src="<?php echo $doc->coverImage ?>" alt="">
 								<div class="update-document">

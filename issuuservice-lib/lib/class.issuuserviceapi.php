@@ -182,27 +182,31 @@ abstract class IssuuServiceAPI
     *   IssuuServiceAPI::curlRequest()
     *
     *   @access public
-    *   @param string $url URL que será enviada a requisição
-    *   @param string|array $data Dados que serão enviados
-    *   @param array $headers Cabeçalhos adicionais da requisição
-    *   @return mixed Reposta da requisição
+    *   @param string $url URL that will be sent in the request
+    *   @param string|array $data Data that will be sent
+    *   @param array $headers Additional request headers
+    *   @param string $requestType Request type (GET or POST)
+    *   @param array $additionalOptions Additional cURL options
+    *   @return mixed Response of the request
     */
     public function curlRequest(
         $url,
         array $data,
         array $headers = array(),
-        $isGet = true,
+        $requestType = 'GET',
         array $additionalOptions = array()
     ) {
-        if ($isGet == true) {
+        $shouldQueryParameters = $requestType == 'GET' || $requestType == 'DELETE';
+
+        if ($shouldQueryParameters && !empty($data)) {
             $data = urldecode(http_build_query($data));
             $url = $url . '?' . $data;
         }
 
         $options = array(
             CURLOPT_URL => $url,
-            CURLOPT_CUSTOMREQUEST => ($isGet == true)? 'GET' : 'POST',
-            CURLOPT_POSTFIELDS => ($isGet == true)? null : json_encode($data),
+            CURLOPT_CUSTOMREQUEST => $requestType,
+            CURLOPT_POSTFIELDS => ($shouldQueryParameters && !empty($data)) ? null : json_encode($data),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
         );
@@ -404,41 +408,18 @@ abstract class IssuuServiceAPI
     */
     final public function delete($params = array())
     {
-        $params['action'] = $this->delete;
         $this->setParams($params);
-        $response = $this->curlRequest(
-            $this->getApiUrl(),
-            $this->params,
-            $this->headers
-        );
 
-        if (isset($params['format']) && $params['format'] == 'json')
-        {
-            $response = json_decode($response);
-            $response = $response->rsp;
-
-            if ($response->stat == 'ok')
-            {
-                return array('stat' => 'ok');
-            }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
+        foreach ($params['names'] as $slug) {
+            $this->curlRequest(
+                $this->getApiUrl('/publications/'.$slug),
+                array(),
+                $this->headers,
+                'DELETE'
+            );
         }
-        else
-        {
-            $response = new SimpleXMLElement($response);
 
-            if ($response['stat'] == 'ok')
-            {
-                return array('stat' => 'ok');
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
-        }
+        return array('stat' => 'ok');
     }
 
     /**
@@ -478,7 +459,6 @@ abstract class IssuuServiceAPI
                     $result[$slug][] = $this->clearObjectJson($item);
                 }
             }
-
             return $result;
         }
         else
