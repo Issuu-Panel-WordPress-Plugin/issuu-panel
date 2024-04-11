@@ -14,15 +14,6 @@ if (!class_exists('IssuuServiceAPI'))
 */
 class IssuuDocument extends IssuuServiceAPI
 {
-
-    /**
-    *   Método de listagem da seção Document
-    *
-    *   @access protected
-    *   @var string
-    */
-    protected $list = 'issuu.documents.list';
-
     /**
     *   Método de exclusão da seção Document
     *
@@ -140,10 +131,8 @@ class IssuuDocument extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    public function update($params = array())
+    public function getUpdateData($params = array())
     {
-        $params['action'] = 'issuu.document.update';
-
         return $this->returnSingleResult($params);
     }
 

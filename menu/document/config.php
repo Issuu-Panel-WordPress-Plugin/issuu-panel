@@ -61,22 +61,14 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$doc = $issuuDocument->update(array('name' => filter_input(INPUT_GET, 'document')));
+        $slug = filter_input(INPUT_GET, 'publication');
+		$doc = $issuuDocument->getUpdateData(array('slug' => $slug));
 		$tags = '';
 
-		if ($doc['stat'] == 'ok' && !empty($doc['document']))
+		if ($doc['stat'] != 'ok' || empty($doc[$slug]))
 		{
-			$doc = $doc['document'];
-
-			if (isset($doc->tags))
-			{
-				$tags = implode(',', $doc->tags);
-			}
-		}
-		else
-		{
-			$this->getErrorMessage(get_issuu_message('No documents found'));
-			return;
+            $this->getErrorMessage(get_issuu_message('No documents found'));
+            return;
 		}
 		include(ISSUU_PANEL_DIR . 'menu/document/forms/update.php');
 	}

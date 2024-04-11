@@ -354,47 +354,27 @@ abstract class IssuuServiceAPI
     */
     final protected function returnSingleResult($params)
     {
+        $slug = $params['slug'];
         $this->setParams($params);
+        
         $response = $this->curlRequest(
-            $this->getApiUrl(),
-            $this->params,
+            $this->getApiUrl('/publications/'.$slug),
+            array(),
             $this->headers
         );
 
-        $slug = $this->slug_section;
-
-        if (isset($params['format']) && $params['format'] == 'json')
+        $response = json_decode($response, true);
+        
+        if(isset($response['slug']))
         {
-            $response = json_decode($response);
-            $response = $response->rsp;
+            $result['stat'] = 'ok';
+            $result[$slug] = $this->clearObjectJson($response);
 
-            if($response->stat == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectJson($response->_content->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
+            return $result;
         }
         else
         {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectXML($response->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
+            return $this->returnErrorJson($response);
         }
     }
 

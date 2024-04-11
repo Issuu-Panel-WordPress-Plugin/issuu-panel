@@ -38,7 +38,7 @@
 							<div class="document-box">
 								<img src="<?php echo $doc->coverImage ?>" alt="">
 								<div class="update-document">
-									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=<?php echo $doc->fileInfo->name; ?>">
+									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&publication=<?php echo $doc->slug; ?>">
 										<?php the_issuu_message('Edit'); ?>
 									</a>
 								</div>

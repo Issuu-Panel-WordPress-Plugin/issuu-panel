@@ -47,7 +47,7 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 		$folderId = filter_input(INPUT_GET, 'folder');
-		$folder = $issuuFolder->update(array('folderId' => $folderId));
+		$folder = $issuuFolder->getUpdateData(array('folderId' => $folderId));
 		$params = $issuuFolder->getParams();
 		unset($params['apiBearerToken']);
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage(

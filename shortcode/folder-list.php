@@ -77,7 +77,7 @@ function issuu_painel_embed_folder_shortcode($atts)
 
                 foreach ($bookmarks['bookmark'] as $book) {
                     try {
-                        $document = $issuu_document->update(array('name' => $book->name));
+                        $document = $issuu_document->getUpdateData(array('name' => $book->name));
                         issuu_panel_debug("Shortcode [issuu-painel-folder-list]: URL - " .
                             $issuu_document->buildUrl());
                     } catch (Exception $e) {
