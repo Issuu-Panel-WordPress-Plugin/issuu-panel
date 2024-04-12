@@ -40,9 +40,9 @@ class IssuuDocument extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    public function upload($params = array())
+    public function upload($params = array(), $fileUrl = null)
     {
-        if (!isset($_FILES['file']) || empty($_FILES['file']))
+        if ((!isset($_FILES['file']) || empty($_FILES['file'])) && $fileUrl == null)
         {
             header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
             header('Content-Type: text/plain');
@@ -61,6 +61,11 @@ class IssuuDocument extends IssuuServiceAPI
 
         // create draft
         $create_params = array('info' => $params);
+        if($fileUrl != null) {
+            $create_params['fileUrl'] = $fileUrl;
+            $create_params['confirmCopyright'] = 'true';
+        }
+
         $create_response = $this->curlRequest(
             $this->getApiUrl('/drafts'),
             $create_params,
@@ -71,36 +76,38 @@ class IssuuDocument extends IssuuServiceAPI
         $create_response = json_decode($create_response);
         $slug = $create_response->slug;
 
-        // upload file
-        $upload_params = array(
-            'file' => $this->setFile($_FILES['file']),
-            'confirmCopyright' => 'true'
-        );
-        
-        $this->setParams($params, 'multipart/form-data');
-        $upload_response = $this->curlRequest(
-            $this->getUploadUrl($slug),
-            $upload_params,
-            $this->headers,
-            'PATCH_FILE'
-        );
-        $upload_response = json_decode($upload_response);
-
-        // check if already processed
-        $this->setParams($params);
-        while($uploaded == false)
-        {
-            $check_response = $this->curlRequest(
-                $this->getApiUrl('/drafts/'.$slug),
-                array(),
-                $this->headers,
+        // upload file if not already uploaded
+        if($fileUrl == null) {
+            $upload_params = array(
+                'file' => $this->setFile($_FILES['file']),
+                'confirmCopyright' => 'true'
             );
-
-            $check_response = json_decode($check_response);
-
-            if($check_response->fileInfo->conversionStatus == 'DONE')
+            
+            $this->setParams($params, 'multipart/form-data');
+            $upload_response = $this->curlRequest(
+                $this->getUploadUrl($slug),
+                $upload_params,
+                $this->headers,
+                'PATCH_FILE'
+            );
+            $upload_response = json_decode($upload_response);
+    
+            // check if already processed
+            $this->setParams($params);
+            while($uploaded == false)
             {
-                $uploaded = true;
+                $check_response = $this->curlRequest(
+                    $this->getApiUrl('/drafts/'.$slug),
+                    array(),
+                    $this->headers,
+                );
+    
+                $check_response = json_decode($check_response);
+    
+                if($check_response->fileInfo->conversionStatus == 'DONE')
+                {
+                    $uploaded = true;
+                }
             }
         }
 
@@ -138,7 +145,9 @@ class IssuuDocument extends IssuuServiceAPI
     */
     public function urlUpload($params = array())
     {
-        return $this->returnSingleResult($params);
+        $fileUrl = $params['fileUrl'];
+        unset($params['fileUrl']);
+        return $this->upload($params, $fileUrl);
     }
 
     /**

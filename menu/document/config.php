@@ -42,8 +42,6 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	private function uploadPage()
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$folders = $issuuFolder->issuuList();
 		$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 		include(ISSUU_PANEL_DIR . "menu/document/forms/upload.php");
 	}
@@ -51,8 +49,6 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	private function urlUploadPage()
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$folders = $issuuFolder->issuuList();
 		$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 		include(ISSUU_PANEL_DIR . "menu/document/forms/url-upload.php");
 	}
