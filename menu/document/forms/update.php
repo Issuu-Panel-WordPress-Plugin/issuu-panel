@@ -41,7 +41,7 @@
 				<tr>
 					<th><label><?php the_issuu_message('Access'); ?></label></th>
 					<td>
-						<?php if ($doc[$slug]->access == 'private') : ?>
+						<?php if ($doc[$slug]->access == 'PRIVATE') : ?>
 							<p><strong><?php the_issuu_message('Private'); ?></strong></p>
 							<p class="description">
 								<?php the_issuu_message('To publish this document <a href="http://issuu.com/home/publications" target="_blank">click here</a>'); ?>

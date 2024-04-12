@@ -149,13 +149,13 @@ abstract class IssuuServiceAPI
     *   @param array $params
     *   @throws Exception Lança um exceção caso não tenha parâmetros
     */
-    public function setParams($params)
+    public function setParams($params, $content_type = 'application/json')
     {
         if (is_array($params) && !empty($params))
         {
             $this->params = $params;
             $this->headers = array(
-                'Content-Type: application/json',
+                'Content-Type: ' . $content_type,
                 'Authorization: Bearer ' . $this->api_bearer_token
             );
         }
@@ -196,19 +196,33 @@ abstract class IssuuServiceAPI
         $requestType = 'GET',
         array $additionalOptions = array()
     ) {
-        $shouldQueryParameters = $requestType == 'GET' || $requestType == 'DELETE';
+        switch ($requestType) {
+            case 'GET':
+            case 'DELETE':
+                $shouldQueryParameters = true;
+                break;
+            case 'PATCH_FILE':
+                $shouldQueryParameters = false;
+                $requestType = 'PATCH';
+                break;
+            default:
+                $data = json_encode($data);
+                break;
+        }
 
         if ($shouldQueryParameters && !empty($data)) {
             $data = urldecode(http_build_query($data));
             $url = $url . '?' . $data;
         }
-
+        
         $options = array(
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $requestType,
-            CURLOPT_POSTFIELDS => ($shouldQueryParameters && !empty($data)) ? null : json_encode($data),
+            CURLOPT_POSTFIELDS => ($shouldQueryParameters && !empty($data)) ? null : $data,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
         );
         
         foreach ($additionalOptions as $key => $value) {
@@ -485,7 +499,7 @@ abstract class IssuuServiceAPI
     */
     public function update($params)
     {
-        // fix array for sending
+        // clean and fix array for sending request
         $slug = $params['slug'];
         unset($params['slug']);
         unset($params['publishDate']);

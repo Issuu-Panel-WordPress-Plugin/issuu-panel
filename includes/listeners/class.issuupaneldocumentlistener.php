@@ -284,22 +284,22 @@ class IssuuPanelDocumentListener
 
 		if ($data)
 		{
-			$postData['publishDate'] = $datetime;	
+			$postData['originalPublishDate'] = $datetime;	
 		}
 		else
 		{
 			if ($postData['pub']['day'] == '' || $postData['pub']['month'] == '' || $postData['pub']['year'] == '')
 			{
-				$postData['publishDate'] = $date;
+				$postData['originalPublishDate'] = $date;
 			}
 			else
 			{
-				$postData['publishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
+				$postData['originalPublishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
 			}
 
 			if ($postData['pub']['hour'] == '' || $postData['pub']['min'] == '')
 			{
-				$postData['publishDate'] .= $time;
+				$postData['originalPublishDate'] .= $time;
 			}
 			else
 			{
@@ -348,7 +348,7 @@ class IssuuPanelDocumentListener
 					}
 				}
 				
-				$postData['publishDate'] .= $postData['pub']['hour'] . ':' . $postData['pub']['min'] . ':' . $postData['pub']['sec'] . 'Z';
+				$postData['originalPublishDate'] .= $postData['pub']['hour'] . ':' . $postData['pub']['min'] . ':' . $postData['pub']['sec'] . 'Z';
 			}
 
 		}
@@ -371,11 +371,6 @@ class IssuuPanelDocumentListener
 		}
 
 		unset($postData['folder']);
-
-		if (trim($postData['name']) != '')
-		{
-			$postData['name'] = str_replace(" ", "", $postData['name']);
-		}
 
 		if (!isset($postData['downloadable']) || trim($postData['downloadable']) != 'true')
 		{

@@ -49,58 +49,80 @@ class IssuuDocument extends IssuuServiceAPI
             die('This form is not multipart/form-data');
         }
 
-        $params['action'] = 'issuu.document.upload';
-
         foreach ($params as $key => $value) {
             if (isset($value) && ($value == '' || is_null($value)))
             {
                 unset($params[$key]);
             }
         }
-
         $this->setParams($params);
-        $this->setFile($_FILES['file']);
-        $response = $this->curlRequest(
-            $this->getUploadUrl($params['slug']),
-            $this->params,
-            array(),
-            false
+        $friendlyUrl = str_replace(' ', '-', strtolower($params['desiredName']));
+        unset($params['desiredName']);
+
+        // create draft
+        $create_params = array('info' => $params);
+        $create_response = $this->curlRequest(
+            $this->getApiUrl('/drafts'),
+            $create_params,
+            $this->headers,
+            'POST'
         );
 
-        $slug = $this->slug_section;
+        $create_response = json_decode($create_response);
+        $slug = $create_response->slug;
 
-        if (isset($params['format']) && $params['format'] == 'json')
+        // TODO: upload file
+        $upload_params = array(
+            'file' => $this->setFile($_FILES['file']),
+            'confirmCopyright' => 'true'
+        );
+        
+        $this->setParams($params, 'multipart/form-data');
+        $upload_response = $this->curlRequest(
+            $this->getUploadUrl($slug),
+            $upload_params,
+            $this->headers,
+            'PATCH_FILE'
+        );
+        $upload_response = json_decode($upload_response);
+
+        // check if already processed
+        $this->setParams($params);
+        while($uploaded == false)
         {
-            $response = json_decode($response);
-            $response = $response->rsp;
+            $check_response = $this->curlRequest(
+                $this->getApiUrl('/drafts/'.$slug),
+                array(),
+                $this->headers,
+            );
 
-            if($response->stat == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectJson($response->_content->$slug);
+            $check_response = json_decode($check_response);
 
-                return $result;
-            }
-            else
+            if($check_response->fileInfo->conversionStatus == 'DONE')
             {
-                return $this->returnErrorJson($response);
+                $uploaded = true;
             }
+        }
+
+        // publish
+        $response = $this->curlRequest(
+            $this->getApiUrl('/drafts/'.$slug.'/publish'),
+            array("desiredName" => $friendlyUrl),
+            $this->headers,
+            'POST'
+        );
+        $response = json_decode($response);
+        
+        if(isset($response->publicLocation))
+        {
+            $result['stat'] = 'ok';
+            $result[$slug] = $this->clearObjectJson($response);
+
+            return $result;
         }
         else
         {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectXML($response->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
+            return $this->returnErrorJson($response);
         }
     }
 
@@ -226,7 +248,7 @@ class IssuuDocument extends IssuuServiceAPI
     {
         if (version_compare(PHP_VERSION, '5.5', '>='))
         {
-            $this->params['file'] = new CURLFile(
+            $fileParams = new CURLFile(
                 $file['tmp_name'],
                 $file['type'],
                 $file['name']
@@ -234,8 +256,10 @@ class IssuuDocument extends IssuuServiceAPI
         }
         else
         {
-            $this->params['file'] = '@' . $file['tmp_name'];
+            $fileParams = '@' . $file['tmp_name'];
         }
+
+        return $fileParams;
     }
  
 }

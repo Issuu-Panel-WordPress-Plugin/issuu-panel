@@ -85,11 +85,11 @@
 					<td>
 						<fieldset>
 							<label for="acesso1">
-								<input type="radio" name="access" id="acesso1" value="public">
+								<input type="radio" name="access" id="acesso1" value="PUBLIC">
 								<?php the_issuu_message('Public'); ?>
 							</label><br>
 							<label for="acesso2">
-								<input type="radio" name="access" id="acesso2" value="private">
+								<input type="radio" name="access" id="acesso2" value="PRIVATE">
 								<?php the_issuu_message('Private'); ?>
 							</label>
 						</fieldset>
