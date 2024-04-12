@@ -472,6 +472,61 @@ abstract class IssuuServiceAPI
         return $this->buildUrl(false, $slug);
     }
 
+
+    /**
+    *   IssuuDocument::update()
+    *
+    *   Relacionado ao método issuu.document.update da API.
+    *   Atualiza os dados de um determinado documento.
+    *
+    *   @access public
+    *   @param array $params Correspondente aos parâmetros da requisição
+    *   @return array Retorna um array com a resposta da requisição
+    */
+    public function update($params)
+    {
+        // fix array for sending
+        $slug = $params['slug'];
+        unset($params['slug']);
+        unset($params['publishDate']);
+        $params = array('info' => $params);
+
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/drafts/'.$slug),
+            $this->params,
+            $this->headers,
+            'PATCH'
+        );
+
+        $response = json_decode($response, true);
+        if(isset($response['slug']))
+        {
+            $friendlyUrl = str_replace(' ', '-', strtolower($params['info']['title']));
+            $response = $this->curlRequest(
+                $this->getApiUrl('/drafts/'.$slug.'/publish'),
+                array("desiredName" => $friendlyUrl),
+                $this->headers,
+                'POST'
+            );
+            if(isset($response))
+            {
+                $result['stat'] = 'ok';
+                $result[$params['slug']] = $this->clearObjectJson($response);
+
+                return $result;
+            }
+            else
+            {
+                return $this->returnErrorJson($response);
+            }
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
     /**
     *   IssuuServiceAPI::clearObjectXML()
     *

@@ -122,21 +122,6 @@ class IssuuDocument extends IssuuServiceAPI
     }
 
     /**
-    *   IssuuDocument::update()
-    *
-    *   Relacionado ao método issuu.document.update da API.
-    *   Atualiza os dados de um determinado documento.
-    *
-    *   @access public
-    *   @param array $params Correspondente aos parâmetros da requisição
-    *   @return array Retorna um array com a resposta da requisição
-    */
-    public function update($params = array())
-    {
-        return array('stat' => 'error', 'message' => 'Method not implemented');
-    }
-
-    /**
      *  IssuuDocument::getUpdateData()
      *  
      */
@@ -178,7 +163,6 @@ class IssuuDocument extends IssuuServiceAPI
         $doc->rating = $this->validFieldXML($document, 'rating');
         $doc->ratingsAllowed = $this->validFieldXML($document, 'ratingsAllowed', 2);
         $doc->ratingDist = $this->validFieldXML($document, 'ratingDist');
-        $doc->commentsAllowed = $this->validFieldXML($document, 'commentsAllowed', 2);
         $doc->showDetectedLinks = $this->validFieldXML($document, 'showDetectedLinks', 2);
 
         $doc->pageCount = $this->validFieldXML($document, 'pageCount');

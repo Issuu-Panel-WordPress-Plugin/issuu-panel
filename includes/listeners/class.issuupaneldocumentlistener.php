@@ -112,33 +112,23 @@ class IssuuPanelDocumentListener
 
 		if ($data)
 		{
-			$postData['publishDate'] = $datetime;
+			$postData['originalPublishDate'] = $datetime;
 		}
 		else
 		{
 			if ($postData['pub']['day'] == '' || $postData['pub']['month'] == '' || $postData['pub']['year'] == '')
 			{
-				$postData['publishDate'] = $date;
+				$postData['originalPublishDate'] = $date;
 			}
 			else
 			{
-				$postData['publishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
+				$postData['originalPublishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
 			}
 
-			$postData['publishDate'] .= $time;
+			$postData['originalPublishDate'] .= $time;
 		}
 
 		unset($postData['pub']);
-
-		if (trim($postData['name']) != '')
-		{
-			$postData['name'] = str_replace(" ", "", $postData['name']);
-		}
-
-		if (!isset($postData['commentsAllowed']) || trim($postData['commentsAllowed']) != 'true')
-		{
-			$postData['commentsAllowed'] = 'false';
-		}
 
 		if (!isset($postData['downloadable']) || trim($postData['downloadable']) != 'true')
 		{
@@ -385,11 +375,6 @@ class IssuuPanelDocumentListener
 		if (trim($postData['name']) != '')
 		{
 			$postData['name'] = str_replace(" ", "", $postData['name']);
-		}
-
-		if (!isset($postData['commentsAllowed']) || trim($postData['commentsAllowed']) != 'true')
-		{
-			$postData['commentsAllowed'] = 'false';
 		}
 
 		if (!isset($postData['downloadable']) || trim($postData['downloadable']) != 'true')

@@ -4,7 +4,7 @@
 		<p></p>
 	</div>
 	<form action="" method="post" id="document-update">
-		<input type="hidden" name="name" value="<?php echo ($doc[$slug]->fileInfo['name']); ?>">
+        <input type="hidden" name="slug" value="<?php echo $slug; ?>">
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -83,7 +83,7 @@
 				$ajaxResult.html(data.message);
 
 				if (data.status == 'success') {
-					$form[0].reset();
+                    window.location.reload();
 				}
 			}).fail(function(x, y, z){
 				console.log(x);
