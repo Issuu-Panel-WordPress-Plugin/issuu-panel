@@ -366,31 +366,7 @@ abstract class IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    final protected function returnSingleResult($params)
-    {
-        $slug = $params['slug'];
-        $this->setParams($params);
-        
-        $response = $this->curlRequest(
-            $this->getApiUrl('/publications/'.$slug),
-            array(),
-            $this->headers
-        );
-
-        $response = json_decode($response, true);
-        
-        if(isset($response['slug']))
-        {
-            $result['stat'] = 'ok';
-            $result[$slug] = $this->clearObjectJson($response);
-
-            return $result;
-        }
-        else
-        {
-            return $this->returnErrorJson($response);
-        }
-    }
+    protected function returnSingleResult($params) {}
 
     /**
     *   IssuuServiceAPI::delete()

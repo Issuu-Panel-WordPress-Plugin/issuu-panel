@@ -72,6 +72,36 @@ class IssuuFolder extends IssuuServiceAPI
         }
     }
 
+    protected function returnSingleResult($params)
+    {
+        $stackId = $params['folderId'];
+        $this->setParams($params);
+        
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks/'.$stackId),
+            array(),
+            $this->headers
+        );
+        $response = json_decode($response, true);
+        
+        if(isset($response['id']))
+        {
+            $result['stat'] = 'ok';
+            $result['stack'] = $this->clearObjectJson($response);
+
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+    public function getUpdateData($params = array())
+    {
+        return $this->returnSingleResult($params);
+    }
+
     /**
     *   IssuuBookmark::stackList()
     *

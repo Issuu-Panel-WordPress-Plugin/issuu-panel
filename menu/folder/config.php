@@ -57,13 +57,8 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		if ($folder['stat'] == 'ok')
 		{
 			$bookmarks = $issuuBookmark->issuuList(array('folderId' => $folderId));
-			$folder = $folder['folder'];
+			$folder = $folder['stack'];
 			$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
-			$folders_documents = array(
-				'name' => $folder->name,
-				'items' => $folder->items,
-				'documentsId' => (($bookmarks['stat'] == 'ok')? $bookmarks['bookmark'] : array()),
-			);
 			include(ISSUU_PANEL_DIR . 'menu/folder/forms/update.php');
 		}
 		else
