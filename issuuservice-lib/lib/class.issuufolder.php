@@ -58,6 +58,49 @@ class IssuuFolder extends IssuuServiceAPI
     }
 
     /**
+    *   IssuuBookmark::stackList()
+    *
+    *   Lista stacks
+    *
+    *   @access public
+    *   @param array $params Correspondente aos parâmetros da requisição
+    */
+    public function stackList($params = array())
+    {
+        $this->setParams($params);
+
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks'),
+            $this->params,
+            $this->headers,
+        );
+
+        $slug = $this->slug_section;
+        $response = json_decode($response, true);
+
+        if ($response['results'])
+        {
+            $result['stat'] = 'ok';
+            $result['totalCount'] = (int) $response['count'];
+            $result['page'] = (int) $params['page'];
+            $result['size'] = (int) $response['pageSize'];
+            $result['more'] = !!$response['links']['next'] ? true : false;
+
+            if (!empty($response['results']))
+            {
+                foreach ($response['results'] as $item) {
+                    $result[$slug][] = $this->clearObjectJson($item);
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+    /**
     *   IssuuFolder::update()
     *
     *   Relacionado ao método issuu.folder.update da API.
@@ -85,17 +128,7 @@ class IssuuFolder extends IssuuServiceAPI
     */
     protected function clearObjectJson($folder)
     {
-        $fold = new stdClass();
-
-        $fold->folderId = $this->validFieldJson($folder, 'folderId');
-        $fold->username = $this->validFieldJson($folder, 'username');
-        $fold->name = $this->validFieldJson($folder, 'name');
-        $fold->description = $this->validFieldJson($folder, 'description');
-        $fold->description = $this->validFieldJson($folder, 'description');
-        $fold->items = $this->validFieldJson($folder, 'items', 1);
-        $fold->itemCount = $this->validFieldJson($folder, 'itemCount', 1);
-        $fold->ep = $this->validFieldJson($folder, 'ep', 1);
-        $fold->created = $this->validFieldJson($folder, 'created');
+        $fold = (object) $folder;
 
         return $fold;
     }
