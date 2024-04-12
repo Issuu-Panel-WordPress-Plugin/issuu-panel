@@ -426,7 +426,6 @@ abstract class IssuuServiceAPI
     */
     final public function issuuList($params = array())
     {
-        $params['page'] = 1;
         $this->setParams($params);
 
         $response = $this->curlRequest(

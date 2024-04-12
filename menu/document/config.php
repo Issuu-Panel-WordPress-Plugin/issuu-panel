@@ -78,16 +78,16 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 		$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
-		$page = (intval(filter_input(INPUT_GET, 'pn')))? : 2;
+		$page = (intval(filter_input(INPUT_GET, 'pn')))? : 1;
 		$size = 10;
 		$docs = $issuuDocument->issuuList(array(
 			'size' => $size,
-			'page' => $size * ($page - 1)
+			'page' => $page
 		));
 		
 		if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['size'])
 		{
-			$number_pages = ceil($docs['totalCount'] / $size);
+            $number_pages = ceil($docs['totalCount'] / $size);
 		}
 		require(ISSUU_PANEL_DIR . 'menu/document/document-list.php');
 	}
