@@ -159,6 +159,22 @@ class IssuuDocument extends IssuuServiceAPI
         return $this->returnSingleResult($params);
     }
 
+
+    public function delete($params = array())
+    {
+        $this->setParams($params);
+        foreach ($params['names'] as $slug) {
+            $response = $this->curlRequest(
+                $this->getApiUrl('/publications/'.$slug),
+                array(),
+                $this->headers,
+                'DELETE'
+            );
+        }
+
+        return array('stat' => 'ok');
+    }
+    
     /**
     *   IssuuDocument::clearObjectXML()
     *

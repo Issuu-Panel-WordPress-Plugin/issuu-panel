@@ -101,6 +101,26 @@ class IssuuFolder extends IssuuServiceAPI
     }
 
     /**
+     *  IssuuFolder::delete()
+     * 
+     * Deleta uma ou mais stacks.
+     */
+    public function delete($params = array())
+    {
+        $this->setParams($params);
+        foreach ($params['stackIds'] as $slug) {
+            $response = $this->curlRequest(
+                $this->getApiUrl('/stacks/'.$slug),
+                array(),
+                $this->headers,
+                'DELETE'
+            );
+        }
+
+        return array('stat' => 'ok');
+    }
+
+    /**
     *   IssuuFolder::update()
     *
     *   Relacionado ao método issuu.folder.update da API.

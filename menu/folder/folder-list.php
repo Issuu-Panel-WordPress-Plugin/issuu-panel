@@ -22,7 +22,7 @@
 		<div class="issuu-folder-content">
             <?php foreach ($folders['folder'] as $folder) : ?>
 				<div class="issuu-folder">
-					<input type="checkbox" name="folderId[]" class="issuu-checkbox" value="<?php echo $folder->id; ?>">
+					<input type="checkbox" name="stackId[]" class="issuu-checkbox" value="<?php echo $folder->id; ?>">
 					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?php echo $folder->id; ?>">
                         <div class="folder-item"></div>
                         <div class="folder-item"></div>
@@ -69,13 +69,7 @@
 				$ajaxResult.html(data.message);
 
 				if (data.folders.length > 0) {
-					$.each(data.folders, function(i, item) {
-						var folder = $('input[value="' + item + '"]');
-
-						if (folder.length > 0) {
-							folder.parents('.issuu-folder').remove();
-						}
-					});
+					window.location.reload();
 				}
 			}).fail(function(x, y, z){
 				console.log(x);

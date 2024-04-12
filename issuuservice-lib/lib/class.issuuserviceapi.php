@@ -400,20 +400,7 @@ abstract class IssuuServiceAPI
     *   @access public
     *   @param array $params Correspondente aos parâmetros da requisição
     */
-    final public function delete($params = array())
-    {
-        $this->setParams($params);
-        foreach ($params['names'] as $slug) {
-            $response = $this->curlRequest(
-                $this->getApiUrl('/publications/'.$slug),
-                array(),
-                $this->headers,
-                'DELETE'
-            );
-        }
-
-        return array('stat' => 'ok');
-    }
+    public function delete($params = array()){}
 
     /**
     *   IssuuServiceAPI::issuuList()
