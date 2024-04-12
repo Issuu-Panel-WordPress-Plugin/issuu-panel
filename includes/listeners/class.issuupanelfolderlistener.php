@@ -19,6 +19,7 @@ class IssuuPanelFolderListener
 				unset($postData[$key]);
 			}
 		}
+        $postData['accessType'] = 'PUBLIC';
 		$response = $config->getIssuuServiceApi('IssuuFolder')->add($postData);
 
 		if ($response['stat'] == 'ok')

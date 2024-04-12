@@ -52,9 +52,24 @@ class IssuuFolder extends IssuuServiceAPI
     */
     public function add($params)
     {
-        $params['action'] = 'issuu.folder.add';
-        
-        return $this->returnSingleResult($params);
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks'),
+            $params,
+            $this->headers,
+            'POST'
+        );
+
+        if (isset($response))
+        {
+            $result['stat'] = 'ok';
+            $result['stackId'] = $response;
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
     }
 
     /**
