@@ -175,11 +175,29 @@ class IssuuFolder extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    public function update($params = array())
+    public function update($params)
     {
-        $params['action'] = 'issuu.folder.update';
+        $slug = $params['id'];
+        unset($params['id']);
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks/'.$slug),
+            $this->params,
+            $this->headers,
+            'PATCH'
+        );
 
-        return $this->returnSingleResult($params);
+        if(isset($response))
+        {
+            $result['stat'] = 'ok';
+            $result[$params['slug']] = $this->clearObjectJson($response);
+
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
     }
 
     /**

@@ -74,6 +74,7 @@
 					processData : false
 				}).done(function(data){
 					$ajaxResult.html(data.message);
+                    window.location.reload();
 				}).fail(function(x, y, z){
 					console.log(x);
 					console.log(y);
