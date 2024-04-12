@@ -403,9 +403,8 @@ abstract class IssuuServiceAPI
     final public function delete($params = array())
     {
         $this->setParams($params);
-
         foreach ($params['names'] as $slug) {
-            $this->curlRequest(
+            $response = $this->curlRequest(
                 $this->getApiUrl('/publications/'.$slug),
                 array(),
                 $this->headers,

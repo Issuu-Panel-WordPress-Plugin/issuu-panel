@@ -90,9 +90,7 @@
 				$ajaxResult.html(data.message);
 
 				if (data.status == 'success') {
-					$.each(data.documents, function(i, doc) {
-						$('[value="' + doc + '"]').parents('.document').remove();
-					});
+					window.location.reload();
 				}
 			}).fail(function(x,y,z) {
 				console.log(x);

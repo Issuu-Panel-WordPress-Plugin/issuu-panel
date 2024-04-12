@@ -181,7 +181,7 @@ class IssuuPanelDocumentListener
 		if ($count > 0)
 		{
 			$result = $config->getIssuuServiceApi('IssuuDocument')->delete(array(
-				'names' => implode(',', $params['names'])
+				'names' => $params['names']
 			));
 
 			if ($result['stat'] == 'ok')

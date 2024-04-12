@@ -71,7 +71,7 @@ class IssuuDocument extends IssuuServiceAPI
         $create_response = json_decode($create_response);
         $slug = $create_response->slug;
 
-        // TODO: upload file
+        // upload file
         $upload_params = array(
             'file' => $this->setFile($_FILES['file']),
             'confirmCopyright' => 'true'
@@ -138,8 +138,6 @@ class IssuuDocument extends IssuuServiceAPI
     */
     public function urlUpload($params = array())
     {
-        $params['action'] = 'issuu.document.url_upload';
-
         return $this->returnSingleResult($params);
     }
 
