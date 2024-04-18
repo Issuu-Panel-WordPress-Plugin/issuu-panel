@@ -122,14 +122,13 @@ class IssuuFolder extends IssuuServiceAPI
 
         $slug = $this->slug_section;
         $response = json_decode($response, true);
-
-        if ($response['results'])
+        if (isset($response['results']) && !empty($response['results']))
         {
             $result['stat'] = 'ok';
-            $result['totalCount'] = (int) $response['count'];
-            $result['page'] = (int) $params['page'];
-            $result['size'] = (int) $response['pageSize'];
-            $result['more'] = !!$response['links']['next'] ? true : false;
+            $result['totalCount'] = isset($response['count']) ? (int) $response['count'] : 0;
+            $result['page'] = isset($params['page']) ? (int) $params['page'] : 0;
+            $result['size'] = isset($response['pageSize']) ? (int) $response['pageSize'] : 0;
+            $result['more'] = isset($response['links']['next']) ? true : false;
 
             if (!empty($response['results']))
             {

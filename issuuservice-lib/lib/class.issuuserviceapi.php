@@ -402,10 +402,11 @@ abstract class IssuuServiceAPI
 
         if ($response['results'])
         {
+            $result = array();
             $result['stat'] = 'ok';
-            $result['totalCount'] = (int) $response['count'];
-            $result['page'] = (int) $params['page'];
-            $result['size'] = (int) $response['pageSize'];
+            $result['totalCount'] = isset($response['count']) ? (int) $response['count'] : 0;
+            $result['page'] = isset($params['page']) ? (int) $params['page'] : 0;
+            $result['size'] = isset($response['pageSize']) ? (int) $response['pageSize'] : 0;
             $result['more'] = !!$response['links']['next'] ? true : false;
 
             if (!empty($response['results']))
