@@ -42,8 +42,6 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	private function uploadPage()
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$folders = $issuuFolder->issuuList();
 		$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 		include(ISSUU_PANEL_DIR . "menu/document/forms/upload.php");
 	}
@@ -51,8 +49,6 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	private function urlUploadPage()
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
-		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$folders = $issuuFolder->issuuList();
 		$cnt_f = (isset($folders['folder']))? count($folders['folder']) : 0;
 		include(ISSUU_PANEL_DIR . "menu/document/forms/url-upload.php");
 	}
@@ -61,22 +57,14 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 	{
 		$issuuDocument = $this->getConfig()->getIssuuServiceApi('IssuuDocument');
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$doc = $issuuDocument->update(array('name' => filter_input(INPUT_GET, 'document')));
+        $slug = filter_input(INPUT_GET, 'publication');
+		$doc = $issuuDocument->getUpdateData(array('slug' => $slug));
 		$tags = '';
 
-		if ($doc['stat'] == 'ok' && !empty($doc['document']))
+		if ($doc['stat'] != 'ok' || empty($doc[$slug]))
 		{
-			$doc = $doc['document'];
-
-			if (isset($doc->tags))
-			{
-				$tags = implode(',', $doc->tags);
-			}
-		}
-		else
-		{
-			$this->getErrorMessage(get_issuu_message('No documents found'));
-			return;
+            $this->getErrorMessage(get_issuu_message('No documents found'));
+            return;
 		}
 		include(ISSUU_PANEL_DIR . 'menu/document/forms/update.php');
 	}
@@ -87,15 +75,15 @@ class IssuuPanelPageDocuments extends IssuuPanelSubmenu
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 		$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
 		$page = (intval(filter_input(INPUT_GET, 'pn')))? : 1;
-		$per_page = 10;
+		$size = 10;
 		$docs = $issuuDocument->issuuList(array(
-			'pageSize' => $per_page,
-			'startIndex' => $per_page * ($page - 1)
+			'size' => $size,
+			'page' => $page
 		));
 		
-		if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize'])
+		if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['size'])
 		{
-			$number_pages = ceil($docs['totalCount'] / $per_page);
+            $number_pages = ceil($docs['totalCount'] / $size);
 		}
 		require(ISSUU_PANEL_DIR . 'menu/document/document-list.php');
 	}

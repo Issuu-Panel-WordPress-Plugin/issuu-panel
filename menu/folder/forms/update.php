@@ -4,20 +4,20 @@
 		<p></p>
 	</div>
 	<form action="" id="update-folder" method="post" accept-charset="utf-8">
-		<input type="hidden" name="folderId" value="<?php echo $folder->folderId; ?>">
+		<input type="hidden" name="id" value="<?php echo $folder->id; ?>">
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th><label for="folderName"><?php the_issuu_message("Folder's name"); ?></label></th>
+					<th><label for="title"><?php the_issuu_message("Folder's name"); ?></label></th>
 					<td>
-						<input type="text" name="folderName" id="folderName" class="regular-text code"
-							value="<?php echo $folder->name; ?>">
+						<input type="text" name="title" id="title" class="regular-text code"
+							value="<?php echo $folder->title; ?>">
 					</td>
 				</tr>
 				<tr>
-					<th><label for="folderDescription"><?php the_issuu_message('Description'); ?></label></th>
+					<th><label for="description"><?php the_issuu_message('Description'); ?></label></th>
 					<td>
-						<textarea name="folderDescription" id="folderDescription"
+						<textarea name="description" id="description"
 							cols="45" rows="6"><?php echo $folder->description; ?></textarea>
 					</td>
 				</tr>
@@ -61,7 +61,7 @@
 			var $ajaxResult = $('#issuu-panel-ajax-result > p');
 			var formData;
 
-			if ($form.find('#folderName').val().trim() == "") {
+			if ($form.find('#title').val().trim() == "") {
 				alert('<?php the_issuu_message("Insert folder\'s name"); ?>');
 			} else {
 				$('html, body').scrollTop(0);
@@ -74,6 +74,7 @@
 					processData : false
 				}).done(function(data){
 					$ajaxResult.html(data.message);
+                    window.location.reload();
 				}).fail(function(x, y, z){
 					console.log(x);
 					console.log(y);

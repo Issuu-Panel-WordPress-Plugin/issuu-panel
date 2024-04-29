@@ -58,9 +58,9 @@ foreach ($docs as $doc) {
 $content .= '</div><!-- /.issuu-painel-list -->';
 $content .= '</div><!-- /.issuupainel -->';
 
-if ($pagination['pageSize'] < $pagination['totalCount'])
+if ($pagination['size'] < $pagination['totalCount'])
 {
-	$number_pages = ceil($pagination['totalCount'] / $pagination['pageSize']);
+	$number_pages = ceil($pagination['totalCount'] / $pagination['size']);
 	$permalink = get_permalink();
 
 	$content .= '<div class="issuu-painel-paginate">';

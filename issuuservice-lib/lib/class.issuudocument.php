@@ -14,15 +14,6 @@ if (!class_exists('IssuuServiceAPI'))
 */
 class IssuuDocument extends IssuuServiceAPI
 {
-
-    /**
-    *   Método de listagem da seção Document
-    *
-    *   @access protected
-    *   @var string
-    */
-    protected $list = 'issuu.documents.list';
-
     /**
     *   Método de exclusão da seção Document
     *
@@ -37,7 +28,7 @@ class IssuuDocument extends IssuuServiceAPI
     *   @access protected
     *   @var string
     */
-    protected $slug_section = 'document';
+    protected $slug_section = 'results';
 
     /**
     *   IssuuDocument::upload()
@@ -49,16 +40,14 @@ class IssuuDocument extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    public function upload($params = array())
+    public function upload($params = array(), $fileUrl = null)
     {
-        if (!isset($_FILES['file']) || empty($_FILES['file']))
+        if ((!isset($_FILES['file']) || empty($_FILES['file'])) && $fileUrl == null)
         {
             header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
             header('Content-Type: text/plain');
             die('This form is not multipart/form-data');
         }
-
-        $params['action'] = 'issuu.document.upload';
 
         foreach ($params as $key => $value) {
             if (isset($value) && ($value == '' || is_null($value)))
@@ -66,50 +55,81 @@ class IssuuDocument extends IssuuServiceAPI
                 unset($params[$key]);
             }
         }
-
         $this->setParams($params);
-        $this->setFile($_FILES['file']);
-        $response = $this->curlRequest(
-            $this->getUploadUrl(),
-            $this->params,
-            array(),
-            false
+        $friendlyUrl = str_replace(' ', '-', strtolower($params['desiredName']));
+        unset($params['desiredName']);
+
+        // create draft
+        $create_params = array('info' => $params);
+        if($fileUrl != null) {
+            $create_params['fileUrl'] = $fileUrl;
+            $create_params['confirmCopyright'] = 'true';
+        }
+
+        $create_response = $this->curlRequest(
+            $this->getApiUrl('/drafts'),
+            $create_params,
+            $this->headers,
+            'POST'
         );
 
-        $slug = $this->slug_section;
+        $create_response = json_decode($create_response);
+        $slug = $create_response->slug;
 
-        if (isset($params['format']) && $params['format'] == 'json')
+        // upload file if not already uploaded
+        if($fileUrl == null) {
+            $upload_params = array(
+                'file' => $this->setFile($_FILES['file']),
+                'confirmCopyright' => 'true'
+            );
+            
+            $this->setParams($params, 'multipart/form-data');
+            $upload_response = $this->curlRequest(
+                $this->getUploadUrl($slug),
+                $upload_params,
+                $this->headers,
+                'PATCH_FILE'
+            );
+            $upload_response = json_decode($upload_response);
+    
+            // check if already processed
+            $this->setParams($params);
+            while($uploaded == false)
+            {
+                $check_response = $this->curlRequest(
+                    $this->getApiUrl('/drafts/'.$slug),
+                    array(),
+                    $this->headers,
+                );
+    
+                $check_response = json_decode($check_response);
+    
+                if($check_response->fileInfo->conversionStatus == 'DONE')
+                {
+                    $uploaded = true;
+                }
+            }
+        }
+
+        // publish
+        $response = $this->curlRequest(
+            $this->getApiUrl('/drafts/'.$slug.'/publish'),
+            array("desiredName" => $friendlyUrl),
+            $this->headers,
+            'POST'
+        );
+        $response = json_decode($response);
+        
+        if(isset($response->publicLocation))
         {
-            $response = json_decode($response);
-            $response = $response->rsp;
+            $result['stat'] = 'ok';
+            $result[$slug] = $this->clearObjectJson($response);
 
-            if($response->stat == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectJson($response->_content->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
+            return $result;
         }
         else
         {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectXML($response->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
+            return $this->returnErrorJson($response);
         }
     }
 
@@ -125,28 +145,106 @@ class IssuuDocument extends IssuuServiceAPI
     */
     public function urlUpload($params = array())
     {
-        $params['action'] = 'issuu.document.url_upload';
+        $fileUrl = $params['fileUrl'];
+        unset($params['fileUrl']);
+        return $this->upload($params, $fileUrl);
+    }
 
-        return $this->returnSingleResult($params);
+    protected function returnSingleResult($params)
+    {
+        $slug = $params['slug'];
+        $this->setParams($params);
+        
+        $response = $this->curlRequest(
+            $this->getApiUrl('/publications/'.$slug),
+            array(),
+            $this->headers
+        );
+
+        $response = json_decode($response, true);
+        
+        if(isset($response['slug']))
+        {
+            $result['stat'] = 'ok';
+            $result[$slug] = $this->clearObjectJson($response);
+
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
     }
 
     /**
-    *   IssuuDocument::update()
-    *
-    *   Relacionado ao método issuu.document.update da API.
-    *   Atualiza os dados de um determinado documento.
-    *
-    *   @access public
-    *   @param array $params Correspondente aos parâmetros da requisição
-    *   @return array Retorna um array com a resposta da requisição
-    */
-    public function update($params = array())
+     *  IssuuDocument::getUpdateData()
+     *  
+     */
+    public function getUpdateData($params = array())
     {
-        $params['action'] = 'issuu.document.update';
-
         return $this->returnSingleResult($params);
     }
 
+    public function update($params)
+    {
+        // clean and fix array for sending request
+        $slug = $params['slug'];
+        unset($params['slug']);
+        unset($params['publishDate']);
+        $params = array('info' => $params);
+
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/drafts/'.$slug),
+            $this->params,
+            $this->headers,
+            'PATCH'
+        );
+
+        $response = json_decode($response, true);
+        if(isset($response['slug']))
+        {
+            $friendlyUrl = str_replace(' ', '-', strtolower($params['info']['title']));
+            $response = $this->curlRequest(
+                $this->getApiUrl('/drafts/'.$slug.'/publish'),
+                array("desiredName" => $friendlyUrl),
+                $this->headers,
+                'POST'
+            );
+            if(isset($response))
+            {
+                $result['stat'] = 'ok';
+                $result[$params['slug']] = $this->clearObjectJson($response);
+
+                return $result;
+            }
+            else
+            {
+                return $this->returnErrorJson($response);
+            }
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+
+    public function delete($params = array())
+    {
+        $this->setParams($params);
+        foreach ($params['names'] as $slug) {
+            $response = $this->curlRequest(
+                $this->getApiUrl('/publications/'.$slug),
+                array(),
+                $this->headers,
+                'DELETE'
+            );
+        }
+
+        return array('stat' => 'ok');
+    }
+    
     /**
     *   IssuuDocument::clearObjectXML()
     *
@@ -159,6 +257,7 @@ class IssuuDocument extends IssuuServiceAPI
     protected function clearObjectXML($document)
     {
         $doc = new stdClass();
+        echo json_encode($document);
 
         $doc->username = $this->validFieldXML($document, 'username');
         $doc->name = $this->validFieldXML($document, 'name');
@@ -179,7 +278,6 @@ class IssuuDocument extends IssuuServiceAPI
         $doc->rating = $this->validFieldXML($document, 'rating');
         $doc->ratingsAllowed = $this->validFieldXML($document, 'ratingsAllowed', 2);
         $doc->ratingDist = $this->validFieldXML($document, 'ratingDist');
-        $doc->commentsAllowed = $this->validFieldXML($document, 'commentsAllowed', 2);
         $doc->showDetectedLinks = $this->validFieldXML($document, 'showDetectedLinks', 2);
 
         $doc->pageCount = $this->validFieldXML($document, 'pageCount');
@@ -224,56 +322,16 @@ class IssuuDocument extends IssuuServiceAPI
     */
     protected function clearObjectJson($document)
     {
-        $doc = new stdClass();
+        $doc = (object) $document;
 
-        $doc->username = $this->validFieldJson($document, 'username');
-        $doc->name = $this->validFieldJson($document, 'name');
-        $doc->documentId = $this->validFieldJson($document, 'documentId');
-        $doc->title = $this->validFieldJson($document, 'title');
-        $doc->access = $this->validFieldJson($document, 'access');
-        $doc->state = $this->validFieldJson($document, 'state');
-        $doc->errorCode = $this->validFieldJson($document, 'errorCode');
-        $doc->preview = $this->validFieldJson($document, 'preview', 2);
-        $doc->category = $this->validFieldJson($document, 'category');
-        $doc->type = $this->validFieldJson($document, 'type');
-
-        $doc->orgDocType = $this->validFieldJson($document, 'orgDocType');
-        $doc->orgDocName = $this->validFieldJson($document, 'orgDocName');
-        $doc->downloadable = $this->validFieldJson($document, 'downloadable', 2);
-        $doc->origin = $this->validFieldJson($document, 'origin');
-        $doc->language = $this->validFieldJson($document, 'language');
-        $doc->rating = $this->validFieldJson($document, 'rating');
-        $doc->ratingsAllowed = $this->validFieldJson($document, 'ratingsAllowed', 2);
-        $doc->ratingDist = $this->validFieldJson($document, 'ratingDist');
-        $doc->commentsAllowed = $this->validFieldJson($document, 'commentsAllowed', 2);
-        $doc->showDetectedLinks = $this->validFieldJson($document, 'showDetectedLinks', 2);
-
-        $doc->pageCount = $this->validFieldJson($document, 'pageCount');
-        $doc->dcla = $this->validFieldJson($document, 'dcla');
-        $doc->ep = $this->validFieldJson($document, 'ep');
-        $doc->publicationCreationTime = $this->validFieldJson($document, 'publicationCreationTime');
-        $doc->publishDate = $this->validFieldJson($document, 'publishDate');
-        $doc->publicOnIssuuTime = $this->validFieldJson($document, 'publicOnIssuuTime');
-        $doc->description = $this->validFieldJson($document, 'description');
-        $doc->coverWidth = $this->validFieldJson($document, 'coverWidth', 1);
-        $doc->coverHeight = $this->validFieldJson($document, 'coverHeight', 1);
-
-        if (isset($document->tags))
-        {
-            $doc->tags = array();
-
-            foreach ($document->tags as $tag) {
-                $doc->tags[] = utf8_decode($tag);
-            }
+        if(isset($doc->cover['small'])) {
+            $doc->coverImage = $doc->cover['small']['url'];
         }
-
-        if (isset($document->folders))
-        {
-            $doc->folders = array();
-
-            foreach ($document->folders as $folder) {
-                $doc->folders[] = (string) $folder;
-            }
+        if(isset($doc->cover['medium'])) {
+            $doc->coverImage = $doc->cover['medium']['url'];
+        }
+        if(isset($doc->cover['large'])) {
+            $doc->coverImage = $doc->cover['large']['url'];
         }
 
         return $doc;
@@ -283,7 +341,7 @@ class IssuuDocument extends IssuuServiceAPI
     {
         if (version_compare(PHP_VERSION, '5.5', '>='))
         {
-            $this->params['file'] = new CURLFile(
+            $fileParams = new CURLFile(
                 $file['tmp_name'],
                 $file['type'],
                 $file['name']
@@ -291,8 +349,10 @@ class IssuuDocument extends IssuuServiceAPI
         }
         else
         {
-            $this->params['file'] = '@' . $file['tmp_name'];
+            $fileParams = '@' . $file['tmp_name'];
         }
+
+        return $fileParams;
     }
  
 }

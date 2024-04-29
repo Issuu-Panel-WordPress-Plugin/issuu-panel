@@ -47,9 +47,9 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
 		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 		$folderId = filter_input(INPUT_GET, 'folder');
-		$folder = $issuuFolder->update(array('folderId' => $folderId));
+		$folder = $issuuFolder->getUpdateData(array('folderId' => $folderId));
 		$params = $issuuFolder->getParams();
-		unset($params['apiKey']);
+		unset($params['apiBearerToken']);
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage(
 			"Request Data - " . json_encode($params)
 		);
@@ -57,13 +57,8 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		if ($folder['stat'] == 'ok')
 		{
 			$bookmarks = $issuuBookmark->issuuList(array('folderId' => $folderId));
-			$folder = $folder['folder'];
+			$folder = $folder['stack'];
 			$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
-			$folders_documents = array(
-				'name' => $folder->name,
-				'items' => $folder->items,
-				'documentsId' => (($bookmarks['stat'] == 'ok')? $bookmarks['bookmark'] : array()),
-			);
 			include(ISSUU_PANEL_DIR . 'menu/folder/forms/update.php');
 		}
 		else
@@ -78,26 +73,18 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 		$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
 		$page = (intval(filter_input(INPUT_GET, 'pn')))? : 1;
-		$per_page = 10;
-		$folders_documents = array();
-		$folders = $issuuFolder->issuuList(array(
-			'pageSize' => $per_page,
-			'folderSortBy' => 'created',
-			'startIndex' => $per_page * ($page - 1)
-		));
+		$size = 10;
+        $params =
+        array(
+            'size' => $size,
+			'page' => $page
+		);
 
-		if (isset($folders['more']) && $folders['more'] == true)
+		$folders = $issuuFolder->stackList($params);
+
+		if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['size'])
 		{
-			$number_pages = ceil($folders['totalCount'] / $per_page);
-		}
-		foreach ($folders['folder'] as $folder) {
-			$folderId = $folder->folderId;
-			$bookmarks = $issuuBookmark->issuuList(array('pageSize' => 3, 'folderId' => $folderId));
-			$folders_documents[$folderId] = array(
-				'name' => $folder->name,
-				'items' => $folder->items,
-				'documentsId' => (($bookmarks['stat'] == 'ok')? $bookmarks['bookmark'] : array())
-			);
+            $number_pages = ceil($folders['totalCount'] / $size);
 		}
 		include(ISSUU_PANEL_DIR . 'menu/folder/folder-list.php');
 	}

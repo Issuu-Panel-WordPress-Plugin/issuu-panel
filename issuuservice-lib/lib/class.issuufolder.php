@@ -52,9 +52,116 @@ class IssuuFolder extends IssuuServiceAPI
     */
     public function add($params)
     {
-        $params['action'] = 'issuu.folder.add';
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks'),
+            $params,
+            $this->headers,
+            'POST'
+        );
+
+        if (isset($response))
+        {
+            $result['stat'] = 'ok';
+            $result['stackId'] = $response;
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+    protected function returnSingleResult($params)
+    {
+        $stackId = $params['folderId'];
+        $this->setParams($params);
         
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks/'.$stackId),
+            array(),
+            $this->headers
+        );
+        $response = json_decode($response, true);
+        
+        if(isset($response['id']))
+        {
+            $result['stat'] = 'ok';
+            $result['stack'] = $this->clearObjectJson($response);
+
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+    public function getUpdateData($params = array())
+    {
         return $this->returnSingleResult($params);
+    }
+
+    /**
+    *   IssuuBookmark::stackList()
+    *
+    *   Lista stacks
+    *
+    *   @access public
+    *   @param array $params Correspondente aos parâmetros da requisição
+    */
+    public function stackList($params = array())
+    {
+        $this->setParams($params);
+
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks'),
+            $this->params,
+            $this->headers,
+        );
+
+        $slug = $this->slug_section;
+        $response = json_decode($response, true);
+        if (isset($response['results']) && !empty($response['results']))
+        {
+            $result['stat'] = 'ok';
+            $result['totalCount'] = isset($response['count']) ? (int) $response['count'] : 0;
+            $result['page'] = isset($params['page']) ? (int) $params['page'] : 0;
+            $result['size'] = isset($response['pageSize']) ? (int) $response['pageSize'] : 0;
+            $result['more'] = isset($response['links']['next']) ? true : false;
+
+            if (!empty($response['results']))
+            {
+                foreach ($response['results'] as $item) {
+                    $result[$slug][] = $this->clearObjectJson($item);
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
+    }
+
+    /**
+     *  IssuuFolder::delete()
+     * 
+     * Deleta uma ou mais stacks.
+     */
+    public function delete($params = array())
+    {
+        $this->setParams($params);
+        foreach ($params['stackIds'] as $slug) {
+            $response = $this->curlRequest(
+                $this->getApiUrl('/stacks/'.$slug),
+                array(),
+                $this->headers,
+                'DELETE'
+            );
+        }
+
+        return array('stat' => 'ok');
     }
 
     /**
@@ -67,11 +174,29 @@ class IssuuFolder extends IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    public function update($params = array())
+    public function update($params)
     {
-        $params['action'] = 'issuu.folder.update';
+        $slug = $params['id'];
+        unset($params['id']);
+        $this->setParams($params);
+        $response = $this->curlRequest(
+            $this->getApiUrl('/stacks/'.$slug),
+            $this->params,
+            $this->headers,
+            'PATCH'
+        );
 
-        return $this->returnSingleResult($params);
+        if(isset($response))
+        {
+            $result['stat'] = 'ok';
+            $result[$params['slug']] = $this->clearObjectJson($response);
+
+            return $result;
+        }
+        else
+        {
+            return $this->returnErrorJson($response);
+        }
     }
 
     /**
@@ -85,17 +210,7 @@ class IssuuFolder extends IssuuServiceAPI
     */
     protected function clearObjectJson($folder)
     {
-        $fold = new stdClass();
-
-        $fold->folderId = $this->validFieldJson($folder, 'folderId');
-        $fold->username = $this->validFieldJson($folder, 'username');
-        $fold->name = $this->validFieldJson($folder, 'name');
-        $fold->description = $this->validFieldJson($folder, 'description');
-        $fold->description = $this->validFieldJson($folder, 'description');
-        $fold->items = $this->validFieldJson($folder, 'items', 1);
-        $fold->itemCount = $this->validFieldJson($folder, 'itemCount', 1);
-        $fold->ep = $this->validFieldJson($folder, 'ep', 1);
-        $fold->created = $this->validFieldJson($folder, 'created');
+        $fold = (object) $folder;
 
         return $fold;
     }

@@ -11,20 +11,12 @@ abstract class IssuuServiceAPI
 {
 
     /**
-    *   Chave de API da aplicação
+    *   Token Bearer da API
     *
     *   @access private
     *   @var string
     */
-    private $api_key;
-
-    /**
-    *   Chave secreta de API da aplicação
-    *
-    *   @access private
-    *   @var string
-    */
-    private $api_secret;
+    private $api_bearer_token;
 
     /**
     *   URL da API do Issuu
@@ -32,7 +24,7 @@ abstract class IssuuServiceAPI
     *   @access private
     *   @var string
     */
-    private $api_url = 'http://api.issuu.com/1_0';
+    private $api_url = 'https://api.issuu.com/v2';
 
     /**
     *   URL de upload do Issuu
@@ -40,7 +32,7 @@ abstract class IssuuServiceAPI
     *   @access private
     *   @var string
     */
-    private $upload_url = 'http://upload.issuu.com/1_0';
+    private $upload_url = 'https://api.issuu.com/v2/drafts/{slug}/upload';
 
     /**
     *   Parâmetros da requisição em forma de array
@@ -51,20 +43,18 @@ abstract class IssuuServiceAPI
     protected $params;
 
     /**
+     * Header da requisição
+     * @var array
+     */
+    protected $headers = array();
+
+    /**
     *   Parâmetros da requisição em forma de string
     *
     *   @access protected
     *   @var string
     */
     protected $params_str;
-
-    /**
-    *   Assinatura calculada
-    *
-    *   @access protected
-    *   @var string
-    */
-    protected $signature;
 
     /**
     *   Nome do método list
@@ -96,27 +86,18 @@ abstract class IssuuServiceAPI
     *   Construtor da classe
     *
     *   @access public
-    *   @param string $api_key Correspondente a chave de API da aplicação
-    *   @param string $api_secret Correspondente a chave secreta de API da aplicação
-    *   @throws Exception Lança uma exceção caso não seja informada a chave de API ou API secreta
+    *   @param string $api_bearer_token Correspondente ao token Bearer da API
+    *   @throws Exception Lança uma exceção caso não seja informada o token Bearer da API
     */
-    public function __construct($api_key, $api_secret)
+    public function __construct($api_bearer_token)
     {
-        if (is_string($api_key) && strlen($api_key) >= 1)
+        if (is_string($api_bearer_token) && strlen($api_bearer_token) >= 1)
         {
-            if (is_string($api_secret) && strlen($api_secret) >= 1)
-            {
-                $this->api_key = $api_key;
-                $this->api_secret = $api_secret;
-            }
-            else
-            {
-                throw new Exception('A API secreta não é uma String ou está vazia');
-            }
+            $this->api_bearer_token = $api_bearer_token;
         }
         else
         {
-            throw new Exception('A chave de API não é uma String ou está vazia');
+            throw new Exception('O token Bearer da API não foi informado');
         }
     }
 
@@ -133,36 +114,25 @@ abstract class IssuuServiceAPI
     }
 
     /**
-    *   IssuuServiceAPI::getSignature()
-    *
-    *   Método acessor da variável $signature
-    *
-    *   @access public
-    *   @return string Assinatura que será passada por parâmetro
-    */
-    public function getSignature()
-    {
-        return $this->signature;
-    }
-
-    /**
     *   IssuuServiceAPI::buildUrl()
     *
     *   Monta a URL da requisição
     *
     *   @access protected
-    *   @param boolean $is_api_url
+    *   @param boolean $regular_request
+    *   @param string $slug
     *   @return string Retorna a URL da api ou upload junto com os parâmetros passados
     */
-    protected function buildUrl($is_api_url = true)
+    protected function buildUrl($regular_request = true, $slug = null)
     {
-        if ($is_api_url == true)
+        if ($regular_request == true)
         {
             return $this->api_url . '?' . $this->params_str;
         }
-        else if ($is_api_url == false)
+        else if ($regular_request == false)
         {
-            return $this->upload_url . '?' . $this->params_str;
+            // override upload_url {slug} with $slug
+            return str_replace('{slug}', $slug, $this->upload_url) . '?' . $this->params_str;
         }
         else
         {
@@ -179,15 +149,15 @@ abstract class IssuuServiceAPI
     *   @param array $params
     *   @throws Exception Lança um exceção caso não tenha parâmetros
     */
-    public function setParams($params)
+    public function setParams($params, $content_type = 'application/json')
     {
         if (is_array($params) && !empty($params))
         {
             $this->params = $params;
-            $this->params['apiKey'] = $this->api_key;
-            $this->signature = $this->calculateSignature();
-            $this->params['signature'] = $this->signature;
-            $this->params_str = $this->params_str . '&signature=' . $this->signature;
+            $this->headers = array(
+                'Content-Type: ' . $content_type,
+                'Authorization: Bearer ' . $this->api_bearer_token
+            );
         }
         else
         {
@@ -209,54 +179,50 @@ abstract class IssuuServiceAPI
     }
 
     /**
-    *   IssuuServiceAPI::calculateSignature()
-    *
-    *   Faz o cálculo da assinatura
-    *
-    *   @access public
-    *   @return string A assinatura
-    */
-    final public function calculateSignature()
-    {
-        if (ksort($this->params))
-        {
-            $this->params_str = http_build_query($this->params);
-            $this->params_str = urldecode($this->params_str);
-            $sign_str = strtr($this->params_str, array('&' => '', '=' => ''));
-            $this->signature = md5($this->api_secret . $sign_str);
-            return $this->signature;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
     *   IssuuServiceAPI::curlRequest()
     *
     *   @access public
-    *   @param string $url URL que será enviada a requisição
-    *   @param string|array $data Dados que serão enviados
-    *   @param array $headers Cabeçalhos adicionais da requisição
-    *   @return mixed Reposta da requisição
+    *   @param string $url URL that will be sent in the request
+    *   @param string|array $data Data that will be sent
+    *   @param array $headers Additional request headers
+    *   @param string $requestType Request type (GET or POST)
+    *   @param array $additionalOptions Additional cURL options
+    *   @return mixed Response of the request
     */
     public function curlRequest(
         $url,
         array $data,
         array $headers = array(),
-        $decodeData = true,
+        $requestType = 'GET',
         array $additionalOptions = array()
     ) {
-        if ($decodeData == true)
-            $data = urldecode(http_build_query($data));
+        switch ($requestType) {
+            case 'GET':
+            case 'DELETE':
+                $shouldQueryParameters = true;
+                break;
+            case 'PATCH_FILE':
+                $shouldQueryParameters = false;
+                $requestType = 'PATCH';
+                break;
+            default:
+                $data = json_encode($data);
+                break;
+        }
 
+        if ($shouldQueryParameters && !empty($data)) {
+            $data = urldecode(http_build_query($data));
+            $url = $url . '?' . $data;
+        }
+        
         $options = array(
             CURLOPT_URL => $url,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_CUSTOMREQUEST => $requestType,
+            CURLOPT_POSTFIELDS => ($shouldQueryParameters && !empty($data)) ? null : $data,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
         );
         
         foreach ($additionalOptions as $key => $value) {
@@ -400,50 +366,7 @@ abstract class IssuuServiceAPI
     *   @param array $params Correspondente aos parâmetros da requisição
     *   @return array Retorna um array com a resposta da requisição
     */
-    final protected function returnSingleResult($params)
-    {
-        $this->setParams($params);
-        $response = $this->curlRequest(
-            $this->getApiUrl(),
-            $this->params
-        );
-
-        $slug = $this->slug_section;
-
-        if (isset($params['format']) && $params['format'] == 'json')
-        {
-            $response = json_decode($response);
-            $response = $response->rsp;
-
-            if($response->stat == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectJson($response->_content->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
-        }
-        else
-        {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result[$slug] = $this->clearObjectXML($response->$slug);
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
-        }
-    }
+    protected function returnSingleResult($params) {}
 
     /**
     *   IssuuServiceAPI::delete()
@@ -453,43 +376,7 @@ abstract class IssuuServiceAPI
     *   @access public
     *   @param array $params Correspondente aos parâmetros da requisição
     */
-    final public function delete($params = array())
-    {
-        $params['action'] = $this->delete;
-        $this->setParams($params);
-        $response = $this->curlRequest(
-            $this->getApiUrl(),
-            $this->params
-        );
-
-        if (isset($params['format']) && $params['format'] == 'json')
-        {
-            $response = json_decode($response);
-            $response = $response->rsp;
-
-            if ($response->stat == 'ok')
-            {
-                return array('stat' => 'ok');
-            }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
-        }
-        else
-        {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                return array('stat' => 'ok');
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
-        }
-    }
+    public function delete($params = array()){}
 
     /**
     *   IssuuServiceAPI::issuuList()
@@ -501,71 +388,38 @@ abstract class IssuuServiceAPI
     */
     final public function issuuList($params = array())
     {
-        $params['action'] = $this->list;
         $this->setParams($params);
+
         $response = $this->curlRequest(
-            $this->getApiUrl(),
-            $this->params
+            $this->getApiUrl('/publications'),
+            $this->params,
+            $this->headers,
         );
 
         $slug = $this->slug_section;
 
-        if (isset($params['format']) && $params['format'] == 'json')
+        $response = json_decode($response, true);
+
+        if ($response['results'])
         {
-            $response = json_decode($response);
-            $response = $response->rsp;
+            $result = array();
+            $result['stat'] = 'ok';
+            $result['totalCount'] = isset($response['count']) ? (int) $response['count'] : 0;
+            $result['page'] = isset($params['page']) ? (int) $params['page'] : 0;
+            $result['size'] = isset($response['pageSize']) ? (int) $response['pageSize'] : 0;
+            $result['more'] = !!$response['links']['next'] ? true : false;
 
-            if ($response->stat == 'ok')
+            if (!empty($response['results']))
             {
-                $result['stat'] = 'ok';
-                $result['totalCount'] = (int) $response->_content->result->totalCount;
-                $result['startIndex'] = (int) $response->_content->result->startIndex;
-                $result['pageSize'] = (int) $response->_content->result->pageSize;
-                $result['more'] = (is_bool($response->_content->result->more))? $response->_content->result->more :
-                    (((string) $response->_content->result->more == 'true')? true : false);
-
-                if (!empty($response->_content->result->_content))
-                {
-                    foreach ($response->_content->result->_content as $item) {
-                        $item = $item->$slug;
-                        $result[$slug][] = $this->clearObjectJson($item);
-                    }
+                foreach ($response['results'] as $item) {
+                    $result[$slug][] = $this->clearObjectJson($item);
                 }
-
-                return $result;
             }
-            else
-            {
-                return $this->returnErrorJson($response);
-            }
+            return $result;
         }
         else
         {
-            $response = new SimpleXMLElement($response);
-
-            if ($response['stat'] == 'ok')
-            {
-                $result['stat'] = 'ok';
-                $result['totalCount'] = (int) $response->result['totalCount'];
-                $result['startIndex'] = (int) $response->result['startIndex'];
-                $result['pageSize'] = (int) $response->result['pageSize'];
-                $result['more'] = (is_bool($response->result['more']))? $response->result['more'] :
-                    (((string) $response->result['more'] == 'true')? true : false);
-
-                if ($response->result->$slug)
-                {
-                    $result[$slug] = array();
-                    foreach ($response->result->$slug as $item) {
-                        $result[$slug][] = $this->clearObjectXML($item);
-                    }
-                }
-
-                return $result;
-            }
-            else
-            {
-                return $this->returnErrorXML($response);
-            }
+            return $this->returnErrorJson($response);
         }
     }
 
@@ -573,11 +427,12 @@ abstract class IssuuServiceAPI
     *   IssuuServiceAPI::getApiUrl()
     *
     *   @access public
+    *   @param string $endpoint
     *   @return string URL da API de dados do Issuu
     */
-    public function getApiUrl()
+    public function getApiUrl($endpoint = '')
     {
-        return $this->api_url;
+        return $this->api_url . $endpoint;
     }
 
 
@@ -585,12 +440,26 @@ abstract class IssuuServiceAPI
     *   IssuuServiceAPI::getUploadUrl()
     *
     *   @access public
+    *   @param string $slug Slug do documento
     *   @return string URL da API para upload do Issuu
     */
-    public function getUploadUrl()
+    public function getUploadUrl($slug)
     {
-        return $this->upload_url;
+        return $this->buildUrl(false, $slug);
     }
+
+
+    /**
+    *   IssuuDocument::update()
+    *
+    *   Relacionado ao método issuu.document.update da API.
+    *   Atualiza os dados de um determinado documento.
+    *
+    *   @access public
+    *   @param array $params Correspondente aos parâmetros da requisição
+    *   @return array Retorna um array com a resposta da requisição
+    */
+    public function update($params) {}
 
     /**
     *   IssuuServiceAPI::clearObjectXML()

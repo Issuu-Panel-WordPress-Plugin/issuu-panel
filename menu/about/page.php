@@ -26,29 +26,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<th>order_by</th>
-					<td>
-						<p class="description">
-							<?php the_issuu_message("Parameter ordering of documents"); ?>
-						</p>
-					</td>
-					<td>title, publishDate, description, documentId</td>
-				</tr>
-
-				<tr>
-					<th>result_order</th>
-					<td>
-						<p class="description">
-							<?php the_issuu_message("End result of ordination"); ?>
-						</p>
-					</td>
-					<td>
-						<?php the_issuu_message("'asc' or 'desc'"); ?>
-					</td>
-				</tr>
-
-				<tr>
-					<th>per_page</th>
+					<th>size</th>
 					<td>
 						<p class="description">
 							<?php the_issuu_message("Number of documents per page"); ?>
@@ -73,29 +51,9 @@
 						</p>
 					</td>
 				</tr>
-				<tr>
-					<th>order_by</th>
-					<td>
-						<p class="description">
-							<?php the_issuu_message("Parameter ordering of documents"); ?>
-						</p>
-					</td>
-					<td>title, publishDate, description, documentId</td>
-				</tr>
-				<tr>
-					<th>result_order</th>
-					<td>
-						<p class="description">
-							<?php the_issuu_message("End result of ordination"); ?>
-						</p>
-					</td>
-					<td>
-						<?php the_issuu_message("'asc' or 'desc'"); ?>
-					</td>
-				</tr>
 
 				<tr>
-					<th>per_page</th>
+					<th>size</th>
 					<td>
 						<p class="description">
 							<?php the_issuu_message("Number of documents per page"); ?>

@@ -8,7 +8,7 @@
 		<button type="submit" class="buttons-top button-secondary button-danger">
 			<?php the_issuu_message('Delete'); ?>
 		</button>
-		<?php if (isset($folders['totalCount']) && $folders['totalCount'] > $folders['pageSize']) : ?>
+		<?php if (isset($folders) && $folders['totalCount'] > $size) : ?>
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
 					<?php if ($page == $i) : ?>
@@ -20,22 +20,16 @@
 			</div>
 		<?php endif; ?>
 		<div class="issuu-folder-content">
-			<?php foreach ($folders_documents as $key => $value) : ?>
+            <?php foreach ($folders['folder'] as $folder) : ?>
 				<div class="issuu-folder">
-					<input type="checkbox" name="folderId[]" class="issuu-checkbox" value="<?php echo $key; ?>">
-					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?php echo $key; ?>">
-						<?php for ($i = 0; $i < 3; $i++) : ?>
-							<?php if (isset($value['documentsId'][$i])) : ?>
-								<div class="folder-item folder-item-doc">
-									<img src="<?php echo sprintf($image, $value['documentsId'][$i]->documentId); ?>">
-								</div><!-- END folder-item -->
-							<?php else: ?>
-								<div class="folder-item"></div><!-- END folder-item -->
-							<?php endif; ?>
-						<?php endfor; ?>
+					<input type="checkbox" name="stackId[]" class="issuu-checkbox" value="<?php echo $folder->id; ?>">
+					<a href="admin.php?page=issuu-folder-admin&issuu-panel-subpage=update&folder=<?php echo $folder->id; ?>">
+                        <div class="folder-item"></div>
+                        <div class="folder-item"></div>
+                        <div class="folder-item"></div>
 						<div>
 							<p>
-								<span><?php echo $value['name']; ?></span>
+								<span><?php echo $folder->title; ?></span>
 							</p>
 						</div>
 					</a>
@@ -75,13 +69,7 @@
 				$ajaxResult.html(data.message);
 
 				if (data.folders.length > 0) {
-					$.each(data.folders, function(i, item) {
-						var folder = $('input[value="' + item + '"]');
-
-						if (folder.length > 0) {
-							folder.parents('.issuu-folder').remove();
-						}
-					});
+					window.location.reload();
 				}
 			}).fail(function(x, y, z){
 				console.log(x);

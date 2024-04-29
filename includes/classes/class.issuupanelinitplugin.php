@@ -43,12 +43,11 @@ class IssuuPanelInitPlugin implements IssuuPanelService
 
 	public function adminMenu()
 	{
-		$apiKey = $this->getConfig()->getOptionEntity()->getApiKey();
-		$apiSecret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$apiBearerToken = $this->getConfig()->getOptionEntity()->getApiBearerToken();
 		$this->getConfig()->getHookManager()->triggerAction(ISSUU_PANEL_PREFIX . 'menu_page');
 		$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel menu loaded");
 
-		if (!empty($apiKey) && !empty($apiSecret))
+		if (!empty($apiBearerToken))
 		{
 			$this->getConfig()->getHookManager()->triggerAction(ISSUU_PANEL_PREFIX . 'submenu_pages');
 			$this->getConfig()->getIssuuPanelDebug()->appendMessage("Issuu Panel submenus loaded");

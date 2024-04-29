@@ -18,7 +18,6 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 		$id = ($instance['issuu_panel_folder'] != '0')? ' id="' . $instance['issuu_panel_folder'] . '"' : '';
 		$link = (isset($instance['issuu_panel_url_page']) && trim($instance['issuu_panel_url_page']) != '')?
 			' link="' . $instance['issuu_panel_url_page'] . '"' : '';
-		$order_by = ' order_by="' . $instance['issuu_panel_order_by'] . '"';
 
 		echo $args['before_widget'];
 
@@ -29,7 +28,7 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 			echo $args['after_title'];
 		}
 
-		echo do_shortcode("[issuu-panel-last-document{$id}{$link}{$order_by}]");
+		echo do_shortcode("[issuu-panel-last-document{$id}{$link}]");
 		echo $args['after_widget'];
 	}
 
@@ -37,10 +36,8 @@ class IssuuPanelWidget extends WP_Widget implements IssuuPanelService
 	{
 		$ipanel_folder = $instance['issuu_panel_folder'];
 		$ipanel_url_page = $instance['issuu_panel_url_page'];
-		$ipanel_order_by = $instance['issuu_panel_order_by'];
 		$ipanel_title = $instance['issuu_panel_title'];
-		$issuu_panel_api_key = $this->getConfig()->getOptionEntity()->getApiKey();
-		$issuu_panel_api_secret = $this->getConfig()->getOptionEntity()->getApiSecret();
+		$issuu_panel_api_bearer_token = $this->getConfig()->getOptionEntity()->getApiBearerToken();
 
 		$result = $this->getConfig()->getIssuuServiceApi('IssuuFolder')->issuuList();
 		include(ISSUU_PANEL_DIR . 'widget/forms/last-document-shortcode.phtml');

@@ -27,22 +27,11 @@
 	}
 </style>
 <div class="wrap">
-	<?php if (strlen($issuu_panel_api_key) <= 0) : ?>
+	<?php if (strlen($issuu_panel_api_bearer_token) <= 0) : ?>
 		<div class="error">
 			<p>
 				<?php
-					the_issuu_message('Insert API key. ');
-					the_issuu_message("To create keys $link_api_service");
-				?>
-			</p>
-		</div>
-	<?php endif; ?>
-	<?php if (strlen($issuu_panel_api_secret) <= 0) : ?>
-		<div class="error">
-			<p>
-				<?php
-					the_issuu_message('Insert API secret. ');
-					the_issuu_message("To create keys $link_api_service");
+					the_issuu_message('Insert API Bearer Token.');
 				?>
 			</p>
 		</div>
@@ -53,21 +42,11 @@
 			<tbody>
 				<tr>
 					<th class="no-padding-bottom no-padding-right">
-						<label for="api_key"><?php the_issuu_message('API key'); ?></label>
+						<label for="api_bearer_token"><?php the_issuu_message('API key'); ?></label>
 					</th>
 					<td class="no-padding-bottom no-padding-right">
-						<input type="text" name="api_key" id="api_key" placeholder="<?php the_issuu_message('Insert API key'); ?>"
-							value="<?php echo $issuu_panel_api_key; ?>" class="issuu-panel-fat">
-					</td>
-				</tr>
-				<tr>
-					<th class="no-padding-bottom no-padding-right">
-						<label for="api_key"><?php the_issuu_message('API secret'); ?></label>
-					</th>
-					<td class="no-padding-bottom no-padding-right">
-						<input type="text" name="api_secret" id="api_secret" class="issuu-panel-fat"
-							placeholder="<?php the_issuu_message('Insert API secret'); ?>"
-							value="<?php echo $issuu_panel_api_secret; ?>">
+						<input type="text" name="api_bearer_token" id="api_bearer_token" placeholder="<?php the_issuu_message('Insert API Bearer Token'); ?>"
+							value="<?php echo $issuu_panel_api_bearer_token; ?>" class="issuu-panel-fat">
 					</td>
 				</tr>
 				<tr>

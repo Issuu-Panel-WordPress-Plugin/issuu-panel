@@ -5,8 +5,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 	$post = get_post();
 	$postID = (!is_null($post) && IssuuPanelConfig::inContent())? $post->ID : 0;
 	$issuuPanelConfig = IssuuPanelConfig::getInstance();
-	$issuu_panel_api_key = IssuuPanelConfig::getVariable('issuu_panel_api_key');
-	$issuu_panel_api_secret = IssuuPanelConfig::getVariable('issuu_panel_api_secret');
+	$issuu_panel_api_bearer_token = IssuuPanelConfig::getVariable('issuu_panel_api_bearer_token');
 	$issuu_panel_reader = IssuuPanelConfig::getVariable('issuu_panel_reader');
 	$issuu_shortcode_index = IssuuPanelConfig::getNextIteratorByTemplate();
 	$inHook = IssuuPanelConfig::getIssuuPanelCatcher()->getCurrentHookIs();
@@ -17,9 +16,7 @@ function issuu_painel_embed_documents_shortcode($atts)
 
 	$atts = shortcode_atts(
 		array(
-			'order_by' => 'publishDate',
-			'result_order' => 'desc',
-			'per_page' => '12'
+			'size' => '10'
 		),
 		$atts
 	);
@@ -39,14 +36,12 @@ function issuu_painel_embed_documents_shortcode($atts)
 	}
 
 	$params = array(
-		'pageSize' => $atts['per_page'],
-		'startIndex' => ($atts['per_page'] * ($page - 1)),
-		'resultOrder' => $atts['result_order'],
-		'documentSortBy' => $atts['order_by']
+		'size' => $atts['size'],
+		'page' => ($atts['size'] * ($page - 1)),
 	);
 
 	try {
-		$issuu_document = new IssuuDocument($issuu_panel_api_key, $issuu_panel_api_secret);
+		$issuu_document = new IssuuDocument($issuu_panel_api_bearer_token);
 		$documents = $issuu_document->issuuList($params);
 		issuu_panel_debug("Shortcode [issuu-painel-document-list]: URL - " . $issuu_document->buildUrl());
 	} catch (Exception $e) {
@@ -57,22 +52,21 @@ function issuu_painel_embed_documents_shortcode($atts)
 
 	if (isset($documents['stat']) && $documents['stat'] == 'ok')
 	{
-		if (isset($documents['document']) && !empty($documents['document']))
+		if (isset($documents['results']) && !empty($documents['results']))
 		{
 			$docs = array();
 			$pagination = array(
-				'pageSize' => $documents['pageSize'],
+				'size' => $documents['size'],
 				'totalCount' => $documents['totalCount']
 			);
 
-			foreach ($documents['document'] as $doc) {
+			foreach ($documents['results'] as $doc) {
 				$docs[] = array(
-					'id' => $doc->documentId,
-					'thumbnail' => 'https://image.issuu.com/' . $doc->documentId . '/jpg/page_1_thumb_large.jpg',
-					'url' => 'https://issuu.com/' . $doc->username . '/docs/' . $doc->name,
-					'title' => $doc->title,
-					'date' => date_i18n('d/F/Y', strtotime($doc->publishDate)),
-					'pageCount' => $doc->pageCount
+					'id' => $doc['slug'],
+					'thumbnail' => $doc['cover']['large']['url'],
+					'url' => 'https://issuu.com/' . $doc['owner'] . '/docs/' . str_replace(' ', '_', strtolower($doc['fileInfo']['name'])),
+					'title' => $doc['fileInfo']['name'],
+					'date' => date_i18n('d/F/Y', strtotime($doc['changes']['originalPublishDate'])),
 				);
 			}
 			

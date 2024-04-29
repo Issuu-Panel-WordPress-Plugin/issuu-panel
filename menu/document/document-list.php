@@ -13,7 +13,7 @@
 		<button type="submit" class="buttons-top button-secondary button-danger">
 			<?php the_issuu_message('Delete'); ?>
 		</button>
-		<?php if (isset($docs['totalCount']) && $docs['totalCount'] > $docs['pageSize']) : ?>
+		<?php if (isset($docs) && $docs['totalCount'] > $size) : ?>
 			<div id="issuu-painel-pagination">
 				<?php for ($i = 1; $i <= $number_pages; $i++) : ?>
 					<?php if ($page == $i) : ?>
@@ -25,20 +25,20 @@
 			</div>
 		<?php endif; ?>
 		<div id="document-list">
-			<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
-				<?php foreach ($docs['document'] as $doc) : ?>
-					<?php if (empty($doc->coverWidth) && empty($doc->coverHeight)) : ?>
+			<?php if (isset($docs['results']) && !empty($docs['results'])) : ?>
+				<?php foreach ($docs['results'] as $doc) : ?>
+					<?php if (empty($doc->coverImage)) : ?>
 						<div id="<?php echo $doc->orgDocName; ?>" class="document converting">
 							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->name; ?>">
 							<div class="document-box">
 								<div class="loading-issuu"></div>
 					<?php else: ?>
 						<div class="document complete">
-							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->name; ?>">
+							<input type="checkbox" name="name[]" class="issuu-checkbox" value="<?php echo $doc->slug; ?>">
 							<div class="document-box">
-								<img src="<?php echo sprintf($image, $doc->documentId) ?>" alt="">
+								<img src="<?php echo $doc->coverImage ?>" alt="">
 								<div class="update-document">
-									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&document=<?php echo $doc->name; ?>">
+									<a href="admin.php?page=issuu-document-admin&issuu-panel-subpage=update&publication=<?php echo $doc->slug; ?>">
 										<?php the_issuu_message('Edit'); ?>
 									</a>
 								</div>
@@ -50,7 +50,7 @@
 			<?php endif; ?>
 		</div>
 	</form>
-	<?php if (isset($docs['document']) && !empty($docs['document'])) : ?>
+	<?php if (isset($docs['results']) && !empty($docs['results'])) : ?>
 		<h3>Shortcode</h3>
 		<input type="text" value="[issuu-painel-document-list]" disabled size="28" class="code shortcode">
 	<?php endif; ?>
@@ -90,9 +90,7 @@
 				$ajaxResult.html(data.message);
 
 				if (data.status == 'success') {
-					$.each(data.documents, function(i, doc) {
-						$('[value="' + doc + '"]').parents('.document').remove();
-					});
+					window.location.reload();
 				}
 			}).fail(function(x,y,z) {
 				console.log(x);

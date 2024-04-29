@@ -19,6 +19,7 @@ class IssuuPanelFolderListener
 				unset($postData[$key]);
 			}
 		}
+        $postData['accessType'] = 'PUBLIC';
 		$response = $config->getIssuuServiceApi('IssuuFolder')->add($postData);
 
 		if ($response['stat'] == 'ok')
@@ -76,19 +77,19 @@ class IssuuPanelFolderListener
 	{
 		$postData = $hook->getParam('postData');
 		$config = $hook->getParam('config');
-		$postData['folderId'] = (isset($postData['folderId']))? $postData['folderId'] : array();
-		$count = count($postData['folderId']);
+		$postData['stackId'] = (isset($postData['stackId']))? $postData['stackId'] : array();
+		$count = count($postData['stackId']);
 
 		if ($count > 0)
 		{
 			$result = $config->getIssuuServiceApi('IssuuFolder')->delete(array(
-				'folderIds' => implode(',', $postData['folderId'])
+				'stackIds' => $postData['stackId']
 			));
 
 			if ($result['stat'] == 'ok')
 			{
 				$hook->setParam('status', 'success');
-				$hook->setParam('folders', $postData['folderId']);
+				$hook->setParam('folders', $postData['stackId']);
 
 				if ($count > 1)
 				{

@@ -7,12 +7,12 @@
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th><label for="folderName"><?php the_issuu_message("Folder's name"); ?></label></th>
-					<td><input type="text" name="folderName" id="folderName" class="regular-text code"></td>
+					<th><label for="title"><?php the_issuu_message("Folder's name"); ?></label></th>
+					<td><input type="text" name="title" id="title" class="regular-text code"></td>
 				</tr>
 				<tr>
-					<th><label for="folderDescription"><?php the_issuu_message('Description'); ?></label></th>
-					<td><textarea name="folderDescription" id="folderDescription" cols="45" rows="6"></textarea></td>
+					<th><label for="description"><?php the_issuu_message('Description'); ?></label></th>
+					<td><textarea name="description" id="description" cols="45" rows="6"></textarea></td>
 				</tr>
 				<tr>
 					<th>
@@ -36,7 +36,7 @@
 			var $ajaxResult = $('#issuu-panel-ajax-result > p');
 			var formData;
 
-			if ($form.find('#folderName').val().trim() == "") {
+			if ($form.find('#title').val().trim() == "") {
 				alert('<?php the_issuu_message("Insert folder\'s name"); ?>');
 			} else {
 				$('html, body').scrollTop(0);

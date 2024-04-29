@@ -112,33 +112,23 @@ class IssuuPanelDocumentListener
 
 		if ($data)
 		{
-			$postData['publishDate'] = $datetime;
+			$postData['originalPublishDate'] = $datetime;
 		}
 		else
 		{
 			if ($postData['pub']['day'] == '' || $postData['pub']['month'] == '' || $postData['pub']['year'] == '')
 			{
-				$postData['publishDate'] = $date;
+				$postData['originalPublishDate'] = $date;
 			}
 			else
 			{
-				$postData['publishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
+				$postData['originalPublishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
 			}
 
-			$postData['publishDate'] .= $time;
+			$postData['originalPublishDate'] .= $time;
 		}
 
 		unset($postData['pub']);
-
-		if (trim($postData['name']) != '')
-		{
-			$postData['name'] = str_replace(" ", "", $postData['name']);
-		}
-
-		if (!isset($postData['commentsAllowed']) || trim($postData['commentsAllowed']) != 'true')
-		{
-			$postData['commentsAllowed'] = 'false';
-		}
 
 		if (!isset($postData['downloadable']) || trim($postData['downloadable']) != 'true')
 		{
@@ -191,7 +181,7 @@ class IssuuPanelDocumentListener
 		if ($count > 0)
 		{
 			$result = $config->getIssuuServiceApi('IssuuDocument')->delete(array(
-				'names' => implode(',', $params['names'])
+				'names' => $params['names']
 			));
 
 			if ($result['stat'] == 'ok')
@@ -268,7 +258,7 @@ class IssuuPanelDocumentListener
 		{
 			$hook->setParam('status', 'fail');
 			$params = $config->getIssuuServiceApi('IssuuDocument')->getParams();
-			unset($params['apiKey']);
+			unset($params['apiBearerToken']);
 			$config->getIssuuPanelDebug()->appendMessage(sprintf(
 				"Fail on file request. Message: %s. Request data - %s",
 				$doc['message'],
@@ -294,22 +284,22 @@ class IssuuPanelDocumentListener
 
 		if ($data)
 		{
-			$postData['publishDate'] = $datetime;	
+			$postData['originalPublishDate'] = $datetime;	
 		}
 		else
 		{
 			if ($postData['pub']['day'] == '' || $postData['pub']['month'] == '' || $postData['pub']['year'] == '')
 			{
-				$postData['publishDate'] = $date;
+				$postData['originalPublishDate'] = $date;
 			}
 			else
 			{
-				$postData['publishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
+				$postData['originalPublishDate'] = $postData['pub']['year'] . '-' . $postData['pub']['month'] . '-' . $postData['pub']['day'] . 'T';
 			}
 
 			if ($postData['pub']['hour'] == '' || $postData['pub']['min'] == '')
 			{
-				$postData['publishDate'] .= $time;
+				$postData['originalPublishDate'] .= $time;
 			}
 			else
 			{
@@ -358,7 +348,7 @@ class IssuuPanelDocumentListener
 					}
 				}
 				
-				$postData['publishDate'] .= $postData['pub']['hour'] . ':' . $postData['pub']['min'] . ':' . $postData['pub']['sec'] . 'Z';
+				$postData['originalPublishDate'] .= $postData['pub']['hour'] . ':' . $postData['pub']['min'] . ':' . $postData['pub']['sec'] . 'Z';
 			}
 
 		}
@@ -381,16 +371,6 @@ class IssuuPanelDocumentListener
 		}
 
 		unset($postData['folder']);
-
-		if (trim($postData['name']) != '')
-		{
-			$postData['name'] = str_replace(" ", "", $postData['name']);
-		}
-
-		if (!isset($postData['commentsAllowed']) || trim($postData['commentsAllowed']) != 'true')
-		{
-			$postData['commentsAllowed'] = 'false';
-		}
 
 		if (!isset($postData['downloadable']) || trim($postData['downloadable']) != 'true')
 		{

@@ -40,7 +40,7 @@ class IssuuPanelConfig
     private $issuu_shortcode_index = 0;
     private $iterator_per_template = array(
         '404' => 0,
-        'page' => 0,
+        'page' => 1,
         'single' => 0,
         'tag' => 0,
         'author' => 0,
@@ -107,24 +107,20 @@ class IssuuPanelConfig
         $this->issuuPanelCacheManager = new IssuuPanelCacheManager($this->getOptionEntity());
 
         // IssuuServiceApi
-        if (strlen($this->getOptionEntity()->getApiKey()) > 0 && strlen($this->getOptionEntity()->getApiSecret()) > 0)
+        if (strlen($this->getOptionEntity()->getApiBearerToken()) > 0)
         {
             $this->issuuServiceApi = array(
                 'IssuuDocument' => new IssuuDocument(
-                    $this->getOptionEntity()->getApiKey(),
-                    $this->getOptionEntity()->getApiSecret()
+                    $this->getOptionEntity()->getApiBearerToken(),
                 ),
                 'IssuuFolder' => new IssuuFolder(
-                    $this->getOptionEntity()->getApiKey(),
-                    $this->getOptionEntity()->getApiSecret()
+                    $this->getOptionEntity()->getApiBearerToken(),
                 ),
                 'IssuuBookmark' => new IssuuBookmark(
-                    $this->getOptionEntity()->getApiKey(),
-                    $this->getOptionEntity()->getApiSecret()
+                    $this->getOptionEntity()->getApiBearerToken(),
                 ),
                 'IssuuDocumentEmbed' => new IssuuDocumentEmbed(
-                    $this->getOptionEntity()->getApiKey(),
-                    $this->getOptionEntity()->getApiSecret()
+                    $this->getOptionEntity()->getApiBearerToken(),
                 ),
             );
         }

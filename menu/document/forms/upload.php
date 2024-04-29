@@ -4,6 +4,7 @@
 		<p></p>
 	</div>
 	<form action="" method="post" id="document-upload" enctype="multipart/form-data">
+        <input type="hidden" name="slug" value="<?php echo $slug; ?>">
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -17,9 +18,9 @@
 					<td><input type="text" name="title" id="title" class="regular-text code"></td>
 				</tr>
 				<tr>
-					<th><label for="name"><?php the_issuu_message('Name in URL'); ?></label></th>
+					<th><label for="desiredName"><?php the_issuu_message('Name in URL'); ?></label></th>
 					<td>
-						<input type="text" name="name" id="name" class="regular-text code">
+						<input type="text" name="desiredName" id="desiredName" class="regular-text code">
 						<p class="description">
 							<?php the_issuu_message('Name that is entered in the URL: http://issuu.com/(username)/docs/(name).<br>Use only lowercase letters [a-z], numbers [0-9] and/or other characters [_.-]. Do not use spaces.<br><strong>NOTE:</strong> If you do not enter a value, it will automatically be generated'); ?>
 						</p>
@@ -29,15 +30,6 @@
 					<th><label for="description"><?php the_issuu_message('Description'); ?></label></th>
 					<td>
 						<textarea name="description" id="description" cols="45" rows="6"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="tags">Tags</label></th>
-					<td>
-						<textarea name="tags" id="tags" cols="45" rows="6"></textarea>
-						<p class="description">
-							<?php the_issuu_message('Use commas to separate tags. Do not use spaces.'); ?>
-						</p>
 					</td>
 				</tr>
 				<tr>
@@ -55,25 +47,6 @@
 					</td>
 				</tr>
 				<tr>
-					<th><label><?php the_issuu_message('Folders'); ?></label></th>
-					<td>
-						<?php if (isset($folders['folder']) && !empty($folders['folder'])) : ?>
-							<fieldset>
-								<?php for ($i = 0; $i < $cnt_f; $i++) : ?>
-									<label for="folder<?php echo $i + 1; ?>">
-										<input id="folder<?php echo $i + 1; ?>" type="checkbox" name="folder[]" value="<?php echo $folders['folder'][$i]->folderId; ?>">
-										<?php echo $folders['folder'][$i]->name; ?> (<?php echo $folders['folder'][$i]->items; ?>)
-									</label><br>
-								<?php endfor; ?>
-							</fieldset>
-						<?php endif; ?>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="commentsAllowed"><?php the_issuu_message('Allow comments'); ?></label></th>
-					<td><input type="checkbox" name="commentsAllowed" id="commentsAllowed" value="true"></td>
-				</tr>
-				<tr>
 					<th><label for="downloadable"><?php the_issuu_message('Allow file download'); ?></label></th>
 					<td><input type="checkbox" name="downloadable" id="downloadable" value="true"></td>
 				</tr>
@@ -82,11 +55,11 @@
 					<td>
 						<fieldset>
 							<label for="acesso1">
-								<input type="radio" name="access" id="acesso1" value="public">
+								<input type="radio" name="access" id="acesso1" value="PUBLIC">
 								<?php the_issuu_message('Public'); ?>
 							</label><br>
 							<label for="acesso2">
-								<input type="radio" name="access" id="acesso2" value="private">
+								<input type="radio" name="access" id="acesso2" value="PRIVATE">
 								<?php the_issuu_message('Private'); ?>
 							</label>
 						</fieldset>
