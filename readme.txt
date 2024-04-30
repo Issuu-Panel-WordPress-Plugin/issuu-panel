@@ -1,5 +1,5 @@
 ﻿=== Issuu Panel ===
-Contributors: pedromjava
+Contributors: pedromjava and Issuu
 Tags: issuu, shortcode, embed, documents, folders, panel, admin, widget
 Requires at least: 3.5
 Tested up to: 4.7.3
@@ -12,7 +12,7 @@ Upload documents, create folders, embed documents in the posts by the WordPress 
 <p>Issuu Panel is a WordPress plugin that allow to you upload your documents, create folders and embed documents in posts.</p>
 <h3>Keys</h3>
 <p>
-	In this menu, you have to insert your keys which you generated in your Issuu account.<br>
+	In this menu, you have to insert your token bearer which you generated in your Issuu account.<br>
 	<a href="https://github.com/pedromarcelojava/Issuu-Painel/blob/master/screenshot-1.png?raw=true">Screenshot 1</a>
 </p>
 <p>
@@ -73,7 +73,7 @@ Upload documents, create folders, embed documents in the posts by the WordPress 
 
 1.Extract the plugin's folder in /wp-content/plugins/<br>
 2.Active plugin<br>
-3.Insert your keys in Issuu Panel menu<br>
+3.Insert your token bearer in Issuu Panel menu<br>
 
 == License ==
 
@@ -86,8 +86,8 @@ You should have received a copy of the GNU General Public License along with Iss
 
 == Screenshots ==
 
-1. This is the first menu available. Insert your API key here.
-2. Other menus will be released after the registration of the keys.
+1. This is the first menu available. Insert your token bearer here.
+2. Other menus will be released after the registration of the token.
 3. In this menu you can upload, list, update and delete documents of your Issuu account.
 4. In this menu you can create, list, update, and delete folders to insert documents in them.
 5. This is the button to insert a shortcode in post content.
@@ -101,9 +101,12 @@ You should have received a copy of the GNU General Public License along with Iss
 
 = How can I help with the translation of the plugin? =
 
-You can send the translation by e-mail. Send for pedromarcelodesaalves@gmail.com.
+You can send the translation by e-mail. Send for indri@issuu.com
 
 == Changelog ==
+
+= 2.0.0 =
+* Updated: Improves for API usage
 
 = 1.6.8 =
 * Updated: changing links from HTTP to HTTPS
