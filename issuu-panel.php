@@ -3,7 +3,7 @@
 Plugin Name: Issuu Panel
 Plugin URI: https://github.com/issuu/issuu-panel
 Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
-Version: 2.0.0
+Version: 2.0.1
 Author: Pedro Marcelo and Issuu
 Author URI: https://issuu.com
 License: GPL3
@@ -11,7 +11,7 @@ License: GPL3
 
 if (defined('ISSUU_PANEL_VERSION'))
 {
-	switch (version_compare(ISSUU_PANEL_VERSION, '2.0.0')) {
+	switch (version_compare(ISSUU_PANEL_VERSION, '2.0.1')) {
 		case -1:
 			wp_die("A lower version of Issuu Panel plugin is already installed");
 			break;
@@ -30,7 +30,7 @@ if (defined('ISSUU_PANEL_VERSION'))
 |--------------------------------------
 */
 
-define('ISSUU_PANEL_VERSION', '2.0.0');
+define('ISSUU_PANEL_VERSION', '2.0.1');
 define('ISSUU_PANEL_DIR', plugin_dir_path(__FILE__));
 define('ISSUU_PANEL_URL', plugin_dir_url(__FILE__));
 define('ISSUU_PANEL_PREFIX', 'issuu_painel_');

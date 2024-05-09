@@ -118,6 +118,9 @@ msgstr "Permitir comentários"
 msgid "Allow file download"
 msgstr "Permitir download do arquivo"
 
+msgid "Show detected links"
+msgstr "Mostrar links detectados"
+
 msgid "Access"
 msgstr "Acesso"
 

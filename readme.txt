@@ -105,6 +105,9 @@ You can send the translation by e-mail. Send for indri@issuu.com
 
 == Changelog ==
 
+= 2.0.1 =
+* Updated: allow customizing show detected links option while creating and editing documents
+
 = 2.0.0 =
 * Updated: Improves for API usage
 
