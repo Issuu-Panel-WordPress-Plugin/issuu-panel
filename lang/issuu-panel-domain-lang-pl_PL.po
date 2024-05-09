@@ -247,6 +247,9 @@ msgstr "Zezwól na komentowanie"
 msgid "Allow file download"
 msgstr "Zezwól na pobieranie"
 
+msgid "Show detected links"
+msgstr "Pokaż wykryte linki"
+
 msgid "Access"
 msgstr "Dostęp"
 

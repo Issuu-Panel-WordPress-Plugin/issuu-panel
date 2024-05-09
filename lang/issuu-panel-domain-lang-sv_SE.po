@@ -118,6 +118,9 @@ msgstr "Tillåt kommentarer"
 msgid "Allow file download"
 msgstr "Tillåt att fil kan laddas ner"
 
+msgid "Show detected links"
+msgstr "Visa upptäckta länkar"
+
 msgid "Access"
 msgstr "Behörighet"
 

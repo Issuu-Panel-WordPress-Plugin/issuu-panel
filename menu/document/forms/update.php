@@ -34,8 +34,15 @@
 				<tr>
 					<th><label for="downloadable"><?php the_issuu_message('Allow file download'); ?></label></th>
 					<td>
-						<input type="checkbox" name="downloadable" id="downloadable" value="true"
+						<input type="checkbox" name="downloadable" id="downloadable" value="<?php echo ($doc[$slug]->downloadable == true)? 'true' : 'false'; ?>"
 							<?php echo ($doc[$slug]->downloadable == true)? 'checked' : ''; ?>>
+					</td>
+				</tr>
+                <tr>
+					<th><label for="showDetectedLinks"><?php the_issuu_message('Show detected links'); ?></label></th>
+					<td>
+						<input type="checkbox" name="showDetectedLinks" id="showDetectedLinks" value="<?php echo ($doc[$slug]->showDetectedLinks == true)? 'true' : 'false'; ?>"
+							<?php echo ($doc[$slug]->showDetectedLinks == true)? 'checked' : ''; ?>>
 					</td>
 				</tr>
 				<tr>

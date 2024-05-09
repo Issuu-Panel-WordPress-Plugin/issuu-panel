@@ -53,6 +53,10 @@
 					<td><input type="checkbox" name="downloadable" id="downloadable" value="true"></td>
 				</tr>
 				<tr>
+					<th><label for="showDetectedLinks"><?php the_issuu_message('Show detected links'); ?></label></th>
+					<td><input type="checkbox" name="showDetectedLinks" id="showDetectedLinks" value="true"></td>
+				</tr>
+				<tr>
 					<th><label><?php the_issuu_message('Access'); ?></label></th>
 					<td>
 						<fieldset>
