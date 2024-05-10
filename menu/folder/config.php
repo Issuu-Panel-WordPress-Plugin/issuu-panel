@@ -45,7 +45,6 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 	private function updatePage()
 	{
 		$issuuFolder = $this->getConfig()->getIssuuServiceApi('IssuuFolder');
-		$issuuBookmark = $this->getConfig()->getIssuuServiceApi('IssuuBookmark');
 		$folderId = filter_input(INPUT_GET, 'folder');
 		$folder = $issuuFolder->getUpdateData(array('folderId' => $folderId));
 		$params = $issuuFolder->getParams();
@@ -56,10 +55,10 @@ class IssuuPanelPageFolders extends IssuuPanelSubmenu
 
 		if ($folder['stat'] == 'ok')
 		{
-			$bookmarks = $issuuBookmark->issuuList(array('folderId' => $folderId));
+            $folders_documents = $folder['documents'];
 			$folder = $folder['stack'];
 			$image = 'https://image.issuu.com/%s/jpg/page_1_thumb_large.jpg';
-			include(ISSUU_PANEL_DIR . 'menu/folder/forms/update.php');
+            include(ISSUU_PANEL_DIR . 'menu/folder/forms/update.php');
 		}
 		else
 		{

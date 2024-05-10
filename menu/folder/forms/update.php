@@ -33,18 +33,18 @@
 				</tr>
 			</tbody>
 		</table>
-		<?php if (isset($folders_documents['documentsId']) && !empty($folders_documents['documentsId'])) : ?>
+		<?php if (isset($folders_documents) && !empty($folders_documents)) : ?>
 			<h3>Shortcode</h3>
 			<input type="text" class="code shortcode" disabled size="70"
-				value='[issuu-panel-folder-list id="<?php echo $folder->folderId; ?>"]'>
+				value='[issuu-panel-folder-list id="<?php echo $folder->id; ?>"]'>
 		<?php endif; ?>
 		<div id="document-list">
-			<?php if (isset($folders_documents['documentsId']) && !empty($folders_documents['documentsId'])) : ?>
+			<?php if (isset($folders_documents) && !empty($folders_documents)) : ?>
 			<h3><?php the_issuu_message("Folder's documents"); ?></h3>
-				<?php foreach ($folders_documents['documentsId'] as $doc) : ?>
+				<?php foreach ($folders_documents as $doc) : ?>
 					<div class="document complete">
 						<div class="document-box">
-							<img src="<?php echo sprintf($image, $doc->documentId) ?>" alt="">
+							<img src="<?php echo $doc->coverImage ?>" alt="">
 						</div>
 						<p class="description"><?php echo $doc->title ?></p>
 					</div>
