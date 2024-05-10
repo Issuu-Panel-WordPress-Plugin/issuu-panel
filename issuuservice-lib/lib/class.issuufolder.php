@@ -77,23 +77,50 @@ class IssuuFolder extends IssuuServiceAPI
         $stackId = $params['folderId'];
         $this->setParams($params);
         
-        $response = $this->curlRequest(
+        $response_stack = $this->curlRequest(
             $this->getApiUrl('/stacks/'.$stackId),
             array(),
             $this->headers
         );
-        $response = json_decode($response, true);
+        $response_stack = json_decode($response_stack, true);
         
-        if(isset($response['id']))
+        if(isset($response_stack['id']))
         {
             $result['stat'] = 'ok';
-            $result['stack'] = $this->clearObjectJson($response);
+            $result['stack'] = $this->clearObjectJson($response_stack);
+
+            // get stack items
+            $response_stack_items = $this->curlRequest(
+                $this->getApiUrl('/stacks/'.$stackId.'/items'),
+                array(
+                    'includeUnlisted' => 'true',
+                ),
+                $this->headers
+            );
+            $response_stack_items = json_decode($response_stack_items, true);
+            
+            $stack_items = $this->clearObjectJson($response_stack_items)->results;
+            // get data from each document
+            foreach($stack_items as $item)
+            {
+                $result_document = $this->curlRequest(
+                    $this->getApiUrl('/publications/'.$item),
+                    array(),
+                    $this->headers
+                );
+
+                $document = json_decode($result_document, true);
+                $document = $this->clearObjectJson($document);
+                $documents[] = $document;
+            }
+            
+            $result['documents'] = $documents;
 
             return $result;
         }
         else
         {
-            return $this->returnErrorJson($response);
+            return $this->returnErrorJson($response_stack);
         }
     }
 
@@ -211,6 +238,16 @@ class IssuuFolder extends IssuuServiceAPI
     protected function clearObjectJson($folder)
     {
         $fold = (object) $folder;
+
+        if(isset($doc->cover['small'])) {
+            $fold->coverImage = $fold->cover['small']['url'];
+        }
+        if(isset($fold->cover['medium'])) {
+            $fold->coverImage = $fold->cover['medium']['url'];
+        }
+        if(isset($fold->cover['large'])) {
+            $fold->coverImage = $fold->cover['large']['url'];
+        }
 
         return $fold;
     }

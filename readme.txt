@@ -105,6 +105,9 @@ You can send the translation by e-mail. Send for indri@issuu.com
 
 == Changelog ==
 
+= 2.1.0 =
+* Updated: show documents information inside folders
+
 = 2.0.1 =
 * Updated: allow customizing show detected links option while creating and editing documents
 
