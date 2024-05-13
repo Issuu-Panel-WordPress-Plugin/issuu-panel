@@ -88,18 +88,38 @@ class IssuuFolder extends IssuuServiceAPI
         {
             $result['stat'] = 'ok';
             $result['stack'] = $this->clearObjectJson($response_stack);
+            $has_next = true;
+            $page = 1;
 
-            // get stack items
-            $response_stack_items = $this->curlRequest(
-                $this->getApiUrl('/stacks/'.$stackId.'/items'),
-                array(
-                    'includeUnlisted' => 'true',
-                ),
-                $this->headers
-            );
-            $response_stack_items = json_decode($response_stack_items, true);
+            while($has_next) {
+                // get stack items
+                $response_stack_items = $this->curlRequest(
+                    $this->getApiUrl('/stacks/'.$stackId.'/items'),
+                    array(
+                        'includeUnlisted' => 'true',
+                        'page' => $page,
+                    ),
+                    $this->headers
+                );
+                $response_stack_items = json_decode($response_stack_items, true);
+                $cleared_object = $this->clearObjectJson($response_stack_items);
+
+                if(isset($cleared_object->links['next']))
+                {
+                    $page++;
+                }
+                else
+                {
+                    $has_next = false;
+                }
+
+
+                foreach($cleared_object->results as $item_id)
+                {
+                    $stack_items[] = $item_id;
+                }
+            }            
             
-            $stack_items = $this->clearObjectJson($response_stack_items)->results;
             // get data from each document
             foreach($stack_items as $item)
             {
