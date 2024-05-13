@@ -1,2 +1,3 @@
-# TODO: Add a script to update the docker image
-# wp plugin install $(wp plugin list --field=name) --force
+sh scripts/build.sh
+# docker cp issuu-panel.zip issuu-panel-github:/var/www/html/wp-content/plugins/
+# rm issuu-panel.zip

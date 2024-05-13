@@ -1,4 +1,4 @@
-cd ..
+sh setup-svn.sh
 # Add files to svn repo
 cp -R plugin-src/* issuu-panel/trunk/
 cp -R plugin-src/*.png issuu-panel/assets/

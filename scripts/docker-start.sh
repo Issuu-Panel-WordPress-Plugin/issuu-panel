@@ -1,3 +1,4 @@
+sh scripts/build.sh
 docker-compose up --build -d --remove-orphans
-# TODO: install local plugin
-# wp plugin install ../my-plugin.zip
+rm issuu-panel.zip
+open http://localhost:8080
