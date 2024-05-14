@@ -49,6 +49,8 @@ After changing the code, you need to run the following command to update the plu
 make docker-update
 ```
 
+Then you need to refresh the page to see the changes.
+
 ## Send a new version to the wordpress repository
 
 ### Prerequisites
