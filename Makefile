@@ -13,7 +13,3 @@ docker-start:
 .PHONY: docker-update
 docker-update:
 	sh scripts/docker-update.sh
-
-.PHONY: setup-svn
-setup-svn:
-	sh scripts/setup-svn.sh
