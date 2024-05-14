@@ -1,4 +1,4 @@
-sh setup-svn.sh
+svn co https://plugins.svn.wordpress.org/issuu-panel
 # Add files to svn repo
 cp -R plugin-src/* issuu-panel/trunk/
 cp -R plugin-src/*.png issuu-panel/assets/
