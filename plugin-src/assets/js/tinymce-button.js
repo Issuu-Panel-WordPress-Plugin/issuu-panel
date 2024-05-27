@@ -19,9 +19,9 @@
 		getInfo : function(){
 			return {
 				longname : "Issuu Panel",
-				author : 'Pedro Marcelo',
-				authorurl : 'https://github.com/pedromarcelojava/',
-				infourl : 'https://github.com/pedromarcelojava/Issuu-Painel/',
+				author : 'Issuu',
+				authorurl : 'https://github.com/issuu/',
+				infourl : 'https://github.com/issuu/issuu-panel',
 				version : "1.0"
 			};
 		}
