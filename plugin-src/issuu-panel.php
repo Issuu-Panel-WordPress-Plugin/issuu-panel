@@ -4,8 +4,8 @@ Plugin Name: Issuu Panel
 Plugin URI: https://github.com/issuu/issuu-panel
 Description: Admin panel for Issuu. You can upload your documents, create folders and embed documents in posts.
 Version: 2.1.1
-Author: Pedro Marcelo and Issuu
-Author URI: https://issuu.com
+Author: Pedro Marcelo
+Author URI: https://github.com/pedromarcelojava/
 License: GPL3
 */
 
